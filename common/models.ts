@@ -1,26 +1,34 @@
 
 
-interface boardPosition {
-    ranks: Number,
-    files: Number,
-    whitePlayer: playerPosition,
-    blackPlayer: playerPosition
-}
-
-interface playerPosition {
+export interface boardPosition {
+    ranks: number,
+    files: number,
+    nextMove: colour,
+    whitePlayer: playerState,
+    blackPlayer: playerState,
+    halfMoveClock: number,
+    fullMoveNumber: number,
+    enPassantTarget: square
     pieces: piece[],
-    canCastle: boolean
 }
 
-interface piece {
+export interface playerState {
+    castlePossibilities: square[]
+}
+
+
+export interface piece {
     colour: colour,
     type: pieceType,
-    rank: Number,
-    file: Number
+    position: square
 }
 
+export interface square {
+    rank: number,
+    file: number
+}
 
-enum pieceType {
+export enum pieceType {
     Queen = "Q",
     King = "K",
     Rook = "R",
@@ -28,7 +36,7 @@ enum pieceType {
     Knight = "N"
 }
 
-enum colour {
+export enum colour {
     black = "B",
     white = "W"
 }

@@ -92,3 +92,5 @@ bin
 obj
 appsettings.json
 local.settings.json
+common/models.js
+common/parseFen.js
