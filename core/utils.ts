@@ -45,27 +45,26 @@ export function blocked(board: GameBoard, from:Location, to:Location): boolean {
     let rank_diff = Math.abs(to.rank - from.rank);
     let rank_up = to.rank > from.rank ? 1 : -1;
     let file_up = to.file > from.file ? 1 : -1;
-    let squaresOnRoute: Location[] = [];
-    while (file_diff > 0 || rank_diff > 0) {
+    // exclude destination square
+    while (file_diff > 1 || rank_diff > 1) {    
         let doRank: boolean = rank_diff > file_diff;
-        if (file_diff > 0 && rank_diff > 0) { //move diagonally whenever possible
+        //move diagonally whenever possible
+        if (file_diff > 0 && rank_diff > 0) { 
             cur.rank += rank_up;
             cur.file += file_up;
-            squaresOnRoute.push(Object.assign({}, cur));
             rank_diff -= 1;
             file_diff -= 1;
         }
         else if (doRank) {
             cur.rank += rank_up;
-            squaresOnRoute.push(Object.assign({}, cur));
             rank_diff -= 1;
         } else {
             cur.file += file_up;
-            squaresOnRoute.push(Object.assign({}, cur));
             file_diff -= 1;
         }
+        if(pieceAtLocation(board, cur))
+            return false;
+        // console.debug(cur);
     }
-    squaresOnRoute.pop();
-    console.debug(squaresOnRoute);
-    return !!squaresOnRoute.find(x=>pieceAtLocation(board, x));
+    return true;
 }
