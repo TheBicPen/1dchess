@@ -1,4 +1,4 @@
-import { PiecePosition, Location, Position, Move, GameBoard } from "../models";
+import { PiecePosition, Location, boardState, Move, GameBoard } from "../models";
 import { enumeratePositions } from "../utils";
 
 
@@ -18,10 +18,10 @@ export abstract class SimplePiece implements GamePiece {
     abstract legalMove(location: Location, considerCheck: boolean, position: GameBoard);
 
     getLegalMoves(considerCheck: boolean, position: GameBoard): Location[] {
-        return enumeratePositions(position.boardDimensions).filter(x=>this.legalMove(x, considerCheck, position));
+        return enumeratePositions(position.boardDimensions).filter(x => this.legalMove(x, considerCheck, position));
     }
     locationToMove(to: Location): Move {
-        return {"from": this.state.position, "to": to};
+        return { "from": this.state.position, "to": to };
     }
-    
+
 }

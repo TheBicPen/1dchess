@@ -1,4 +1,4 @@
-import { GameBoard, Move, PiecePosition, Player, Position } from "../models";
+import { GameBoard, Move, PiecePosition, Player, boardState } from "../models";
 
 
 export abstract class AIPlayer {

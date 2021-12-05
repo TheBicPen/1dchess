@@ -20,7 +20,7 @@ export interface PiecePosition {
     player: Player
 }
 
-export interface Position {
+export interface boardState {
     pieces: PiecePosition[],
     boardDimensions: Location,
 }
