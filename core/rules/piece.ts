@@ -1,7 +1,8 @@
-import { PiecePosition, Location, boardState, Move, GameBoard } from "../models";
+import { PiecePosition, Location, boardState, Move, GameBoard, Player, Piece } from "../models";
 import { enumeratePositions } from "../utils";
 
 
+// legalMove assumes that the target move is valid in principle, i.e. target is on the board
 export interface GamePiece {
     state: PiecePosition;
     moveTo(location: Location): void;
@@ -23,8 +24,8 @@ export abstract class SimplePiece implements GamePiece {
     locationToMove(to: Location): Move {
         return { "from": this.state.position, "to": to };
     }
-    constructor(position: PiecePosition) {
-        this.state = position;
+    constructor(location: Location, player: Player, piece: Piece) {
+        this.state = {'position': location, 'player': player, 'piece': piece};
     }
 
 }
