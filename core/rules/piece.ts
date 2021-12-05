@@ -15,13 +15,16 @@ export abstract class SimplePiece implements GamePiece {
     moveTo(location: Location): void {
         this.state.position = location;
     }
-    abstract legalMove(location: Location, considerCheck: boolean, position: GameBoard);
+    abstract legalMove(location: Location, considerCheck: boolean, position: GameBoard): boolean;
 
     getLegalMoves(considerCheck: boolean, position: GameBoard): Location[] {
         return enumeratePositions(position.boardDimensions).filter(x => this.legalMove(x, considerCheck, position));
     }
     locationToMove(to: Location): Move {
         return { "from": this.state.position, "to": to };
+    }
+    constructor(position: PiecePosition) {
+        this.state = position;
     }
 
 }
