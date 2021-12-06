@@ -35,7 +35,7 @@ export function letterToFile(c: string): number | null {
 }
 
 export function pieceAtLocation(board: GameBoard, location: Location): GamePiece | undefined {
-    return board.gamePieces.find(x=>x.state.position === location);
+    return board.gamePieces.find(x=>x.state.position.file === location.file && x.state.position.rank === location.rank);
 }
 
 // returns whether there are any pieces blocking the straight line from from to to
@@ -47,15 +47,14 @@ export function blocked(board: GameBoard, from:Location, to:Location): boolean {
     let file_up = to.file > from.file ? 1 : -1;
     // exclude destination square
     while (file_diff > 1 || rank_diff > 1) {    
-        let doRank: boolean = rank_diff > file_diff;
         //move diagonally whenever possible
-        if (file_diff > 0 && rank_diff > 0) { 
+        if (file_diff > 1 && rank_diff > 1) { 
             cur.rank += rank_up;
             cur.file += file_up;
             rank_diff -= 1;
             file_diff -= 1;
         }
-        else if (doRank) {
+        else if (rank_diff > file_diff) {
             cur.rank += rank_up;
             rank_diff -= 1;
         } else {
@@ -63,8 +62,8 @@ export function blocked(board: GameBoard, from:Location, to:Location): boolean {
             file_diff -= 1;
         }
         if(pieceAtLocation(board, cur))
-            return false;
+            return true;
         // console.debug(cur);
     }
-    return true;
+    return false;
 }

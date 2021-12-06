@@ -1,7 +1,39 @@
-import { PiecePosition, Location, GameBoard, Move, Player, Piece } from "../models";
-import { blocked, pieceAtLocation } from "../utils";
-import { SimplePiece } from "./piece";
+import { PiecePosition, Location, GameBoard, Move, Player, PieceType, Rules } from "../models";
+import { blocked, enumeratePositions, pieceAtLocation } from "../utils";
+import { GamePiece, RuleSet } from "./piece";
 
+
+export class SimpleRuleSet extends RuleSet {
+    rules: Rules = { 'kingCheck': false };
+    pieceToGamePiece = pieceToGamePiece;
+}
+
+export abstract class SimplePiece implements GamePiece {
+    state: PiecePosition;
+    moveTo(location: Location): void {
+        this.state.position = location;
+    };
+    abstract legalMove(location: Location, considerCheck: boolean, position: GameBoard): boolean;
+
+    getLegalMoves(considerCheck: boolean, position: GameBoard): Location[] {
+        return enumeratePositions(position.boardDimensions).filter(x => this.legalMove(x, considerCheck, position));
+    };
+    locationToMove(to: Location): Move {
+        return { "from": this.state.position, "to": to };
+    };
+    constructor(location: Location, player: Player, piece: PieceType) {
+        this.state = { 'position': location, 'player': player, 'piece': piece };
+    };
+}
+
+export function pieceToGamePiece(piece: PiecePosition): GamePiece {
+    return piece.piece === PieceType.Bishop ? new SimpleBishop(piece.position, piece.player)
+        : piece.piece === PieceType.King ? new SimpleKing(piece.position, piece.player)
+            : piece.piece === PieceType.Knight ? new SimpleKnight(piece.position, piece.player)
+                : piece.piece === PieceType.Queen ? new SimpleQueen(piece.position, piece.player)
+                    : piece.piece === PieceType.Rook ? new SimpleRook(piece.position, piece.player)
+                        : /* piece.piece === Piece.Pawn ? */ new SimplePawn(piece.position, piece.player);
+}
 
 export class SimpleKing extends SimplePiece {
     legalMove(location: Location, considerCheck: boolean, position: GameBoard): boolean {
@@ -11,7 +43,7 @@ export class SimpleKing extends SimplePiece {
             && true; //ignore considerCheck for now
     }
     constructor(location: Location, player: Player) {
-        super(location, player, Piece.King);
+        super(location, player, PieceType.King);
     }
 }
 
@@ -23,7 +55,7 @@ export class SimpleKnight extends SimplePiece {
             && true; //ignore considerCheck for now
     }
     constructor(location: Location, player: Player) {
-        super(location, player, Piece.Knight);
+        super(location, player, PieceType.Knight);
     }
 }
 
@@ -35,7 +67,7 @@ export class SimpleBishop extends SimplePiece {
             && true; //ignore considerCheck for now
     }
     constructor(location: Location, player: Player) {
-        super(location, player, Piece.Queen);
+        super(location, player, PieceType.Queen);
     }
 }
 
@@ -48,7 +80,7 @@ export class SimpleQueen extends SimplePiece {
             && true; //ignore considerCheck for now
     }
     constructor(location: Location, player: Player) {
-        super(location, player, Piece.Queen);
+        super(location, player, PieceType.Queen);
     }
 }
 
@@ -60,7 +92,7 @@ export class SimpleRook extends SimplePiece {
             && true; //ignore considerCheck for now
     }
     constructor(location: Location, player: Player) {
-        super(location, player, Piece.Rook);
+        super(location, player, PieceType.Rook);
     }
 }
 
@@ -76,9 +108,9 @@ export class SimplePawn extends SimplePiece {
             || (pieceAtLocation(position, location)?.state.player === (this.state.player === Player.White ? Player.Black : Player.White)
                 && Math.abs(thisPosition.file - location.file) === 1)
             && true; //ignore considerCheck for now
-            // no en passant yet
+        // no en passant yet
     }
     constructor(location: Location, player: Player) {
-        super(location, player, Piece.Pawn);
+        super(location, player, PieceType.Pawn);
     }
 }

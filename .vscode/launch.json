@@ -2,11 +2,15 @@
   "version": "0.2.0",
   "configurations": [
     {
-      "name": "Attach to Node Functions",
-      "type": "node",
-      "request": "attach",
-      "port": 9229,
-      "preLaunchTask": "func: host start"
+      "name": "Launch Game",
+      "program": "${workspaceFolder}/core/game/game.ts",
+      "request": "launch",
+      "console": "integratedTerminal",
+      "skipFiles": [
+        "<node_internals>/**"
+      ],
+      "type": "pwa-node",
+      "preLaunchTask": "build core"
     }
   ]
 }

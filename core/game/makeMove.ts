@@ -7,10 +7,10 @@ export function parseMove(move: string): Move | null {
     if (move.length !== 5)
         return null;
     let sourceFile = letterToFile(move[0]);
-    let sourceRank = parseInt(move[1]);
+    let sourceRank = parseInt(move[1]) - 1; // convert 1-index to 0-index
     let targetFile = letterToFile(move[3]);
-    let targetRank = parseInt(move[4]);
-    if (sourceFile === null || !sourceRank || targetFile === null || !targetRank)
+    let targetRank = parseInt(move[4]) - 1; // convert 1-index to 0-index
+    if (sourceFile === null || isNaN(sourceRank) || targetFile === null || isNaN(targetRank))
         return null;
     else
         return { 'from': { 'file': sourceFile, 'rank': sourceRank }, 'to': { 'file': targetFile, 'rank': targetRank } }
@@ -23,7 +23,7 @@ export async function requestMove(): Promise<Move> {
     });
     return new Promise<Move>(
         (resolve, reject) => {
-            rl.question("Enter a move", answer => {
+            rl.question("Enter a move\n", answer => {
                 rl.close();
                 let move: Move | null = parseMove(answer);
                 if (move) resolve(move);
