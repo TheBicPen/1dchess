@@ -3,7 +3,7 @@ import { GamePiece } from "./rules/piece";
 
 
 // Return a list of possible positions within dimensions
-export function enumeratePositions(dimensions: Location) {
+export function enumeratePositions(dimensions: Location): Location[] {
     const ranks = range(dimensions.rank);
     const files = range(dimensions.file);
     // 2-ary Cartesian product
@@ -12,18 +12,18 @@ export function enumeratePositions(dimensions: Location) {
 
 
 // Return array containing 0 to val-1, inclusive.
-export function range(val: number) {
+export function range(val: number): number[] {
     return [... new Array(val).keys()];
 }
 
 
 // Random element in range
-export function randRange(val: number) {
+export function randRange(val: number): number {
     return Math.floor(Math.random() * val);
 }
 
 // Random element in range
-export function randItem(arr: any[]) {
+export function randItem<T>(arr: T[]): T {
     return arr[randRange(arr.length)];
 }
 
