@@ -6,15 +6,37 @@
       "type": "typescript",
       "tsconfig": "core/tsconfig.json",
       "problemMatcher": [
-          "$tsc"
+        "$tsc"
       ],
       "options": {
         "cwd": "${workspaceFolder}/core",
       },
       "group": {
-          "kind": "build",
-          "isDefault": true
+        "kind": "build",
+        "isDefault": true
       }
-  }
+    },
+    {
+      "label": "launch front-end server",
+      "command": "python3 -n http.server",
+      "dependsOn":[
+        "build front-end"
+      ]
+    },
+    {
+      "label": "build front-end",
+      "type": "typescript",
+      "tsconfig": "front-end/tsconfig.json",
+      "problemMatcher": [
+        "$tsc"
+      ],
+      "options": {
+        "cwd": "${workspaceFolder}/front-end",
+      },
+      "group": {
+        "kind": "build",
+        "isDefault": true
+      }
+    }
   ]
 }

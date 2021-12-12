@@ -2,7 +2,16 @@
   "version": "0.2.0",
   "configurations": [
     {
-      "name": "Launch Game",
+      "type": "firefox",
+      "request": "launch",
+      "reAttach": true,
+      "name": "Launch Front-end",
+      "url": "http://localhost/front-end/game.html",
+      "webRoot": "${workspaceFolder}",
+      "preLaunchTask": "launch front-end server"
+    },
+    {
+      "name": "Launch Core",
       "program": "${workspaceFolder}/core/game/game.ts",
       "request": "launch",
       "console": "integratedTerminal",

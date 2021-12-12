@@ -6,16 +6,10 @@ import { validMove } from "../rules/rules";
 import { SimpleRuleSet } from "../rules/simplePieces";
 import { pieceAtLocation } from "../utils";
 import { requestMove } from "./makeMove";
-
+import board from "../positions/normal_chess";
 
 export async function runAIGame() {
     let CPU: AIPlayer = new randomAI(0);
-    let board: boardState = {
-        "pieces": [
-            { 'piece': PieceType.Rook, 'player': Player.White, 'position': { 'rank': 0, 'file': 0 } },
-            { 'piece': PieceType.Rook, 'player': Player.Black, 'position': { 'rank': 7, 'file': 7 } }
-        ], "boardDimensions": { "rank": 8, "file": 8 },
-    };
     let ruleSet: RuleSet = new SimpleRuleSet();
     let gameState: GameBoard = ruleSet.initBoardPosition(board);
 
