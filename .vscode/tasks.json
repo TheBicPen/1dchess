@@ -18,7 +18,7 @@
     },
     {
       "label": "launch front-end server",
-      "command": "python3 -n http.server",
+      "command": "python3 -m http.server",
       "dependsOn":[
         "build front-end"
       ]
