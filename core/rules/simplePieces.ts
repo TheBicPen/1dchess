@@ -100,7 +100,7 @@ export class SimplePawn extends SimplePiece {
     legalMove(location: Location, considerCheck: boolean, position: GameBoard): boolean {
         let rankMult: -1 | 1 = this.state.player === Player.White ? 1 : -1;
         let thisPosition: Location = this.state.position;
-        let plus2 = ((thisPosition.rank === 2 || thisPosition.rank === position.boardDimensions.rank - 2)
+        let plus2 = ((thisPosition.rank === 1 || thisPosition.rank === position.boardDimensions.rank - 2)
             && location.rank === thisPosition.rank + 2 * rankMult && !blocked(position, this.state.position, location))  // initial +2 move
         let forwardMove: boolean = (plus2 || location.rank === thisPosition.rank + rankMult)
             && thisPosition.file === location.file && !pieceAtLocation(position, location) // non-capture forward move

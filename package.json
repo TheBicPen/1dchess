@@ -1,0 +1,27 @@
+{
+  "name": "1dchess",
+  "version": "1.0.0",
+  "description": "`cd front-end; python -m http.server` vscode -> launch front-end",
+  "main": "index.js",
+  "directories": {
+    "lib": "lib"
+  },
+  "dependencies": {},
+  "devDependencies": {
+    "@tsconfig/recommended": "^1.0.1",
+    "@types/node": "^17.0.5"
+  },
+  "scripts": {
+    "test": "echo \"Error: no test specified\" && exit 1"
+  },
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/TheBicPen/1dchess.git"
+  },
+  "author": "",
+  "license": "ISC",
+  "bugs": {
+    "url": "https://github.com/TheBicPen/1dchess/issues"
+  },
+  "homepage": "https://github.com/TheBicPen/1dchess#readme"
+}
