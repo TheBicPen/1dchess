@@ -5,10 +5,10 @@ import { GamePiece, RuleSet } from "../rules/piece";
 import { validMove } from "../rules/rules";
 import { SimpleRuleSet } from "../rules/simplePieces";
 import { pieceAtLocation } from "../utils";
-import { requestMove } from "./makeMove";
+import { parseMove, requestMove } from "./makeMove";
 import board from "../positions/normal_chess";
 
-export async function runAIGame() {
+export async function runAIGameNode() {
     let CPU: AIPlayer = new randomAI(0);
     let ruleSet: RuleSet = new SimpleRuleSet();
     let gameState: GameBoard = ruleSet.initBoardPosition(board);
@@ -36,6 +36,36 @@ export async function runAIGame() {
         AIMove = null;
         playerMove = null;
     }
+}
+
+
+// move to front-end
+export function runAIGame() {
+    let CPU: AIPlayer = new randomAI(0);
+    let ruleSet: RuleSet = new SimpleRuleSet();
+    let gameState: GameBoard = ruleSet.initBoardPosition(board);
+
+
+    return {
+        'playerMove': function (move: string) {
+            let playerMove: Move | null = parseMove(move);
+            if (!playerMove)
+                return 'snapback';
+            if (!validMove(gameState, playerMove, Player.White)) {
+                return 'snapback'
+            }
+
+            console.log("Player:", playerMove);
+            makeMove(gameState, playerMove);
+            return 'drop';
+        },
+        'AIMove': function () {
+            let AIMove: Move | null = CPU.move(gameState, Player.Black);
+            console.log("AI:", AIMove);
+            makeMove(gameState, AIMove);
+            return AIMove;
+        }
+    };
 }
 
 // moves a piece on a gameboard. Assumes the move is valid

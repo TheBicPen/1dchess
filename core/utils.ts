@@ -13,7 +13,7 @@ export function enumeratePositions(dimensions: Location): Location[] {
 
 // Return array containing 0 to val-1, inclusive.
 export function range(val: number): number[] {
-    return [... new Array(val).keys()];
+    return [...new Array(val).keys()];
 }
 
 
@@ -34,21 +34,26 @@ export function letterToFile(c: string): number | null {
     return idx === -1 ? null : idx;
 }
 
+export function fileToLetter(n: number): string | null {
+    const letters: string = 'abcdefghijklmnopqrstuvwxyz';
+    return n < letters.length ? letters[n] : null;
+}
+
 export function pieceAtLocation(board: GameBoard, location: Location): GamePiece | undefined {
-    return board.gamePieces.find(x=>x.state.position.file === location.file && x.state.position.rank === location.rank);
+    return board.gamePieces.find(x => x.state.position.file === location.file && x.state.position.rank === location.rank);
 }
 
 // returns whether there are any pieces blocking the straight line from from to to
-export function blocked(board: GameBoard, from:Location, to:Location): boolean {
+export function blocked(board: GameBoard, from: Location, to: Location): boolean {
     let cur: Location = Object.assign({}, from);
     let file_diff = Math.abs(to.file - from.file);
     let rank_diff = Math.abs(to.rank - from.rank);
     let rank_up = to.rank > from.rank ? 1 : -1;
     let file_up = to.file > from.file ? 1 : -1;
     // exclude destination square
-    while (file_diff > 1 || rank_diff > 1) {    
+    while (file_diff > 1 || rank_diff > 1) {
         //move diagonally whenever possible
-        if (file_diff > 1 && rank_diff > 1) { 
+        if (file_diff > 1 && rank_diff > 1) {
             cur.rank += rank_up;
             cur.file += file_up;
             rank_diff -= 1;
@@ -61,9 +66,14 @@ export function blocked(board: GameBoard, from:Location, to:Location): boolean {
             cur.file += file_up;
             file_diff -= 1;
         }
-        if(pieceAtLocation(board, cur))
+        if (pieceAtLocation(board, cur))
             return true;
         // console.debug(cur);
     }
     return false;
+}
+
+// Returns whether any square in the list has a piece on it
+export function blockedSquares(board: GameBoard, squares: Location[]) {
+    return squares.some(s => pieceAtLocation(board, s));
 }

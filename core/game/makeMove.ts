@@ -1,5 +1,5 @@
 import { Move } from "../models";
-import { letterToFile } from "../utils";
+import { fileToLetter, letterToFile } from "../utils";
 import * as readline from 'readline';
 
 // moves should be encoded as the source square, space, target square. null indicates invalid
@@ -14,6 +14,15 @@ export function parseMove(move: string): Move | null {
         return null;
     else
         return { 'from': { 'file': sourceFile, 'rank': sourceRank }, 'to': { 'file': targetFile, 'rank': targetRank } }
+}
+
+export function unparse(move: Move): string | null {
+    let fromFile = fileToLetter(move.from.file);
+    let toFile = fileToLetter(move.to.file);
+    if (toFile && fromFile)
+        return fromFile + move.from.rank + '-' + toFile + move.to.rank;
+    else
+        return null;
 }
 
 export async function requestMove(): Promise<Move> {

@@ -37,7 +37,7 @@ export function pieceToGamePiece(piece: PiecePosition): GamePiece {
 
 export class SimpleKing extends SimplePiece {
     legalMove(location: Location, considerCheck: boolean, position: GameBoard): boolean {
-        let dist: Number = Math.abs(this.state.position.file - location.file) + Math.abs(this.state.position.rank - location.rank);
+        let dist: number = Math.abs(this.state.position.file - location.file) + Math.abs(this.state.position.rank - location.rank);
         return dist === 1
             && pieceAtLocation(position, location)?.state.player !== this.state.player //piece is other player's or empty
             && true; //ignore considerCheck for now
@@ -67,7 +67,7 @@ export class SimpleBishop extends SimplePiece {
             && true; //ignore considerCheck for now
     }
     constructor(location: Location, player: Player) {
-        super(location, player, PieceType.Queen);
+        super(location, player, PieceType.Bishop);
     }
 }
 
