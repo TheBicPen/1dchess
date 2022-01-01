@@ -1,6 +1,6 @@
-import { GameBoard, Player, Move } from "../models";
-import { randItem } from "../utils";
-import { AIPlayer } from "./interface";
+import { GameBoard, Player, Move } from "../models.js";
+import { randItem } from "../utils.js";
+import { AIPlayer } from "./interface.js";
 
 
 export default class randomAI extends AIPlayer {

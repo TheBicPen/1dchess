@@ -1,8 +1,9 @@
-import { Move } from "../models";
-import { fileToLetter, letterToFile } from "../utils";
-import * as readline from 'readline';
+import { Move } from "../models.js";
+import { fileToLetter, letterToFile } from "../utils.js";
 
-// moves should be encoded as the source square, space, target square. null indicates invalid
+
+// moves should be encoded as the source square, <any char>, target square. null indicates invalid
+// e.g. 'a2-e7', 'a4 a3', 'g9_g9'
 export function parseMove(move: string): Move | null {
     if (move.length !== 5)
         return null;
@@ -23,21 +24,4 @@ export function unparse(move: Move): string | null {
         return fromFile + move.from.rank + '-' + toFile + move.to.rank;
     else
         return null;
-}
-
-export async function requestMove(): Promise<Move> {
-    let rl = readline.createInterface({
-        input: process.stdin,
-        output: process.stdout
-    });
-    return new Promise<Move>(
-        (resolve, reject) => {
-            rl.question("Enter a move\n", answer => {
-                rl.close();
-                let move: Move | null = parseMove(answer);
-                if (move) resolve(move);
-                else reject(move);
-            });
-        }
-    );
 }

@@ -1,6 +1,4 @@
-import { PiecePosition, Location, boardState, Move, GameBoard, Player, PieceType, Rules } from "../models";
-import { enumeratePositions } from "../utils";
-import { pieceToGamePiece } from "./simplePieces";
+import { PiecePosition, Location, boardState, Move, GameBoard, Rules } from "../models.js";
 
 
 // legalMove assumes that the target move is valid in principle, i.e. target is on the board

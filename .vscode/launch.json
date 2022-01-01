@@ -12,7 +12,7 @@
     },
     {
       "name": "Launch Core",
-      "program": "${workspaceFolder}/core/game/game.ts",
+      "program": "${workspaceFolder}/core/game/gameCLI.ts",
       "request": "launch",
       "console": "integratedTerminal",
       "skipFiles": [

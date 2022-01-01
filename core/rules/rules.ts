@@ -1,6 +1,6 @@
-import { GameBoard, Move, Location, Player } from "../models";
-import { pieceAtLocation } from "../utils";
-import { GamePiece } from "./piece";
+import { GameBoard, Move, Location, Player } from "../models.js";
+import { pieceAtLocation } from "../utils.js";
+import { GamePiece } from "./piece.js";
 
 
 // check whether a move entered on a player's turn is valid. Do not call this from Piece.legalMove

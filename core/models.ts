@@ -1,4 +1,4 @@
-import { GamePiece } from "./rules/piece";
+import { GamePiece } from "./rules/piece.js";
 
 
 export enum PieceType {

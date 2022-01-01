@@ -1,6 +1,6 @@
-import { PiecePosition, Location, GameBoard, Move, Player, PieceType, Rules } from "../models";
-import { blocked, enumeratePositions, pieceAtLocation } from "../utils";
-import { GamePiece, RuleSet } from "./piece";
+import { PiecePosition, Location, GameBoard, Move, Player, PieceType, Rules } from "../models.js";
+import { blocked, enumeratePositions, pieceAtLocation } from "../utils.js";
+import { GamePiece, RuleSet } from "./piece.js";
 
 
 export class SimpleRuleSet extends RuleSet {

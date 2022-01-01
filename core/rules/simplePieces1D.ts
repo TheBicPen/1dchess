@@ -1,7 +1,6 @@
-import { PiecePosition, Location, GameBoard, Move, Player, PieceType, Rules } from "../models";
-import { blocked, blockedSquares, enumeratePositions, pieceAtLocation } from "../utils";
-import { GamePiece, RuleSet } from "./piece";
-import { SimplePiece, SimpleRuleSet } from "./simplePieces";
+import { Location, GameBoard, Player, PieceType } from "../models.js";
+import { blocked, blockedSquares, pieceAtLocation } from "../utils.js";
+import { SimplePiece } from "./simplePieces.js";
 
 
 

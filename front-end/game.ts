@@ -2,10 +2,10 @@
 
 
 import chessboard from '../lib/chessboard.js'
-import { runAIGame } from '../core/game/game'
-import { unparse } from '../core/game/makeMove';
+import { runAIGame } from '../core/game/game.js'
+import { unparse } from '../core/game/makeMove.js';
 let files: number = 1;
-let ranks: number = 10;
+let ranks: number = 8;
 let game: any = runAIGame();
 
 

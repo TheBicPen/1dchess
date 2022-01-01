@@ -1,5 +1,5 @@
-import { GameBoard, Location } from "./models";
-import { GamePiece } from "./rules/piece";
+import { GameBoard, Location } from "./models.js";
+import { GamePiece } from "./rules/piece.js";
 
 
 // Return a list of possible positions within dimensions

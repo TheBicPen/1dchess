@@ -1,5 +1,5 @@
-import { GameBoard, Location } from "../models";
-import { blocked } from "../utils";
+import { GameBoard, Location } from "../models.js";
+import { blocked } from "../utils.js";
 
 
 const loc1: Location = {'rank': 1, 'file': 2};
