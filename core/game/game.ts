@@ -2,13 +2,16 @@ import { AIPlayer } from "../ai/interface.js";
 import randomAI from "../ai/random.js";
 import { GameBoard, Move, Player } from "../models.js";
 import { GamePiece, RuleSet } from "../rules/piece.js";
-import { validMove } from "../rules/rules.js";
+import { validMove, validMoveReason } from "../rules/rules.js";
 import { SimpleRuleSet } from "../rules/simplePieces.js";
 import { pieceAtLocation } from "../utils.js";
 import { parseMove } from "./makeMove.js";
 import board from "../positions/normal_chess.js";
 
-
+export interface moveResult {
+    reason: string | null,
+    move: Move | null
+}
 
 // move to front-end
 export function runAIGame() {
@@ -18,18 +21,18 @@ export function runAIGame() {
 
 
     return {
-        // these return values should be created by front-end code. When this gets turned into a server, these values will need to be changed
-        'playerMove': function (move: string) {
+        'playerMove': function (move: string): moveResult {
             let playerMove: Move | null = parseMove(move);
             if (!playerMove)
-                return 'snapback';
-            if (!validMove(gameState, playerMove, Player.White)) {
-                return 'snapback'
+                return { 'move': null, 'reason': 'Parsing error' };
+            let moveResult: moveResult = validMoveReason(gameState, playerMove, Player.White);
+            if (!moveResult.move) {
+                return moveResult;
             }
 
             console.log("Player:", playerMove);
             makeMove(gameState, playerMove);
-            return 'drop';
+            return moveResult;
         },
         'AIMove': function () {
             let AIMove: Move | null = CPU.move(gameState, Player.Black);

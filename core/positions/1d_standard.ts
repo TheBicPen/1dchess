@@ -8,8 +8,8 @@ const board: boardState = {
         { 'piece': PieceType.Knight, 'player': Player.White, 'position': { 'rank': 2, 'file': 0 } },
 
         { 'piece': PieceType.King, 'player': Player.Black, 'position': { 'rank': 7, 'file': 0 } },
-        { 'piece': PieceType.Knight, 'player': Player.Black, 'position': { 'rank': 6, 'file': 0 } },
-        { 'piece': PieceType.Rook, 'player': Player.Black, 'position': { 'rank': 5, 'file': 0 } }
+        { 'piece': PieceType.Rook, 'player': Player.Black, 'position': { 'rank': 6, 'file': 0 } },
+        { 'piece': PieceType.Knight, 'player': Player.Black, 'position': { 'rank': 5, 'file': 0 } }
     ], "boardDimensions": { "rank": 8, "file": 1 },
 };
 export default board;

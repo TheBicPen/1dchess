@@ -1,13 +1,13 @@
 import { GamePiece } from "./rules/piece.js";
 
-
+// matches front-end library
 export enum PieceType {
-    Queen,
-    King,
-    Rook,
-    Bishop,
-    Knight,
-    Pawn
+    Queen = "Q",
+    King = "K",
+    Rook = "R",
+    Bishop = "B",
+    Knight = "N",
+    Pawn = "P"
 };
 
 export interface Location {
@@ -39,10 +39,10 @@ export interface Rules {
     kingCheck: boolean
 };
 
-
+// matches front-end library
 export enum Player {
-    Black,
-    White
+    Black = "b",
+    White = "w"
 };
 
 export interface Move {
