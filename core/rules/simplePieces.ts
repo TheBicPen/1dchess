@@ -5,7 +5,7 @@ import { GamePiece, RuleSet } from "./piece.js";
 
 export class SimpleRuleSet extends RuleSet {
     rules: Rules = { 'kingCheck': false };
-    pieceToGamePiece = pieceToGamePiece;
+    pieceToGamePiece = pieceToGamePiece;    // defines piece behaviour
 }
 
 export abstract class SimplePiece implements GamePiece {

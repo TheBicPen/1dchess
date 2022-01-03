@@ -1,4 +1,4 @@
-import { PiecePosition, Location, boardState, Move, GameBoard, Rules } from "../models.js";
+import { PiecePosition, Location, BoardState, Move, GameBoard, Rules } from "../models.js";
 
 
 // legalMove assumes that the target move is valid in principle, i.e. target is on the board
@@ -16,7 +16,7 @@ export abstract class RuleSet {
     abstract rules: Rules;
     abstract pieceToGamePiece(piece: PiecePosition): GamePiece;
 
-    initBoardPosition(board: boardState): GameBoard {
+    initBoardPosition(board: BoardState): GameBoard {
         let gamePieces: GamePiece[] = board.pieces.map(p => this.pieceToGamePiece(p));
         return { 'rules': this.rules, 'gamePieces': gamePieces, 'boardDimensions': board.boardDimensions };
     };

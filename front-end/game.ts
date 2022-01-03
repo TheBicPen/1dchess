@@ -5,13 +5,20 @@ import chessboard from '../lib/chessboard.js'
 import { moveResult, runAIGame } from '../core/game/game.js'
 import { unparse } from '../core/game/makeMove.js';
 import starting_position from '../core/positions/1d_standard.js';
-import { boardState } from '../core/models.js';
+import { BoardState } from '../core/models.js';
 import { fileToLetter } from '../core/utils.js';
+import { AIPlayer } from '../core/ai/interface.js';
+import randomAI from '../core/ai/random.js';
+import { RuleSet } from '../core/rules/piece.js';
+import { SimpleRuleSet1D } from '../core/rules/simplePieces1D.js';
 let files: number = 1;
 let ranks: number = 8;
-let game: any = runAIGame();
+let CPU: AIPlayer = new randomAI(0);
+let ruleSet: RuleSet = new SimpleRuleSet1D();
 
-function objToBoardObj(position: boardState): object {
+let game: any = runAIGame(ruleSet, CPU, starting_position);
+
+function objToBoardObj(position: BoardState): object {
     let out: any = {};
     position.pieces.forEach(p => {
         let file: string | null = fileToLetter(p.position.file);
@@ -43,7 +50,8 @@ let config: any = {
     'rows': ranks,
     'onDrop': onMove,
     'moveCallback': true,
-    'draggable': true
+    'draggable': true,
+    'showErrors': 'console'
 };
 let board: any = chessboard.constructor('board1', config);
 board.position(objToBoardObj(starting_position), ranks, files);

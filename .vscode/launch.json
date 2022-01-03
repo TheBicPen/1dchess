@@ -8,7 +8,19 @@
       "name": "Launch Front-end",
       "url": "http://localhost:8000/front-end/game.html",
       "webRoot": "${workspaceFolder}",
-      "preLaunchTask": "build front-end"
+      "preLaunchTask": "build front-end",
+      "pathMappings": [
+        {
+          "url": "http://localhost:8000/front-end/dist/core",
+          "path": "${workspaceFolder}/core/dist"
+        }
+      ],
+      "log": {
+        "consoleLevel": {
+            "PathConversion": "Debug",
+            "default": "Error"
+        }
+    }
     },
     {
       "name": "Launch Core",

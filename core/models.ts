@@ -22,7 +22,7 @@ export interface PiecePosition {
 };
 
 // abstract, unaware of rules
-export interface boardState {
+export interface BoardState {
     pieces: PiecePosition[],
     boardDimensions: Location,
 };

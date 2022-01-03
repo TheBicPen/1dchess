@@ -13,11 +13,11 @@ export function validMove(board: GameBoard, move: Move, player: Player): boolean
 export function validMoveReason(board: GameBoard, move: Move, player: Player): moveResult {
     let pieceToMove: GamePiece | undefined = pieceAtLocation(board, move.from);
     if (!pieceToMove)
-        return { 'move': null, 'reason': 'No piece at location' + JSON.stringify(move.from) };
+        return { 'move': null, 'reason': 'No piece at location ' + JSON.stringify(move.from) };
     if (pieceToMove.state.player !== player)
         return { 'move': null, 'reason': `Player ${player} does not own piece ${pieceToMove.state.piece}` };
     if (!pieceToMove.legalMove(move.to, board.rules.kingCheck, board))
-        return { 'move': null, 'reason': `Piece ${pieceToMove.state.piece} cannot move to ${move.to}` };
+        return { 'move': null, 'reason': `Piece ${pieceToMove.state.piece} cannot move to ${JSON.stringify(move.to)}` };
     return { 'move': move, 'reason': null };
 
 }

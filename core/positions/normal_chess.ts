@@ -1,7 +1,7 @@
-import { boardState, PieceType, Player } from "../models.js";
+import { BoardState, PieceType, Player } from "../models.js";
 
 
-const board: boardState = {
+const board: BoardState = {
     "pieces": [
         { 'piece': PieceType.Rook, 'player': Player.White, 'position': { 'rank': 0, 'file': 0 } },
         { 'piece': PieceType.Knight, 'player': Player.White, 'position': { 'rank': 0, 'file': 1 } },

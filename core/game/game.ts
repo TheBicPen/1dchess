@@ -1,12 +1,11 @@
 import { AIPlayer } from "../ai/interface.js";
 import randomAI from "../ai/random.js";
-import { GameBoard, Move, Player } from "../models.js";
+import { BoardState, GameBoard, Move, Player } from "../models.js";
 import { GamePiece, RuleSet } from "../rules/piece.js";
 import { validMove, validMoveReason } from "../rules/rules.js";
 import { SimpleRuleSet } from "../rules/simplePieces.js";
 import { pieceAtLocation } from "../utils.js";
 import { parseMove } from "./makeMove.js";
-import board from "../positions/normal_chess.js";
 
 export interface moveResult {
     reason: string | null,
@@ -14,11 +13,8 @@ export interface moveResult {
 }
 
 // move to front-end
-export function runAIGame() {
-    let CPU: AIPlayer = new randomAI(0);
-    let ruleSet: RuleSet = new SimpleRuleSet();
+export function runAIGame(ruleSet: RuleSet, CPU: AIPlayer, board: BoardState) {
     let gameState: GameBoard = ruleSet.initBoardPosition(board);
-
 
     return {
         'playerMove': function (move: string): moveResult {
@@ -43,11 +39,17 @@ export function runAIGame() {
     };
 }
 
-// moves a piece on a gameboard. Assumes the move is valid
+// moves a piece on a gameboard. Assumes the move is valid.
+// this really should operate on the level of boardState, not gameBoard
 export function makeMove(game: GameBoard, move: Move): boolean {
     let piece: GamePiece | undefined = pieceAtLocation(game, move.from);
+    let capturePiece: GamePiece | undefined = pieceAtLocation(game, move.to);
     piece?.moveTo(move.to);
+    if(capturePiece)
+        capture(game, capturePiece);
     return !!piece;
 }
 
-runAIGame();
+function capture(game:GameBoard, piece: GamePiece) {
+    game.gamePieces.splice(game.gamePieces.indexOf(piece), 1);
+}

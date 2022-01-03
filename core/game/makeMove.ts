@@ -21,7 +21,7 @@ export function unparse(move: Move): string | null {
     let fromFile = fileToLetter(move.from.file);
     let toFile = fileToLetter(move.to.file);
     if (toFile && fromFile)
-        return fromFile + move.from.rank + '-' + toFile + move.to.rank;
+        return `${fromFile}${move.from.rank + 1}-${toFile}${move.to.rank + 1}`;
     else
         return null;
 }
