@@ -33,7 +33,7 @@ export function runAIGame(ruleSet: RuleSet, CPU: AIPlayer, board: BoardState) {
         'AIMove': function () {
             let AIMove: Move | null = CPU.move(gameState, Player.Black);
             console.log("AI:", AIMove);
-            makeMove(gameState, AIMove);
+            AIMove && makeMove(gameState, AIMove);
             return AIMove;
         }
     };
