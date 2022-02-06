@@ -1,7 +1,7 @@
 import { PiecePosition, Location, BoardState, Move, GameBoard, Rules } from "../models.js";
 
 
-// legalMove assumes that the target move is valid in principle, i.e. target is on the board
+// legalMove only checks the piece's movement rules. The target location must be on the board
 export interface GamePiece {
     state: PiecePosition;
     moveTo(location: Location): void;

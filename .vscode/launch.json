@@ -8,7 +8,7 @@
       "name": "Launch Front-end",
       "url": "http://localhost:8000/front-end/game.html",
       "webRoot": "${workspaceFolder}",
-      "preLaunchTask": "build front-end",
+      "preLaunchTask": "launch front-end server",
       "pathMappings": [
         {
           "url": "http://localhost:8000/front-end/dist/core",

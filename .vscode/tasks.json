@@ -18,10 +18,28 @@
     },
     {
       "label": "launch front-end server",
-      "command": "python3 -m http.server",
-      "dependsOn":[
+      "type": "shell",
+      "command": "npm run start-server",
+      "dependsOn": [
         "build front-end"
-      ]
+      ],
+      "isBackground": true,
+      "problemMatcher": {
+        "owner": "http-server",
+        "pattern": [
+          {
+            "regexp": ".",
+            "file": 1,
+            "location": 2,
+            "message": 3
+          }
+        ],
+        "background": {
+          "activeOnStart": true,
+          "beginsPattern": "Starting up http-server.*",
+          "endsPattern": ".* to stop the server"
+        }
+      }
     },
     {
       "label": "build front-end",

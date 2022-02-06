@@ -1,7 +1,7 @@
 {
   "name": "1dchess",
   "version": "1.0.0",
-  "description": "`cd front-end; python -m http.server` vscode -> launch front-end",
+  "description": "1D draft chess. Project contains both server and client.",
   "main": "index.js",
   "directories": {
     "lib": "lib"
@@ -9,10 +9,12 @@
   "dependencies": {},
   "devDependencies": {
     "@tsconfig/recommended": "^1.0.1",
-    "@types/node": "^17.0.5"
+    "@types/node": "^17.0.5",
+    "http-server": "^14.1.0"
   },
   "scripts": {
-    "test": ""
+    "test": "",
+    "start-server": "./node_modules/http-server/bin/http-server -p 8000"
   },
   "repository": {
     "type": "git",
