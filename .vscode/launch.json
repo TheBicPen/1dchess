@@ -17,10 +17,10 @@
       ],
       "log": {
         "consoleLevel": {
-            "PathConversion": "Debug",
-            "default": "Error"
+          "PathConversion": "Debug",
+          "default": "Error"
         }
-    }
+      }
     },
     {
       "name": "Launch Core",
@@ -32,6 +32,18 @@
       ],
       "type": "pwa-node",
       "preLaunchTask": "build core"
+    },
+    {
+      "name": "Test Core",
+      "program": "${workspaceFolder}/core/test/test_all.ts",
+      "request": "launch",
+      "console": "integratedTerminal",
+      "skipFiles": [
+        "<node_internals>/**"
+      ],
+      "type": "pwa-node",
+      "preLaunchTask": "build core"
     }
+
   ]
 }

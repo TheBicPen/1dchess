@@ -2,7 +2,7 @@ import { AIPlayer } from "../ai/interface.js";
 import randomAI from "../ai/random.js";
 import { BoardState, GameBoard, Move, Player } from "../models.js";
 import { GamePiece, RuleSet } from "../rules/piece.js";
-import { validMove, validMoveReason } from "../rules/rules.js";
+import { validMove, validMoveWithReason } from "../rules/rules.js";
 import { SimpleRuleSet } from "../rules/simplePieces.js";
 import { pieceAtLocation } from "../utils.js";
 import { parseMove } from "./makeMove.js";
@@ -21,7 +21,7 @@ export function runAIGame(ruleSet: RuleSet, CPU: AIPlayer, board: BoardState) {
             let playerMove: Move | null = parseMove(move);
             if (!playerMove)
                 return { 'move': null, 'reason': 'Parsing error' };
-            let moveResult: moveResult = validMoveReason(gameState, playerMove, Player.White);
+            let moveResult: moveResult = validMoveWithReason(gameState, playerMove, Player.White);
             if (!moveResult.move) {
                 return moveResult;
             }

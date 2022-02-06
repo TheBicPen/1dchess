@@ -68,7 +68,6 @@ export function blocked(board: GameBoard, from: Location, to: Location): boolean
         }
         if (pieceAtLocation(board, cur))
             return true;
-        // console.debug(cur);
     }
     return false;
 }
