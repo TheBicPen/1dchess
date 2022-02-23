@@ -1,4 +1,4 @@
-import { GameBoard, Location } from "./models.js";
+import { BoardState, GameBoard, Location } from "./models.js";
 import { GamePiece } from "./rules/piece.js";
 
 
@@ -75,4 +75,9 @@ export function blocked(board: GameBoard, from: Location, to: Location): boolean
 // Returns whether any square in the list has a piece on it
 export function blockedSquares(board: GameBoard, squares: Location[]) {
     return squares.some(s => pieceAtLocation(board, s));
+}
+
+// convert concrete game board to abstract board state
+export function boardState(board: GameBoard): BoardState {
+    return { boardDimensions: board.boardDimensions, pieces: board.gamePieces.map(p => p.state) };
 }

@@ -17,12 +17,16 @@
       }
     },
     {
+      "label": "prep front-end",
+      "dependsOn": [
+        "build front-end",
+        "launch front-end server"
+      ]
+    },
+    {
       "label": "launch front-end server",
       "type": "shell",
       "command": "npm run start-server",
-      "dependsOn": [
-        "build front-end"
-      ],
       "isBackground": true,
       "problemMatcher": {
         "owner": "http-server",

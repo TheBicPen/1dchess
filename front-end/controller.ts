@@ -2,7 +2,7 @@
 
 
 import chessboard from '../lib/chessboard.js'
-import { moveResult, runAIGame } from '../core/game/game.js'
+import { moveResult, moveStatus, runAIGame, status } from '../core/game/game.js'
 import { unparse } from '../core/game/makeMove.js';
 import starting_position from '../core/positions/1d_standard.js';
 import { BoardState, Move } from '../core/models.js';
@@ -36,25 +36,37 @@ function objToBoardObj(position: BoardState): object {
 function onMove(source: string, target: string, _piece: string,
     _newPos: string, _oldPos: string, _orientation: string): action {
     let move: string = source + "-" + target;
-    let moveResult: moveResult = game.playerMove(move);
+    if (gameState !== "playing")
+        return "snapback";
+    let moveResult: moveStatus = game.playerMove(move);
     if (!moveResult.move) {
         console.log("Invalid move:", moveResult.reason);
         return 'snapback';
     }
-
+    updateStatus(moveResult.status);
     return 'drop';
 }
 
 function moveResponse(action: action): string | null {
     if (action !== "drop")
         return null;
-    let response: Move | null = game.AIMove();
+    if (gameState !== "playing")
+        return null;
+    let response: moveStatus = game.AIMove();
     let AIMove: string | null = null;
-    if(response)
-        AIMove = unparse(response);
+    if (response && response.move)
+        AIMove = unparse(response.move);
     if (!AIMove)
         console.error("No move made. Not updating");
+    updateStatus(response.status);
     return AIMove;
+}
+
+function updateStatus(status: status) {
+    gameState = status;
+    if (status !== "playing") {
+        window.alert("Game is over! " + status);
+    }
 }
 
 let config: any = {
@@ -67,5 +79,5 @@ let config: any = {
 };
 let board: any = chessboard.constructor('board1', config);
 board.position(objToBoardObj(starting_position), ranks, files);
-
+let gameState: status = "playing";
 
