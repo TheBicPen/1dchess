@@ -1,5 +1,5 @@
-import { Location, GameBoard, Player, PieceType, Rules, PiecePosition } from "../models.js";
-import { blocked, blockedSquares, pieceAtLocation } from "../utils.js";
+import { Square, GameBoard, Player, PieceType, Rules, PiecePosition } from "../models.js";
+import { blocked, blockedSquares, boardState, pieceAtLocation } from "../utils.js";
 import { GamePiece, RuleSet } from "./piece.js";
 import {
     SimplePiece,
@@ -21,7 +21,7 @@ export class SimpleRuleSet1D extends RuleSet {
 }
 
 function piecesBetweenDiagonal(rank_from: number, rank_to: number) {
-    let squares: Location[] = [];
+    let squares: Square[] = [];
     let min: number = Math.min(rank_from, rank_to);
     let max: number = Math.min(rank_from, rank_to);
     while ((min += 2) < max) {
@@ -31,37 +31,37 @@ function piecesBetweenDiagonal(rank_from: number, rank_to: number) {
 }
 
 class SimpleKnight1D extends SimplePiece {
-    legalMove(location: Location, considerCheck: boolean, position: GameBoard): boolean {
+    legalMove(location: Square, considerCheck: boolean, position: GameBoard): boolean {
         return Math.abs(this.state.position.rank - location.rank) === 3
             && pieceAtLocation(position, location)?.state.player !== this.state.player //piece is other player's or empty
             && true; //ignore considerCheck for now
     }
-    constructor(location: Location, player: Player) {
+    constructor(location: Square, player: Player) {
         super(location, player, PieceType.Knight);
     }
 }
 
 class SimpleBishop1D extends SimplePiece {
-    legalMove(location: Location, considerCheck: boolean, position: GameBoard): boolean {
+    legalMove(location: Square, considerCheck: boolean, position: GameBoard): boolean {
         return (this.state.position.rank - location.rank) % 2 === 0
             && !blockedSquares(position, piecesBetweenDiagonal(this.state.position.rank, location.rank))
             && pieceAtLocation(position, location)?.state.player !== this.state.player //piece is other player's or empty
             && true; //ignore considerCheck for now
     }
-    constructor(location: Location, player: Player) {
+    constructor(location: Square, player: Player) {
         super(location, player, PieceType.Bishop);
     }
 }
 
 class SimpleQueen1D extends SimplePiece {
-    legalMove(location: Location, considerCheck: boolean, position: GameBoard): boolean {
+    legalMove(location: Square, considerCheck: boolean, position: GameBoard): boolean {
         return ((this.state.position.rank - location.rank) % 2 === 0
             && !blockedSquares(position, piecesBetweenDiagonal(this.state.position.rank, location.rank)))
-            || !blocked(position, this.state.position, location)
+            || !blocked(boardState(position), this.state.position, location)
             && pieceAtLocation(position, location)?.state.player !== this.state.player //piece is other player's or empty
             && true; //ignore considerCheck for now
     }
-    constructor(location: Location, player: Player) {
+    constructor(location: Square, player: Player) {
         super(location, player, PieceType.Queen);
     }
 }

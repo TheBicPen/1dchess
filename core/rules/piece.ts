@@ -1,13 +1,13 @@
-import { PiecePosition, Location, BoardState, Move, GameBoard, Rules } from "../models.js";
+import { PiecePosition, Square, BoardState, Move, GameBoard, Rules } from "../models.js";
 
 
 // legalMove only checks the piece's movement rules. The target location must be on the board
 export interface GamePiece {
     state: PiecePosition;
-    moveTo(location: Location): void;
-    legalMove(location: Location, considerCheck: boolean, position: GameBoard): boolean;
-    getLegalMoves(considerCheck: boolean, position: GameBoard): Location[];
-    locationToMove(to: Location): Move;
+    moveTo(location: Square): void;
+    legalMove(location: Square, considerCheck: boolean, position: GameBoard): boolean;
+    getLegalMoves(considerCheck: boolean, position: GameBoard): Square[];
+    locationToMove(to: Square): Move;
 }
 
 

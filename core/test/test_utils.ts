@@ -1,15 +1,15 @@
-import { GameBoard, Location } from "../models.js";
+import { GameBoard, Square } from "../models.js";
 import { blocked } from "../utils.js";
 import emptyBoard from '../positions/normal_empty';
 
-const loc1: Location = { 'rank': 1, 'file': 2 };
-const loc2: Location = { 'rank': 1, 'file': 5 };
-const loc3: Location = { 'rank': 6, 'file': 2 };
-const loc4: Location = { 'rank': 3, 'file': 5 };
-const loc5: Location = { 'rank': 8, 'file': 8 };
-const loc6: Location = { 'rank': 1, 'file': 1 };
-const loc7: Location = { 'rank': 8, 'file': 1 };
-const loc8: Location = { 'rank': 1, 'file': 8 };
+const loc1: Square = { 'rank': 1, 'file': 2 };
+const loc2: Square = { 'rank': 1, 'file': 5 };
+const loc3: Square = { 'rank': 6, 'file': 2 };
+const loc4: Square = { 'rank': 3, 'file': 5 };
+const loc5: Square = { 'rank': 8, 'file': 8 };
+const loc6: Square = { 'rank': 1, 'file': 1 };
+const loc7: Square = { 'rank': 8, 'file': 1 };
+const loc8: Square = { 'rank': 1, 'file': 8 };
 
 // this test is mostly to see the squares `blocked` considers.
 export default () => {

@@ -1,13 +1,13 @@
-import { BoardState, GameBoard, Location } from "./models.js";
+import { BoardState, GameBoard, Square, Player, PiecePosition, PieceType } from "./models.js";
 import { GamePiece } from "./rules/piece.js";
 
 
 // Return a list of possible positions within dimensions
-export function enumeratePositions(dimensions: Location): Location[] {
+export function enumeratePositions(dimensions: Square): Square[] {
     const ranks = range(dimensions.rank);
     const files = range(dimensions.file);
     // 2-ary Cartesian product
-    return ranks.flatMap(x => files.map(y => { return { rank: x, file: y } as Location }));
+    return ranks.flatMap(x => files.map(y => { return { rank: x, file: y } as Square }));
 }
 
 
@@ -39,13 +39,19 @@ export function fileToLetter(n: number): string | null {
     return n < letters.length ? letters[n] : null;
 }
 
-export function pieceAtLocation(board: GameBoard, location: Location): GamePiece | undefined {
+// get piece at location on game board. Result has correct truthiness.
+export function pieceAtLocation(board: GameBoard, location: Square): GamePiece | undefined {
     return board.gamePieces.find(x => x.state.position.file === location.file && x.state.position.rank === location.rank);
 }
 
+// get piece at location on abstract board. Result has correct truthiness.
+export function pieceAtLocation2(board: BoardState, location: Square): PiecePosition | undefined {
+    return board.pieces.find(x => x.position.file === location.file && x.position.rank === location.rank);
+}
+
 // returns whether there are any pieces blocking the straight line from from to to
-export function blocked(board: GameBoard, from: Location, to: Location): boolean {
-    let cur: Location = Object.assign({}, from);
+export function blocked(board: BoardState, from: Square, to: Square): boolean {
+    let cur: Square = Object.assign({}, from);
     let file_diff = Math.abs(to.file - from.file);
     let rank_diff = Math.abs(to.rank - from.rank);
     let rank_up = to.rank > from.rank ? 1 : -1;
@@ -66,18 +72,51 @@ export function blocked(board: GameBoard, from: Location, to: Location): boolean
             cur.file += file_up;
             file_diff -= 1;
         }
-        if (pieceAtLocation(board, cur))
+        if (pieceAtLocation2(board, cur))
             return true;
     }
     return false;
 }
 
 // Returns whether any square in the list has a piece on it
-export function blockedSquares(board: GameBoard, squares: Location[]) {
+export function blockedSquares(board: GameBoard, squares: Square[]) {
     return squares.some(s => pieceAtLocation(board, s));
 }
 
 // convert concrete game board to abstract board state
 export function boardState(board: GameBoard): BoardState {
     return { boardDimensions: board.boardDimensions, pieces: board.gamePieces.map(p => p.state) };
+}
+
+// get next empty square, in row-major order
+export function nextEmptySquare(board: BoardState, player: Player): Square | null {
+    const startingRank: number = player === Player.White ? 0 : board.boardDimensions.rank - 1;
+    const endingRank: number = player === Player.White ? board.boardDimensions.rank - 1 : 0;
+    const iter: number = player === Player.White ? 1 : -1;
+    for (let rank = startingRank; rank !== endingRank; rank += iter)
+        for (let file = 0; file < board.boardDimensions.file; file++)
+            if (!board.pieces.some(p => p.position.file === file && p.position.rank === rank))
+                return { file, rank };
+    return null;
+}
+
+// count pieces matching predicate
+export function countPieces(board: BoardState, p: (pos: PiecePosition) => boolean): number {
+    return board.pieces.filter(piece => p(piece)).length;
+}
+
+// TS doesn't have reverse mappings for string enums, so we use liner-time lookup
+export function parsePiece(str: string): PieceType | undefined {
+    return Object.values(PieceType).find(p => p === str);
+}
+
+export function printBoard(board: BoardState) {
+    console.log(range(board.boardDimensions.file).map(_ => "-").join(""));
+    for (let rank = board.boardDimensions.rank - 1; rank >= 0; rank--) {
+        console.log(range(board.boardDimensions.file).map(file => {
+            let piece = board.pieces.find(p => p.position.file === file && p.position.rank === rank);
+            return piece ? piece.piece : " ";
+        }).join(""));
+    }
+    console.log(range(board.boardDimensions.file).map(_ => "-").join(""));
 }

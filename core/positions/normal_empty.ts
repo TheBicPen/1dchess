@@ -1,6 +1,6 @@
-import { GameBoard } from "../models";
+import { BoardState } from "../models";
 
 
 
-const board: GameBoard = { 'boardDimensions': { 'rank': 8, 'file': 8 }, 'gamePieces': [], 'rules': { 'kingCheck': false } };
+const board: BoardState = { 'boardDimensions': { 'rank': 8, 'file': 8 }, 'pieces': [] };
 export default board;

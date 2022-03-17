@@ -10,27 +10,27 @@ export enum PieceType {
     Pawn = "P"
 };
 
-export interface Location {
+export interface Square {
     rank: number,
     file: number
 };
 
 export interface PiecePosition {
     piece: PieceType,
-    position: Location,
+    position: Square,
     player: Player
 };
 
 // abstract, unaware of rules
 export interface BoardState {
     pieces: PiecePosition[],
-    boardDimensions: Location,
+    boardDimensions: Square,
 };
 
-// concrete, aware of rules and contains movement
+// concrete, aware of rules and piece movement
 export interface GameBoard {
     gamePieces: GamePiece[],
-    boardDimensions: Location,
+    boardDimensions: Square,
     rules: Rules
 };
 
@@ -46,6 +46,6 @@ export enum Player {
 };
 
 export interface Move {
-    from: Location,
-    to: Location
+    from: Square,
+    to: Square
 };

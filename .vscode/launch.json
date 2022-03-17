@@ -34,6 +34,17 @@
       "preLaunchTask": "build core"
     },
     {
+      "name": "Launch Draft Game CLI",
+      "program": "${workspaceFolder}/core/game/draftGameCLI.ts",
+      "request": "launch",
+      "console": "integratedTerminal",
+      "skipFiles": [
+        "<node_internals>/**"
+      ],
+      "type": "pwa-node",
+      "preLaunchTask": "build core"
+    },
+    {
       "name": "Test Core",
       "program": "${workspaceFolder}/core/test/test_all.ts",
       "request": "launch",
