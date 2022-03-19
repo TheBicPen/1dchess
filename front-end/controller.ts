@@ -14,12 +14,7 @@ import { SimpleRuleSet1D } from '../core/rules/simplePieces1D.js';
 
 type action = "snapback" | "trash" | "drop";
 
-let files: number = 1;
-let ranks: number = 8;
-let CPU: AIPlayer = new randomAI(0);
-let ruleSet: RuleSet = new SimpleRuleSet1D();
 
-let game: any = runAIGame(ruleSet, CPU, starting_position);
 
 function objToBoardObj(position: BoardState): object {
     let out: any = {};
@@ -69,15 +64,28 @@ function updateStatus(status: status) {
     }
 }
 
-let config: any = {
-    'columns': files,
-    'rows': ranks,
-    'onDrop': onMove,
-    'moveCallback': moveResponse,
-    'draggable': true,
-    'showErrors': 'console'
-};
-let board: any = chessboard.constructor('board1', config);
-board.position(objToBoardObj(starting_position), ranks, files);
-let gameState: status = "playing";
+
+// global state
+let gameState: status;
+let game: any;
+
+
+export default function startGame() {
+    let files: number = 1;
+    let ranks: number = 8;
+    let CPU: AIPlayer = new randomAI(0);
+    let ruleSet: RuleSet = new SimpleRuleSet1D();
+    let config: any = {
+        'columns': files,
+        'rows': ranks,
+        'onDrop': onMove,
+        'moveCallback': moveResponse,
+        'draggable': true,
+        'showErrors': 'console'
+    };
+    game = runAIGame(ruleSet, CPU, starting_position);
+    let board: any = chessboard.constructor('board1', config);
+    board.position(objToBoardObj(starting_position), ranks, files);
+    gameState = "playing";
+}
 

@@ -1,14 +1,20 @@
-
 <html>
-    <head>
-        <meta charset="UTF-8" />
-        <link rel="stylesheet" href="../lib/chessboard.css"
-    </head>
 
-    <body>
+<head>
+    <meta charset="UTF-8" />
+    <link rel="stylesheet" href="../lib/chessboard.css" />
+</head>
 
-        <div id="board1" style="width: 400px; height: 400px;"/>
-        <script src="https://code.jquery.com/jquery-3.6.0.js" integrity="sha256-H+K7U5CnXl1h5ywQfKtSj8PCmoN9aaq30gDh27Xc0jk=" crossorigin="anonymous"></script>
-        <script type="module" src="./dist/front-end/controller.js"></script>
-    </body>
+<body>
+
+    <div id="board1" style="width: 400px; height: 400px;" />
+    <script src="https://code.jquery.com/jquery-3.6.0.js"
+        integrity="sha256-H+K7U5CnXl1h5ywQfKtSj8PCmoN9aaq30gDh27Xc0jk=" crossorigin="anonymous"></script>
+    <button id="start">Start Game</button>
+    <script type="module">
+        import startGame from "./dist/front-end/controller.js"
+        document.querySelector("#start").addEventListener('click', startGame);
+    </script>
+</body>
+
 </html>
