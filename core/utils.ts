@@ -91,10 +91,12 @@ export function boardState(board: GameBoard): BoardState {
 // get next empty square, in row-major order
 export function nextEmptySquare(board: BoardState, player: Player): Square | null {
     const startingRank: number = player === Player.White ? 0 : board.boardDimensions.rank - 1;
-    const endingRank: number = player === Player.White ? board.boardDimensions.rank - 1 : 0;
+    const endingRank: number = player === Player.White ? board.boardDimensions.rank : -1;
+    const startingFile: number = player === Player.White ? 0 : board.boardDimensions.file - 1;
+    const endingFile: number = player === Player.White ? board.boardDimensions.file : -1;
     const iter: number = player === Player.White ? 1 : -1;
     for (let rank = startingRank; rank !== endingRank; rank += iter)
-        for (let file = 0; file < board.boardDimensions.file; file++)
+        for (let file = startingFile; file !== endingFile; file += iter)
             if (!board.pieces.some(p => p.position.file === file && p.position.rank === rank))
                 return { file, rank };
     return null;
@@ -105,9 +107,9 @@ export function countPieces(board: BoardState, p: (pos: PiecePosition) => boolea
     return board.pieces.filter(piece => p(piece)).length;
 }
 
-// TS doesn't have reverse mappings for string enums, so we use liner-time lookup
+// TS doesn't have reverse mappings for string enums, so we use linear-time lookup
 export function parsePiece(str: string): PieceType | undefined {
-    return Object.values(PieceType).find(p => p === str);
+    return Object.values(PieceType).find(p => p === str.toUpperCase());
 }
 
 export function printBoard(board: BoardState) {
