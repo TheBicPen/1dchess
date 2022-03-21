@@ -1,3 +1,4 @@
+<!DOCTYPE html>
 <html>
 
 <head>
@@ -13,7 +14,7 @@
     <button id="start">Start Game</button>
     <script type="module">
         import startGame from "./dist/front-end/controller.js"
-        document.querySelector("#start").addEventListener('click', startGame);
+        document.querySelector("#start").addEventListener('click', () => startGame('board1'));
     </script>
 </body>
 

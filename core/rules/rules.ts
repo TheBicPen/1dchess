@@ -1,4 +1,4 @@
-import { moveResult } from "../game/game.js";
+import { MoveResult } from "../game/game.js";
 import { GameBoard, Move, Player } from "../models.js";
 import { pieceAtLocation } from "../utils.js";
 import { GamePiece } from "./piece.js";
@@ -10,7 +10,7 @@ export function validMove(board: GameBoard, move: Move, player: Player): boolean
 }
 
 // check whether a move entered on a player's turn is valid. Do not call this from Piece.legalMove
-export function validMoveWithReason(board: GameBoard, move: Move, player: Player): moveResult {
+export function validMoveWithReason(board: GameBoard, move: Move, player: Player): MoveResult {
     let pieceToMove: GamePiece | undefined = pieceAtLocation(board, move.from);
     if (!pieceToMove)
         return { 'move': null, 'reason': 'No piece at location ' + JSON.stringify(move.from) };

@@ -2,10 +2,10 @@
 
 
 import chessboard from '../lib/chessboard.js'
-import { moveResult, moveStatus, runAIGame, status } from '../core/game/game.js'
+import { Game, MoveStatus } from '../core/game/game.js'
 import { unparse } from '../core/game/makeMove.js';
 import starting_position from '../core/positions/1d_standard.js';
-import { BoardState, Move } from '../core/models.js';
+import { BoardState, Move, Player } from '../core/models.js';
 import { fileToLetter } from '../core/utils.js';
 import { AIPlayer } from '../core/ai/interface.js';
 import randomAI from '../core/ai/random.js';
@@ -31,51 +31,53 @@ function objToBoardObj(position: BoardState): object {
 function onMove(source: string, target: string, _piece: string,
     _newPos: string, _oldPos: string, _orientation: string): action {
     let move: string = source + "-" + target;
-    if (gameState !== "playing")
+    if (game?.gameStatus.status !== "playing")
         return "snapback";
-    let moveResult: moveStatus = game.playerMove(move);
+    let moveResult: MoveStatus = game.makeMove(Player.White, move);
     if (!moveResult.move) {
         console.log("Invalid move:", moveResult.reason);
         return 'snapback';
     }
-    updateStatus(moveResult.status);
+    checkStatus();
     return 'drop';
 }
 
+// Callback for move: action is the action of the move that triggered the callback
+// Get AI move.
 function moveResponse(action: action): string | null {
     if (action !== "drop")
         return null;
-    if (gameState !== "playing")
+    if (game?.gameStatus.status !== "playing")
         return null;
-    let response: moveStatus = game.AIMove();
-    let AIMove: string | null = null;
-    if (response && response.move)
-        AIMove = unparse(response.move);
-    if (!AIMove)
+    let response: MoveStatus = game.makeMove(Player.Black, CPU.move(game.gameBoard, Player.Black));
+    const AIMove = response.move && unparse(response.move);
+    if (AIMove)
+        checkStatus();
+    else
         console.error("No move made. Not updating");
-    updateStatus(response.status);
     return AIMove;
 }
 
-function updateStatus(status: status) {
-    gameState = status;
-    if (status !== "playing") {
-        window.alert("Game is over! " + status);
-    }
+function checkStatus() {
+    if (game?.gameStatus.status === "draw")
+        window.alert(`Game is over! It's a draw!`);
+    if (game?.gameStatus.status === "loss")
+        window.alert(`Game is over! ${game.gameStatus.player} lost!`);
+
 }
 
 
 // global state
-let gameState: status;
-let game: any;
+let game: Game;
+const CPU: AIPlayer = new randomAI(0);
 
 
-export default function startGame() {
-    let files: number = 1;
-    let ranks: number = 8;
-    let CPU: AIPlayer = new randomAI(0);
-    let ruleSet: RuleSet = new SimpleRuleSet1D();
-    let config: any = {
+export default function startGame(element: string | Node) {
+    const files: number = 1;
+    const ranks: number = 8;
+    const ruleSet: RuleSet = new SimpleRuleSet1D();
+    const board: BoardState = starting_position;
+    const config: any = {
         'columns': files,
         'rows': ranks,
         'onDrop': onMove,
@@ -83,9 +85,9 @@ export default function startGame() {
         'draggable': true,
         'showErrors': 'console'
     };
-    game = runAIGame(ruleSet, CPU, starting_position);
-    let board: any = chessboard.constructor('board1', config);
-    board.position(objToBoardObj(starting_position), ranks, files);
-    gameState = "playing";
+
+    game = new Game(ruleSet, board);
+    const screenBoard: any = chessboard.constructor(element, config);
+    screenBoard?.position(objToBoardObj(board), ranks, files);
 }
 
