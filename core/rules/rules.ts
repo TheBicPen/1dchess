@@ -1,4 +1,5 @@
 import { MoveResult } from "../game/game.js";
+import { unparseSquare } from "../game/makeMove.js";
 import { GameBoard, Move, Player } from "../models.js";
 import { pieceAtLocation } from "../utils.js";
 import { GamePiece } from "./piece.js";
@@ -13,11 +14,11 @@ export function validMove(board: GameBoard, move: Move, player: Player): boolean
 export function validMoveWithReason(board: GameBoard, move: Move, player: Player): MoveResult {
     let pieceToMove: GamePiece | undefined = pieceAtLocation(board, move.from);
     if (!pieceToMove)
-        return { 'move': null, 'reason': 'No piece at location ' + JSON.stringify(move.from) };
+        return { 'move': null, 'reason': 'No piece at location ' + unparseSquare(move.from) };
     if (pieceToMove.state.player !== player)
         return { 'move': null, 'reason': `Player ${player} does not own piece ${pieceToMove.state.piece}` };
     if (!pieceToMove.legalMove(move.to, board.rules.kingCheck, board))
-        return { 'move': null, 'reason': `Piece ${pieceToMove.state.piece} cannot move to ${JSON.stringify(move.to)}` };
+        return { 'move': null, 'reason': `Piece ${pieceToMove.state.piece} cannot move to ${unparseSquare(move.to)}` };
     return { 'move': move, 'reason': null };
 
 }

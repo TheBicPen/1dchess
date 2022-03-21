@@ -1,4 +1,4 @@
-import { Move } from "../models.js";
+import { Move, Square } from "../models.js";
 import { fileToLetter, letterToFile } from "../utils.js";
 
 
@@ -17,11 +17,13 @@ export function parseMove(move: string): Move | null {
         return { 'from': { 'file': sourceFile, 'rank': sourceRank }, 'to': { 'file': targetFile, 'rank': targetRank } }
 }
 
+export function unparseSquare(square: Square): string | null {
+    const fromFile = fileToLetter(square.file);
+    return fromFile && fromFile + (square.rank+1).toString();
+}
+
 export function unparse(move: Move): string | null {
-    let fromFile = fileToLetter(move.from.file);
-    let toFile = fileToLetter(move.to.file);
-    if (toFile && fromFile)
-        return `${fromFile}${move.from.rank + 1}-${toFile}${move.to.rank + 1}`;
-    else
-        return null;
+    const fromSquare = unparseSquare(move.from);
+    const toSquare = unparseSquare(move.to);
+    return fromSquare && toSquare && `${fromSquare}-${toSquare}`;
 }

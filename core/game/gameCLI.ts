@@ -1,41 +1,32 @@
 import { AIPlayer } from "../ai/interface";
 import randomAI from "../ai/random";
-import { GameBoard, Move, Player } from "../models";
-import board from "../positions/normal_chess";
+import { BoardState, Move, Player } from "../models";
 import { RuleSet } from "../rules/piece";
-import { validMove } from "../rules/rules";
 import { SimpleRuleSet } from "../rules/simplePieces";
-import { makeMove } from "./game";
+import { Game } from "./game";
 import { parseMove } from "./makeMove";
 import * as readline from 'readline';
+import { boardToState, printBoard } from "../utils";
 
-export default async function runAIGameNode() {
-    let CPU: AIPlayer = new randomAI(0);
-    let ruleSet: RuleSet = new SimpleRuleSet();
-    let gameState: GameBoard = ruleSet.initBoardPosition(board);
+export default async function runAIGameNode(board: BoardState) {
+    const CPU: AIPlayer = new randomAI(0);
+    const ruleSet: RuleSet = new SimpleRuleSet();
 
-    let playerMove: Move | null = null;
-    let AIMove: Move | null = null;
-    while (true) {
+    const game: Game = new Game(ruleSet, board);
 
-        while (!playerMove) {
-            try {
-                playerMove = await requestMove();
-                if (!validMove(gameState, playerMove, Player.White)) {
-                    playerMove = null;
-                    throw new Error("Invalid move");
-                }
-            } catch (error) {
-                console.error("error:", error);
+    while (game.gameStatus.status === "playing") {
+        printBoard(boardToState(game.gameBoard));
+        try {
+            let result = game.makeMove(Player.White, await requestMove());
+
+            while (!result.move) {
+                console.log("Error:", result.reason);
+                result = game.makeMove(Player.White, await requestMove());
             }
+        } catch (e) {
+            console.error(e);
         }
-        console.log("Player:", playerMove);
-        makeMove(gameState, playerMove);
-        AIMove = CPU.move(gameState, Player.Black);
-        console.log("AI:", AIMove);
-        makeMove(gameState, AIMove);
-        AIMove = null;
-        playerMove = null;
+        game.makeMove(Player.Black, CPU.move(game.gameBoard, Player.Black));
     }
 }
 
@@ -56,5 +47,3 @@ async function requestMove(): Promise<Move> {
         }
     );
 }
-
-runAIGameNode();

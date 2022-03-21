@@ -23,25 +23,16 @@
       }
     },
     {
-      "name": "Launch Core",
-      "program": "${workspaceFolder}/core/game/gameCLI.ts",
+      "name": "Launch Core CLI",
+      "program": "${workspaceFolder}/core/game/runGameCLI.ts",
       "request": "launch",
       "console": "integratedTerminal",
       "skipFiles": [
         "<node_internals>/**"
       ],
       "type": "pwa-node",
-      "preLaunchTask": "build core"
-    },
-    {
-      "name": "Launch Draft Game CLI",
-      "program": "${workspaceFolder}/core/game/draftGameCLI.ts",
-      "request": "launch",
-      "console": "integratedTerminal",
-      "skipFiles": [
-        "<node_internals>/**"
-      ],
-      "type": "pwa-node",
+      // "trace": true,
+      // "runtimeArgs": ["--trace-warnings"],
       "preLaunchTask": "build core"
     },
     {

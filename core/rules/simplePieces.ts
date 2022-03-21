@@ -1,5 +1,5 @@
 import { PiecePosition, Square, GameBoard, Move, Player, PieceType, Rules } from "../models.js";
-import { blocked, boardState, enumeratePositions, pieceAtLocation } from "../utils.js";
+import { blocked, boardToState, enumeratePositions, pieceAtLocation } from "../utils.js";
 import { GamePiece, RuleSet } from "./piece.js";
 
 
@@ -63,7 +63,7 @@ export class SimpleBishop extends SimplePiece {
     legalMove(location: Square, considerCheck: boolean, position: GameBoard): boolean {
         return Math.abs(this.state.position.file - this.state.position.rank) === Math.abs(location.file - location.rank)
             && pieceAtLocation(position, location)?.state.player !== this.state.player //piece is other player's or empty
-            && !blocked(boardState(position), this.state.position, location)
+            && !blocked(boardToState(position), this.state.position, location)
             && true; //ignore considerCheck for now
     }
     constructor(location: Square, player: Player) {
@@ -76,7 +76,7 @@ export class SimpleQueen extends SimplePiece {
         return (Math.abs(this.state.position.file - this.state.position.rank) === Math.abs(location.file - location.rank)
             || this.state.position.file === location.file || this.state.position.rank === location.rank)
             && pieceAtLocation(position, location)?.state.player !== this.state.player //piece is other player's or empty
-            && !blocked(boardState(position), this.state.position, location)
+            && !blocked(boardToState(position), this.state.position, location)
             && true; //ignore considerCheck for now
     }
     constructor(location: Square, player: Player) {
@@ -88,7 +88,7 @@ export class SimpleRook extends SimplePiece {
     legalMove(location: Square, considerCheck: boolean, position: GameBoard): boolean {
         return (this.state.position.file === location.file || this.state.position.rank === location.rank)
             && pieceAtLocation(position, location)?.state.player !== this.state.player //piece is other player's or empty
-            && !blocked(boardState(position), this.state.position, location)
+            && !blocked(boardToState(position), this.state.position, location)
             && true; //ignore considerCheck for now
     }
     constructor(location: Square, player: Player) {
@@ -101,7 +101,7 @@ export class SimplePawn extends SimplePiece {
         let rankMult: -1 | 1 = this.state.player === Player.White ? 1 : -1;
         let thisPosition: Square = this.state.position;
         let plus2 = ((thisPosition.rank === 1 || thisPosition.rank === position.boardDimensions.rank - 2)
-            && location.rank === thisPosition.rank + 2 * rankMult && !blocked(boardState(position), this.state.position, location))  // initial +2 move
+            && location.rank === thisPosition.rank + 2 * rankMult && !blocked(boardToState(position), this.state.position, location))  // initial +2 move
         let forwardMove: boolean = (plus2 || location.rank === thisPosition.rank + rankMult)
             && thisPosition.file === location.file && !pieceAtLocation(position, location) // non-capture forward move
         return forwardMove

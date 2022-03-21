@@ -1,5 +1,5 @@
 import { Square, GameBoard, Player, PieceType, Rules, PiecePosition } from "../models.js";
-import { blocked, blockedSquares, boardState, pieceAtLocation } from "../utils.js";
+import { blocked, blockedSquares, boardToState, pieceAtLocation } from "../utils.js";
 import { GamePiece, RuleSet } from "./piece.js";
 import {
     SimplePiece,
@@ -57,7 +57,7 @@ class SimpleQueen1D extends SimplePiece {
     legalMove(location: Square, considerCheck: boolean, position: GameBoard): boolean {
         return ((this.state.position.rank - location.rank) % 2 === 0
             && !blockedSquares(position, piecesBetweenDiagonal(this.state.position.rank, location.rank)))
-            || !blocked(boardState(position), this.state.position, location)
+            || !blocked(boardToState(position), this.state.position, location)
             && pieceAtLocation(position, location)?.state.player !== this.state.player //piece is other player's or empty
             && true; //ignore considerCheck for now
     }

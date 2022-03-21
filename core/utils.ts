@@ -79,12 +79,12 @@ export function blocked(board: BoardState, from: Square, to: Square): boolean {
 }
 
 // Returns whether any square in the list has a piece on it
-export function blockedSquares(board: GameBoard, squares: Square[]) {
+export function blockedSquares(board: GameBoard, squares: Square[]): boolean {
     return squares.some(s => pieceAtLocation(board, s));
 }
 
 // convert concrete game board to abstract board state
-export function boardState(board: GameBoard): BoardState {
+export function boardToState(board: GameBoard): BoardState {
     return { boardDimensions: board.boardDimensions, pieces: board.gamePieces.map(p => p.state) };
 }
 
