@@ -12,7 +12,7 @@ export function validMove(board: GameBoard, move: Move, player: Player): boolean
 
 // check whether a move entered on a player's turn is valid. Do not call this from Piece.legalMove
 export function validMoveWithReason(board: GameBoard, move: Move, player: Player): MoveResult {
-    let pieceToMove: GamePiece | undefined = pieceAtLocation(board, move.from);
+    const pieceToMove: GamePiece | undefined = pieceAtLocation(board, move.from);
     if (!pieceToMove)
         return { 'move': null, 'reason': 'No piece at location ' + unparseSquare(move.from) };
     if (pieceToMove.state.player !== player)

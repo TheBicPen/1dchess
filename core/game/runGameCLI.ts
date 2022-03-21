@@ -4,7 +4,7 @@ import * as readline from "readline";
 import runAIGameNode from "./gameCLI.js";
 import runDraftAIGameNode from "./draftCLI.js";
 
-let rl = readline.createInterface({
+const rl = readline.createInterface({
     input: process.stdin,
     output: process.stdout
 });

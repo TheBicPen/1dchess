@@ -1,4 +1,4 @@
-import { BoardState, GameBoard, Square, Player, PiecePosition, PieceType } from "./models.js";
+import { BoardState, GameBoard, Square, Player, PiecePosition } from "./models.js";
 import { GamePiece } from "./rules/piece.js";
 
 
@@ -40,11 +40,11 @@ export function pieceAtLocation2(board: BoardState, location: Square): PiecePosi
 
 // returns whether there are any pieces blocking the straight line from from to to
 export function blocked(board: BoardState, from: Square, to: Square): boolean {
-    let cur: Square = Object.assign({}, from);
+    const cur: Square = Object.assign({}, from);
     let file_diff = Math.abs(to.file - from.file);
     let rank_diff = Math.abs(to.rank - from.rank);
-    let rank_up = to.rank > from.rank ? 1 : -1;
-    let file_up = to.file > from.file ? 1 : -1;
+    const rank_up = to.rank > from.rank ? 1 : -1;
+    const file_up = to.file > from.file ? 1 : -1;
     // exclude destination square
     while (file_diff > 1 || rank_diff > 1) {
         //move diagonally whenever possible
@@ -95,7 +95,7 @@ export function printBoard(board: BoardState) {
     console.log(range(board.boardDimensions.file).map(_ => "-").join(""));
     for (let rank = board.boardDimensions.rank - 1; rank >= 0; rank--) {
         console.log(range(board.boardDimensions.file).map(file => {
-            let piece = board.pieces.find(p => p.position.file === file && p.position.rank === rank);
+            const piece = board.pieces.find(p => p.position.file === file && p.position.rank === rank);
             return piece ? piece.piece : " ";
         }).join(""));
     }

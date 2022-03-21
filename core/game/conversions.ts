@@ -6,10 +6,10 @@ import { BoardState, GameBoard, Move, PieceType, Square } from "../models.js";
 export function parseMove(move: string): Move | null {
     if (move.length !== 5)
         return null;
-    let sourceFile = letterToFile(move[0]);
-    let sourceRank = parseInt(move[1]) - 1; // convert 1-index to 0-index
-    let targetFile = letterToFile(move[3]);
-    let targetRank = parseInt(move[4]) - 1; // convert 1-index to 0-index
+    const sourceFile = letterToFile(move[0]);
+    const sourceRank = parseInt(move[1]) - 1; // convert 1-index to 0-index
+    const targetFile = letterToFile(move[3]);
+    const targetRank = parseInt(move[4]) - 1; // convert 1-index to 0-index
     if (sourceFile === null || isNaN(sourceRank) || targetFile === null || isNaN(targetRank))
         return null;
     else
@@ -39,12 +39,12 @@ export function parsePiece(str: string): PieceType | undefined {
 
 
 export function letterToFile(c: string): number | null {
-    const letters: string = 'abcdefghijklmnopqrstuvwxyz';
-    let idx: number = letters.indexOf(c);
+    const letters = 'abcdefghijklmnopqrstuvwxyz';
+    const idx: number = letters.indexOf(c);
     return idx === -1 ? null : idx;
 }
 
 export function fileToLetter(n: number): string | null {
-    const letters: string = 'abcdefghijklmnopqrstuvwxyz';
+    const letters = 'abcdefghijklmnopqrstuvwxyz';
     return n < letters.length ? letters[n] : null;
 }

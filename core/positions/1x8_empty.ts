@@ -1,4 +1,4 @@
-import { BoardState, PieceType, Player } from "../models.js";
+import { BoardState } from "../models.js";
 
 
 const board: BoardState = {

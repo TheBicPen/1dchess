@@ -18,7 +18,7 @@ export default async function runDraftAIGameNode() {
 }
 
 async function requestDraft(rules: DraftRules, board: BoardState, player: Player, points: number): Promise<PiecePosition> {
-    let rl = readline.createInterface({
+    const rl = readline.createInterface({
         input: process.stdin,
         output: process.stdout
     });
@@ -30,7 +30,7 @@ async function requestDraft(rules: DraftRules, board: BoardState, player: Player
         (resolve, reject) => {
             rl.question(`Choose a piece. You have ${points} points left.\n`, answer => {
                 rl.close();
-                let piece = parsePiece(answer);
+                const piece = parsePiece(answer);
                 if (piece) resolve({ 'piece': piece, 'player': player, 'position': nextEmptySquare(board, player) as Square });
                 else reject(piece);
             });

@@ -13,18 +13,18 @@ export abstract class SimplePiece implements GamePiece {
     state: PiecePosition;
     moveTo(location: Square): void {
         this.state.position = location;
-    };
+    }
     abstract legalMove(location: Square, considerCheck: boolean, position: GameBoard): boolean;
 
     getLegalMoves(considerCheck: boolean, position: GameBoard): Square[] {
         return enumeratePositions(position.boardDimensions).filter(x => this.legalMove(x, considerCheck, position));
-    };
+    }
     locationToMove(to: Square): Move {
         return { "from": this.state.position, "to": to };
-    };
+    }
     constructor(location: Square, player: Player, piece: PieceType) {
         this.state = { 'position': location, 'player': player, 'piece': piece };
-    };
+    }
 }
 
 export function pieceToGamePiece(piece: PiecePosition): GamePiece {
@@ -38,7 +38,7 @@ export function pieceToGamePiece(piece: PiecePosition): GamePiece {
 
 export class SimpleKing extends SimplePiece {
     legalMove(location: Square, considerCheck: boolean, position: GameBoard): boolean {
-        let dist: number = Math.abs(this.state.position.file - location.file) + Math.abs(this.state.position.rank - location.rank);
+        const dist: number = Math.abs(this.state.position.file - location.file) + Math.abs(this.state.position.rank - location.rank);
         return dist === 1
             && pieceAtLocation(position, location)?.state.player !== this.state.player //piece is other player's or empty
             && true; //ignore considerCheck for now
@@ -99,11 +99,11 @@ export class SimpleRook extends SimplePiece {
 
 export class SimplePawn extends SimplePiece {
     legalMove(location: Square, considerCheck: boolean, position: GameBoard): boolean {
-        let rankMult: -1 | 1 = this.state.player === Player.White ? 1 : -1;
-        let thisPosition: Square = this.state.position;
-        let plus2 = ((thisPosition.rank === 1 || thisPosition.rank === position.boardDimensions.rank - 2)
+        const rankMult: -1 | 1 = this.state.player === Player.White ? 1 : -1;
+        const thisPosition: Square = this.state.position;
+        const plus2 = ((thisPosition.rank === 1 || thisPosition.rank === position.boardDimensions.rank - 2)
             && location.rank === thisPosition.rank + 2 * rankMult && !blocked(boardToState(position), this.state.position, location))  // initial +2 move
-        let forwardMove: boolean = (plus2 || location.rank === thisPosition.rank + rankMult)
+        const forwardMove: boolean = (plus2 || location.rank === thisPosition.rank + rankMult)
             && thisPosition.file === location.file && !pieceAtLocation(position, location) // non-capture forward move
         return forwardMove
             || (pieceAtLocation(position, location)?.state.player === (this.state.player === Player.White ? Player.Black : Player.White)

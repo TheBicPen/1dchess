@@ -22,9 +22,9 @@ export class SimpleRuleSet1D extends RuleSet {
 }
 
 function piecesBetweenDiagonal(rank_from: number, rank_to: number) {
-    let squares: Square[] = [];
+    const squares: Square[] = [];
     let min: number = Math.min(rank_from, rank_to);
-    let max: number = Math.min(rank_from, rank_to);
+    const max: number = Math.min(rank_from, rank_to);
     while ((min += 2) < max) {
         squares.push({ 'rank': min, 'file': 0 });
     }

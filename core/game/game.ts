@@ -14,7 +14,7 @@ export type GameStatus = { "status": GameState, player: Player };
 
 export interface MoveStatus extends MoveResult {
     status: GameStatus
-};
+}
 
 export class Game {
 
@@ -31,7 +31,7 @@ export class Game {
     makeMove(player: Player, move: Move | string): MoveStatus {
 
         if (typeof (move) === "string") {
-            let _move = parseMove(move);
+            const _move = parseMove(move);
             if (!_move)
                 return { 'move': null, 'reason': 'Parsing error', 'status': this.gameStatus };
             else
@@ -41,7 +41,7 @@ export class Game {
         if (this.gameStatus.player !== player)
             return { 'move': null, 'reason': 'Wrong player', 'status': this.gameStatus };
 
-        let moveResult: MoveResult = validMoveWithReason(this.gameBoard, move, player);
+        const moveResult: MoveResult = validMoveWithReason(this.gameBoard, move, player);
         if (!moveResult.move) {
             return { ...moveResult, 'status': this.gameStatus };
         }
@@ -68,9 +68,9 @@ export function nextPlayer(player: Player) {
 
 // move logic
 export function updateWithMove(board: GameBoard, move: Move) {
-    let piece: GamePiece | undefined = pieceAtLocation(board, move.from);
+    const piece: GamePiece | undefined = pieceAtLocation(board, move.from);
     // check target square before moving piece
-    let capturePiece: GamePiece | undefined = pieceAtLocation(board, move.to);
+    const capturePiece: GamePiece | undefined = pieceAtLocation(board, move.to);
     piece?.moveTo(move.to);
     if (capturePiece)
         capture(board, capturePiece);

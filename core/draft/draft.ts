@@ -18,7 +18,7 @@ function validateDraftChoice(rules: DraftRules, board: BoardState, player: Playe
 export async function runAIDraft(draftRules: DraftRules, board: BoardState, choosePiece: (rules: DraftRules, board: BoardState, player: Player, points: number) => Promise<PiecePosition>): Promise<BoardState> {
     let AIPoints: number = draftRules.startingPoints;
     let playerPoints: number = draftRules.startingPoints;
-    let ai: AIPlayer = new randomAI(0);
+    const ai: AIPlayer = new randomAI(0);
     board.pieces.push({ 'position': nextEmptySquare(board, Player.White) as Square, 'player': Player.White, 'piece': PieceType.King });
     board.pieces.push({ 'position': nextEmptySquare(board, Player.Black) as Square, 'player': Player.Black, 'piece': PieceType.King });
 

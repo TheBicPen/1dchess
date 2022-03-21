@@ -19,10 +19,10 @@ type action = "snapback" | "trash" | "drop";
 // When a move is made via the UI, send that move and wait for a response move
 function onMove(source: string, target: string, _piece: string,
     _newPos: string, _oldPos: string, _orientation: string): action {
-    let move: string = source + "-" + target;
+    const move: string = source + "-" + target;
     if (game?.gameStatus.status !== "playing")
         return "snapback";
-    let moveResult: MoveStatus = game.makeMove(Player.White, move);
+    const moveResult: MoveStatus = game.makeMove(Player.White, move);
     if (!moveResult.move) {
         console.log("Invalid move:", moveResult.reason);
         return 'snapback';
@@ -38,7 +38,7 @@ function moveResponse(action: action): string | null {
         return null;
     if (game?.gameStatus.status !== "playing")
         return null;
-    let response: MoveStatus = game.makeMove(Player.Black, CPU.move(game.gameBoard, Player.Black));
+    const response: MoveStatus = game.makeMove(Player.Black, CPU.move(game.gameBoard, Player.Black));
     const AIMove = response.move && unparse(response.move);
     if (AIMove)
         checkStatus();
@@ -62,11 +62,11 @@ const CPU: AIPlayer = new randomAI(0);
 
 
 export default function startGame(element: string | Node) {
-    const files: number = 1;
-    const ranks: number = 8;
+    const files = 1;
+    const ranks = 8;
     const ruleSet: RuleSet = new SimpleRuleSet1D();
     const board: BoardState = starting_position;
-    const config: any = {
+    const config = {
         'columns': files,
         'rows': ranks,
         'onDrop': onMove,
@@ -76,7 +76,7 @@ export default function startGame(element: string | Node) {
     };
 
     game = new Game(ruleSet, board);
-    const screenBoard: any = chessboard.constructor(element, config);
+    const screenBoard = chessboard.constructor(element, config);
     screenBoard?.position(objToBoardObj(board), ranks, files);
 }
 

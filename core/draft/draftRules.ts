@@ -6,4 +6,4 @@ export interface DraftRules {
     pieceLimit: number,
     pieceCost: { [p in PieceType]: number },
     rounds: number
-};
+}

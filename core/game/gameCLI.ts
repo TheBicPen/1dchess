@@ -32,7 +32,7 @@ export default async function runAIGameNode(board: BoardState) {
 
 
 async function requestMove(): Promise<Move> {
-    let rl = readline.createInterface({
+    const rl = readline.createInterface({
         input: process.stdin,
         output: process.stdout
     });
@@ -40,7 +40,7 @@ async function requestMove(): Promise<Move> {
         (resolve, reject) => {
             rl.question("Enter a move\n", answer => {
                 rl.close();
-                let move: Move | null = parseMove(answer);
+                const move: Move | null = parseMove(answer);
                 if (move) resolve(move);
                 else reject(move);
             });

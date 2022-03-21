@@ -4,9 +4,9 @@ import { BoardState } from "../core/models.js";
 
 
 export function objToBoardObj(position: BoardState): object {
-    let out: any = {};
+    const out: any = {};
     position.pieces.forEach(p => {
-        let file: string | null = fileToLetter(p.position.file);
+        const file: string | null = fileToLetter(p.position.file);
         if (file)
             out[file + (p.position.rank + 1).toString()] = p.player + p.piece;
     });

@@ -10,11 +10,16 @@
   "devDependencies": {
     "@tsconfig/recommended": "^1.0.1",
     "@types/node": "^17.0.5",
-    "http-server": "^14.1.0"
+    "@typescript-eslint/eslint-plugin": "^5.15.0",
+    "@typescript-eslint/parser": "^5.15.0",
+    "eslint": "^8.11.0",
+    "http-server": "^14.1.0",
+    "typescript": "^4.6.2"
   },
   "scripts": {
-    "test": "",
-    "start-server": "./node_modules/http-server/bin/http-server -p 8000"
+    "test": "exit 1",
+    "start-server": "./node_modules/http-server/bin/http-server -p 8000",
+    "lint": "./node_modules/.bin/eslint --ext .ts --fix -- ."
   },
   "repository": {
     "type": "git",
