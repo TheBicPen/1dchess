@@ -1,11 +1,12 @@
-import { BoardState, PiecePosition, Player, Square } from "../models";
-import board from "../positions/normal_empty";
-import * as readline from 'readline';
-import { runAIDraft } from "../draft/draft";
-import draftRules1D from "../draft/1dDraftRules";
-import { DraftRules } from "../draft/draftRules";
-import { nextEmptySquare, parsePiece } from "../utils";
-import runAIGameNode from "./gameCLI";
+import { BoardState, PiecePosition, Player, Square } from "../models.js";
+import board from "../positions/normal_empty.js";
+import * as readline from "readline";
+import { runAIDraft } from "../draft/draft.js";
+import draftRules1D from "../draft/1dDraftRules.js";
+import { DraftRules } from "../draft/draftRules.js";
+import { nextEmptySquare } from "../utils.js";
+import runAIGameNode from "./gameCLI.js";
+import { parsePiece } from "./conversions.js";
 
 export default async function runDraftAIGameNode() {
     try {

@@ -28,17 +28,6 @@ export function randItem<T>(arr: T[]): T {
 }
 
 
-export function letterToFile(c: string): number | null {
-    const letters: string = 'abcdefghijklmnopqrstuvwxyz';
-    let idx: number = letters.indexOf(c);
-    return idx === -1 ? null : idx;
-}
-
-export function fileToLetter(n: number): string | null {
-    const letters: string = 'abcdefghijklmnopqrstuvwxyz';
-    return n < letters.length ? letters[n] : null;
-}
-
 // get piece at location on game board. Result has correct truthiness.
 export function pieceAtLocation(board: GameBoard, location: Square): GamePiece | undefined {
     return board.gamePieces.find(x => x.state.position.file === location.file && x.state.position.rank === location.rank);
@@ -83,11 +72,6 @@ export function blockedSquares(board: GameBoard, squares: Square[]): boolean {
     return squares.some(s => pieceAtLocation(board, s));
 }
 
-// convert concrete game board to abstract board state
-export function boardToState(board: GameBoard): BoardState {
-    return { boardDimensions: board.boardDimensions, pieces: board.gamePieces.map(p => p.state) };
-}
-
 // get next empty square, in row-major order
 export function nextEmptySquare(board: BoardState, player: Player): Square | null {
     const startingRank: number = player === Player.White ? 0 : board.boardDimensions.rank - 1;
@@ -105,11 +89,6 @@ export function nextEmptySquare(board: BoardState, player: Player): Square | nul
 // count pieces matching predicate
 export function countPieces(board: BoardState, p: (pos: PiecePosition) => boolean): number {
     return board.pieces.filter(piece => p(piece)).length;
-}
-
-// TS doesn't have reverse mappings for string enums, so we use linear-time lookup
-export function parsePiece(str: string): PieceType | undefined {
-    return Object.values(PieceType).find(p => p === str.toUpperCase());
 }
 
 export function printBoard(board: BoardState) {

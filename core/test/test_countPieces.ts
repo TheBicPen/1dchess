@@ -1,7 +1,7 @@
 import { GameBoard, PiecePosition, PieceType, Player, Square } from "../models.js";
 import { blocked, countPieces } from "../utils.js";
-import standard_board from "../positions/normal_chess";
-import empty_board from '../positions/normal_empty';
+import standard_board from "../positions/normal_chess.js";
+import empty_board from "../positions/normal_empty.js";
 
 
 export default () => {

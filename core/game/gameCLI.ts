@@ -1,12 +1,12 @@
-import { AIPlayer } from "../ai/interface";
-import randomAI from "../ai/random";
-import { BoardState, Move, Player } from "../models";
-import { RuleSet } from "../rules/piece";
-import { SimpleRuleSet } from "../rules/simplePieces";
-import { Game } from "./game";
-import { parseMove } from "./makeMove";
-import * as readline from 'readline';
-import { boardToState, printBoard } from "../utils";
+import { AIPlayer } from "../ai/interface.js";
+import randomAI from "../ai/random.js";
+import { BoardState, Move, Player } from "../models.js";
+import { RuleSet } from "../rules/piece.js";
+import { SimpleRuleSet } from "../rules/simplePieces.js";
+import { Game } from "./game.js";
+import { boardToState, parseMove } from "./conversions.js";
+import * as readline from "readline";
+import {  printBoard } from "../utils.js";
 
 export default async function runAIGameNode(board: BoardState) {
     const CPU: AIPlayer = new randomAI(0);

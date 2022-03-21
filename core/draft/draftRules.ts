@@ -1,4 +1,4 @@
-import { PieceType } from "../models";
+import { PieceType } from "../models.js";
 
 
 export interface DraftRules {

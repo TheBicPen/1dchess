@@ -1,5 +1,5 @@
 import { MoveResult } from "../game/game.js";
-import { unparseSquare } from "../game/makeMove.js";
+import { unparseSquare } from "../game/conversions.js";
 import { GameBoard, Move, Player } from "../models.js";
 import { pieceAtLocation } from "../utils.js";
 import { GamePiece } from "./piece.js";

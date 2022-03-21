@@ -1,4 +1,4 @@
-import { BoardState } from "../models";
+import { BoardState } from "../models.js";
 
 
 

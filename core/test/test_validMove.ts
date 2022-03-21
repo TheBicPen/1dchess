@@ -1,9 +1,9 @@
 
-import { GameBoard, Move, Player } from '../models';
-import board from '../positions/normal_chess';
-import { RuleSet } from '../rules/piece';
-import { validMove } from '../rules/rules';
-import { SimpleRuleSet } from '../rules/simplePieces';
+import { GameBoard, Move, Player } from "../models.js";
+import board from "../positions/normal_chess.js";
+import { RuleSet } from "../rules/piece.js";
+import { validMove } from "../rules/rules.js";
+import { SimpleRuleSet } from "../rules/simplePieces.js";
 
 const ruleSet: RuleSet = new SimpleRuleSet();
 const gameBoard: GameBoard = ruleSet.initBoardPosition(board);

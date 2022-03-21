@@ -1,6 +1,6 @@
-import { GameBoard, Square } from "../models.js";
+import { Square } from "../models.js";
 import { blocked } from "../utils.js";
-import emptyBoard from '../positions/normal_empty';
+import emptyBoard from "../positions/normal_empty.js";
 
 const loc1: Square = { 'rank': 1, 'file': 2 };
 const loc2: Square = { 'rank': 1, 'file': 5 };

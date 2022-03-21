@@ -1,10 +1,10 @@
 
-import { Player, Square } from "../models";
-import standard_board from "../positions/normal_chess";
-import empty_board from '../positions/normal_empty';
-import pawns_4x4 from '../positions/4x4_fullpawns';
-import empty1x8 from '../positions/1x8_empty';
-import { nextEmptySquare } from "../utils";
+import { Player, Square } from "../models.js";
+import standard_board from "../positions/normal_chess.js";
+import empty_board from "../positions/normal_empty.js";
+import pawns_4x4 from "../positions/4x4_fullpawns.js";
+import empty1x8 from "../positions/1x8_empty.js";
+import { nextEmptySquare } from "../utils.js";
 
 
 export default () => {

@@ -1,9 +1,8 @@
-import { AIPlayer } from "../ai/interface";
-import randomAI from "../ai/random";
-import { BoardState, PiecePosition, PieceType, Player, Square } from "../models";
-import { RuleSet } from "../rules/piece";
-import { blocked, countPieces, nextEmptySquare, pieceAtLocation, pieceAtLocation2 } from "../utils";
-import { DraftRules } from "./draftRules";
+import { AIPlayer } from "../ai/interface.js";
+import randomAI from "../ai/random.js";
+import { BoardState, PiecePosition, PieceType, Player, Square } from "../models.js";
+import { nextEmptySquare, pieceAtLocation2 } from "../utils.js";
+import { DraftRules } from "./draftRules.js";
 
 
 

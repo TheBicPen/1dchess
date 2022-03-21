@@ -1,5 +1,5 @@
 
-import { DraftRules } from "./draftRules";
+import { DraftRules } from "./draftRules.js";
 
 const draftRules1D: DraftRules = {
     startingPoints: 30,

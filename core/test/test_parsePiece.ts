@@ -1,6 +1,5 @@
-import { PieceType } from "../models";
-import { parsePiece } from "../utils";
-
+import { parsePiece } from "../game/conversions.js";
+import { PieceType } from "../models.js";
 
 
 export default () => {

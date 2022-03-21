@@ -1,13 +1,13 @@
 
+import test_blocked from "./test_blocked.js";
+import test_countPieces from "./test_countPieces.js";
+import test_nextEmptySquare from "./test_nextEmptySquare.js";
+import test_parsePiece from "./test_parsePiece.js";
+import test_validMove from "./test_validMove.js";
 
-import test_utils from './test_blocked';
-import test_countPieces from './test_countPieces';
-import test_nextEmptySquare from './test_nextEmptySquare';
-import test_parsePiece from './test_parsePiece';
-import test_validMove from './test_validMove';
 
-test_utils();
-test_validMove();
+test_blocked();
 test_countPieces();
-test_parsePiece();
 test_nextEmptySquare();
+test_parsePiece();
+test_validMove();

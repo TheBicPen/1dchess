@@ -1,5 +1,6 @@
+import { boardToState } from "../game/conversions.js";
 import { PiecePosition, Square, GameBoard, Move, Player, PieceType, Rules } from "../models.js";
-import { blocked, boardToState, enumeratePositions, pieceAtLocation } from "../utils.js";
+import { blocked, enumeratePositions, pieceAtLocation } from "../utils.js";
 import { GamePiece, RuleSet } from "./piece.js";
 
 

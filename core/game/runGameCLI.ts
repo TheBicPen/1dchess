@@ -1,8 +1,8 @@
 
-import board from "../positions/normal_chess";
-import * as readline from 'readline';
-import runAIGameNode from "./gameCLI";
-import runDraftAIGameNode from "./draftCLI";
+import board from "../positions/normal_chess.js";
+import * as readline from "readline";
+import runAIGameNode from "./gameCLI.js";
+import runDraftAIGameNode from "./draftCLI.js";
 
 let rl = readline.createInterface({
     input: process.stdin,

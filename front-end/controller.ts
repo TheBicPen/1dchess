@@ -1,30 +1,19 @@
 
 
 
-import chessboard from '../lib/chessboard.js'
-import { Game, MoveStatus } from '../core/game/game.js'
-import { unparse } from '../core/game/makeMove.js';
-import starting_position from '../core/positions/1d_standard.js';
-import { BoardState, Move, Player } from '../core/models.js';
-import { fileToLetter } from '../core/utils.js';
-import { AIPlayer } from '../core/ai/interface.js';
-import randomAI from '../core/ai/random.js';
-import { RuleSet } from '../core/rules/piece.js';
-import { SimpleRuleSet1D } from '../core/rules/simplePieces1D.js';
+import chessboard from "../lib/chessboard.js";
+import { Game, MoveStatus } from "../core/game/game.js";
+import { unparse } from "../core/game/conversions.js";
+import starting_position from "../core/positions/1d_standard.js";
+import { BoardState, Player } from "../core/models.js";
+import { AIPlayer } from "../core/ai/interface.js";
+import randomAI from "../core/ai/random.js";
+import { RuleSet } from "../core/rules/piece.js";
+import { SimpleRuleSet1D } from "../core/rules/simplePieces1D.js";
+import { objToBoardObj } from "./core_adapter.js";
 
 type action = "snapback" | "trash" | "drop";
 
-
-
-function objToBoardObj(position: BoardState): object {
-    let out: any = {};
-    position.pieces.forEach(p => {
-        let file: string | null = fileToLetter(p.position.file);
-        if (file)
-            out[file + (p.position.rank + 1).toString()] = p.player + p.piece;
-    });
-    return out;
-}
 
 
 // When a move is made via the UI, send that move and wait for a response move

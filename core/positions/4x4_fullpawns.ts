@@ -1,4 +1,4 @@
-import { BoardState, PieceType, Player } from "../models";
+import { BoardState, PieceType, Player } from "../models.js";
 
 
 
