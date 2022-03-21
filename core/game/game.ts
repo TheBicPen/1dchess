@@ -47,12 +47,10 @@ export class Game {
         }
 
         updateWithMove(this.gameBoard, move);
-        this.gameStatus = checkGameState(this.gameBoard, this.gameStatus.player);
         this.gameStatus.player = nextPlayer(this.gameStatus.player);
+        this.gameStatus = checkGameState(this.gameBoard, this.gameStatus.player);
         return { ...moveResult, 'status': this.gameStatus };
     }
-
-
 
 }
 
@@ -78,7 +76,7 @@ export function updateWithMove(board: GameBoard, move: Move) {
         capture(board, capturePiece);
 }
 
-
+// Return the game's status. Call this after making a move and updating the current player.
 export function checkGameState(gameBoard: GameBoard, playerTurn: Player): GameStatus {
     const whiteKing: boolean = gameBoard.gamePieces.some(p => p.state.player == Player.White && p.state.piece == PieceType.King);
     const blackKing: boolean = gameBoard.gamePieces.some(p => p.state.player == Player.Black && p.state.piece == PieceType.King);
