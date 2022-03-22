@@ -1,8 +1,8 @@
 import { BoardState, GameBoard, Move, PieceType, Player } from "../models.js";
 import { GamePiece, RuleSet } from "../rules/piece.js";
 import { validMoveWithReason } from "../rules/rules.js";
-import { pieceAtLocation } from "../utils.js";
-import { parseMove } from "./conversions.js";
+import { pieceAtLocation, printBoard } from "../utils.js";
+import { boardToState, parseMove } from "./conversions.js";
 
 export interface MoveResult {
     reason: string | null,
@@ -50,6 +50,9 @@ export class Game {
         this.gameStatus.player = nextPlayer(this.gameStatus.player);
         this.gameStatus = checkGameState(this.gameBoard, this.gameStatus.player);
         return { ...moveResult, 'status': this.gameStatus };
+    }
+    _printBoard() {
+        printBoard(boardToState(this.gameBoard));
     }
 
 }

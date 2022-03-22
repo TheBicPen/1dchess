@@ -11,8 +11,8 @@ export enum PieceType {
 }
 
 export interface Square {
-    rank: number,
     file: number
+    rank: number,
 }
 
 export interface PiecePosition {
@@ -23,14 +23,14 @@ export interface PiecePosition {
 
 // abstract, unaware of rules
 export interface BoardState {
-    pieces: PiecePosition[],
     boardDimensions: Square,
+    pieces: PiecePosition[],
 }
 
 // concrete, aware of rules and piece movement
 export interface GameBoard {
-    gamePieces: GamePiece[],
     boardDimensions: Square,
+    gamePieces: GamePiece[],
     rules: Rules
 }
 

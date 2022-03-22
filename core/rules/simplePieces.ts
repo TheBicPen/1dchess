@@ -62,7 +62,8 @@ export class SimpleKnight extends SimplePiece {
 
 export class SimpleBishop extends SimplePiece {
     legalMove(location: Square, considerCheck: boolean, position: GameBoard): boolean {
-        return Math.abs(this.state.position.file - this.state.position.rank) === Math.abs(location.file - location.rank)
+        return (this.state.position.file - this.state.position.rank === location.file - location.rank
+            || this.state.position.file + this.state.position.rank === location.file + location.rank)
             && pieceAtLocation(position, location)?.state.player !== this.state.player //piece is other player's or empty
             && !blocked(boardToState(position), this.state.position, location)
             && true; //ignore considerCheck for now
@@ -74,7 +75,8 @@ export class SimpleBishop extends SimplePiece {
 
 export class SimpleQueen extends SimplePiece {
     legalMove(location: Square, considerCheck: boolean, position: GameBoard): boolean {
-        return (Math.abs(this.state.position.file - this.state.position.rank) === Math.abs(location.file - location.rank)
+        return (this.state.position.file - this.state.position.rank === location.file - location.rank
+            || this.state.position.file + this.state.position.rank === location.file + location.rank
             || this.state.position.file === location.file || this.state.position.rank === location.rank)
             && pieceAtLocation(position, location)?.state.player !== this.state.player //piece is other player's or empty
             && !blocked(boardToState(position), this.state.position, location)
