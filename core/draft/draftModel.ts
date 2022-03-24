@@ -1,8 +1,8 @@
-import { nextPlayer } from "../game/gameModel";
-import { BoardState, PiecePosition, PieceType, Player, Square } from "../models";
-import { nextEmptySquare } from "../utils";
-import { validateDraftChoice } from "./draftController";
-import { DraftRules } from "./draftRules";
+import { nextPlayer } from "../game/gameModel.js";
+import { BoardState, PiecePosition, PieceType, Player, Square } from "../models.js";
+import { nextEmptySquare } from "../utils.js";
+import { validateDraftChoice } from "./draftController.js";
+import { DraftRules } from "./draftRules.js";
 
 
 

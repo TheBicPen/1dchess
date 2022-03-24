@@ -1,7 +1,7 @@
 import { Square } from "../models.js";
 import { blocked } from "../utils.js";
 import emptyBoard from "../positions/normal_empty.js";
-import startingBoard from "../positions/normal_chess";
+import startingBoard from "../positions/normal_chess.js";
 
 const loc1: Square = { 'rank': 1, 'file': 2 };
 const loc2: Square = { 'rank': 1, 'file': 5 };

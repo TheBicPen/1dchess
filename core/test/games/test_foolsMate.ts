@@ -1,8 +1,8 @@
-import { parseMove } from "../../game/conversions";
-import { Game, nextPlayer } from "../../game/gameModel";
-import { Move, Player } from "../../models";
-import starting_position from "../../positions/normal_chess";
-import { SimpleRuleSet } from "../../rules/simplePieces";
+import { parseMove } from "../../game/conversions.js";
+import { Game, nextPlayer } from "../../game/gameModel.js";
+import { Move, Player } from "../../models.js";
+import starting_position from "../../positions/normal_chess.js";
+import { SimpleRuleSet } from "../../rules/simplePieces.js";
 
 
 export default () => {

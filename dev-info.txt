@@ -1,0 +1,9 @@
+
+
+### Regexes for fixing imports
+
+import (.*) from '(.*)'
+import $1 from "$2"
+
+import (.*) from "(.*/\w+)";
+import $1 from "$2.js";

@@ -1,8 +1,8 @@
-import { Player, PieceType, Square } from "../../models";
+import { Player, PieceType, Square } from "../../models.js";
 import empty_board from "../../positions/normal_empty.js";
-import { GamePiece } from "../../rules/piece";
-import { SimpleRuleSet } from "../../rules/simplePieces";
-import { pieceAtLocation, printBoard } from "../../utils";
+import { GamePiece } from "../../rules/piece.js";
+import { SimpleRuleSet } from "../../rules/simplePieces.js";
+import { pieceAtLocation, printBoard } from "../../utils.js";
 
 
 
