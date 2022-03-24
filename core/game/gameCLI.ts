@@ -3,7 +3,7 @@ import randomAI from "../ai/random.js";
 import { BoardState, Move, Player } from "../models.js";
 import { RuleSet } from "../rules/piece.js";
 import { SimpleRuleSet } from "../rules/simplePieces.js";
-import { Game } from "./game.js";
+import { Game } from "./gameModel.js";
 import { boardToState, parseMove } from "./conversions.js";
 import * as readline from "readline";
 import {  printBoard } from "../utils.js";

@@ -1,5 +1,5 @@
 import { parseMove } from "../../game/conversions";
-import { Game, nextPlayer } from "../../game/game";
+import { Game, nextPlayer } from "../../game/gameModel";
 import { Move, Player } from "../../models";
 import starting_position from "../../positions/normal_chess";
 import { SimpleRuleSet } from "../../rules/simplePieces";

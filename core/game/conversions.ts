@@ -21,7 +21,7 @@ export function unparseSquare(square: Square): string | null {
     return fromFile && fromFile + (square.rank + 1).toString();
 }
 
-export function unparse(move: Move): string | null {
+export function unparseMove(move: Move): string | null {
     const fromSquare = unparseSquare(move.from);
     const toSquare = unparseSquare(move.to);
     return fromSquare && toSquare && `${fromSquare}-${toSquare}`;

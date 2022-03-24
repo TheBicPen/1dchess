@@ -1,6 +1,6 @@
 {
-  "name": "1dchess",
-  "version": "1.0.0",
+  "name": "draft-chess",
+  "version": "0.0.1",
   "description": "1D draft chess. Project contains both server and client.",
   "main": "index.js",
   "directories": {

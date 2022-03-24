@@ -1,4 +1,4 @@
-import { MoveResult } from "../game/game.js";
+import { MoveResult } from "../game/gameModel.js";
 import { unparseSquare } from "../game/conversions.js";
 import { GameBoard, Move, Player } from "../models.js";
 import { pieceAtLocation } from "../utils.js";
