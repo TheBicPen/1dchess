@@ -46,7 +46,7 @@ export function parsePiece(str: string): PieceType | undefined {
 
 export function letterToFile(c: string): number | null {
     const letters = 'abcdefghijklmnopqrstuvwxyz';
-    const idx: number = letters.indexOf(c);
+    const idx: number = letters.indexOf(c.toLowerCase());
     return idx === -1 ? null : idx;
 }
 
