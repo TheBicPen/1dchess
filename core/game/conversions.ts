@@ -6,14 +6,20 @@ import { BoardState, GameBoard, Move, PieceType, Square } from "../models.js";
 export function parseMove(move: string): Move | null {
     if (move.length !== 5)
         return null;
-    const sourceFile = letterToFile(move[0]);
-    const sourceRank = parseInt(move[1]) - 1; // convert 1-index to 0-index
-    const targetFile = letterToFile(move[3]);
-    const targetRank = parseInt(move[4]) - 1; // convert 1-index to 0-index
-    if (sourceFile === null || isNaN(sourceRank) || targetFile === null || isNaN(targetRank))
+    const from = parseSquare(move.slice(0, 2));
+    const to = parseSquare(move.slice(3, 5));
+    return from && to && { 'from': from, 'to': to };
+}
+
+export function parseSquare(square: string): Square | null {
+    if (square.length !== 2)
+        return null;
+    const file = letterToFile(square[0]);
+    const rank = parseInt(square[1]) - 1; // convert 1-index to 0-index
+    if (file === null || isNaN(rank))
         return null;
     else
-        return { 'from': { 'file': sourceFile, 'rank': sourceRank }, 'to': { 'file': targetFile, 'rank': targetRank } }
+        return { 'file': file, 'rank': rank };
 }
 
 export function unparseSquare(square: Square): string | null {
