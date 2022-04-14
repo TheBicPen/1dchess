@@ -21,7 +21,9 @@ export class SimpleRuleSet1D extends RuleSet {
     };    // defines piece behaviour
 }
 
-function piecesBetweenDiagonal(rank_from: number, rank_to: number) {
+// return the squares between rank_from and rank_to, exclusive, but only squares
+// on the same 1D "diagonal", i.e. same colour
+function squaresBetweenDiagonal(rank_from: number, rank_to: number) {
     const squares: Square[] = [];
     let min: number = Math.min(rank_from, rank_to);
     const max: number = Math.min(rank_from, rank_to);
@@ -45,7 +47,7 @@ class SimpleKnight1D extends SimplePiece {
 class SimpleBishop1D extends SimplePiece {
     legalMove(location: Square, considerCheck: boolean, position: GameBoard): boolean {
         return (this.state.position.rank - location.rank) % 2 === 0
-            && !blockedSquares(position, piecesBetweenDiagonal(this.state.position.rank, location.rank))
+            && !blockedSquares(position, squaresBetweenDiagonal(this.state.position.rank, location.rank))
             && pieceAtLocation(position, location)?.state.player !== this.state.player //piece is other player's or empty
             && true; //ignore considerCheck for now
     }
@@ -57,7 +59,7 @@ class SimpleBishop1D extends SimplePiece {
 class SimpleQueen1D extends SimplePiece {
     legalMove(location: Square, considerCheck: boolean, position: GameBoard): boolean {
         return ((this.state.position.rank - location.rank) % 2 === 0
-            && !blockedSquares(position, piecesBetweenDiagonal(this.state.position.rank, location.rank)))
+            && !blockedSquares(position, squaresBetweenDiagonal(this.state.position.rank, location.rank)))
             || !blocked(boardToState(position), this.state.position, location)
             && pieceAtLocation(position, location)?.state.player !== this.state.player //piece is other player's or empty
             && true; //ignore considerCheck for now

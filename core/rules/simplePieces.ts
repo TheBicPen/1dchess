@@ -1,5 +1,6 @@
 import { boardToState } from "../game/conversions.js";
-import { PiecePosition, Square, GameBoard, Move, Player, PieceType, Rules } from "../models.js";
+import { nextPlayer } from "../game/gameModel.js";
+import { PiecePosition, Square, GameBoard, Move, Player, PieceType, Rules, BoardState } from "../models.js";
 import { blocked, enumeratePositions, pieceAtLocation } from "../utils.js";
 import { GamePiece, RuleSet } from "./piece.js";
 
@@ -27,6 +28,11 @@ export abstract class SimplePiece implements GamePiece {
     }
 }
 
+// return whether the target square is empty or has the other player's piece
+function emptyOrOpponent(position: GameBoard, location: Square, current_player: Player) {
+    return pieceAtLocation(position, location)?.state.player !== current_player;
+}
+
 export function pieceToGamePiece(piece: PiecePosition): GamePiece {
     return piece.piece === PieceType.Bishop ? new SimpleBishop(piece.position, piece.player)
         : piece.piece === PieceType.King ? new SimpleKing(piece.position, piece.player)
@@ -40,7 +46,7 @@ export class SimpleKing extends SimplePiece {
     legalMove(location: Square, considerCheck: boolean, position: GameBoard): boolean {
         return Math.abs(this.state.position.file - location.file) <= 1
             && Math.abs(this.state.position.rank - location.rank) <= 1
-            && pieceAtLocation(position, location)?.state.player !== this.state.player //piece is other player's or empty
+            && emptyOrOpponent(position, location, this.state.player)
             && true; //ignore considerCheck for now
     }
     constructor(location: Square, player: Player) {
@@ -52,7 +58,7 @@ export class SimpleKnight extends SimplePiece {
     legalMove(location: Square, considerCheck: boolean, position: GameBoard): boolean {
         return (Math.abs(this.state.position.file - location.file) === 2 && Math.abs(this.state.position.rank - location.rank) === 1
             || Math.abs(this.state.position.file - location.file) === 1 && Math.abs(this.state.position.rank - location.rank) === 2)
-            && pieceAtLocation(position, location)?.state.player !== this.state.player //piece is other player's or empty
+            && emptyOrOpponent(position, location, this.state.player)
             && true; //ignore considerCheck for now
     }
     constructor(location: Square, player: Player) {
@@ -64,7 +70,7 @@ export class SimpleBishop extends SimplePiece {
     legalMove(location: Square, considerCheck: boolean, position: GameBoard): boolean {
         return (this.state.position.file - this.state.position.rank === location.file - location.rank
             || this.state.position.file + this.state.position.rank === location.file + location.rank)
-            && pieceAtLocation(position, location)?.state.player !== this.state.player //piece is other player's or empty
+            && emptyOrOpponent(position, location, this.state.player)
             && !blocked(boardToState(position), this.state.position, location)
             && true; //ignore considerCheck for now
     }
@@ -78,7 +84,7 @@ export class SimpleQueen extends SimplePiece {
         return (this.state.position.file - this.state.position.rank === location.file - location.rank
             || this.state.position.file + this.state.position.rank === location.file + location.rank
             || this.state.position.file === location.file || this.state.position.rank === location.rank)
-            && pieceAtLocation(position, location)?.state.player !== this.state.player //piece is other player's or empty
+            && emptyOrOpponent(position, location, this.state.player)
             && !blocked(boardToState(position), this.state.position, location)
             && true; //ignore considerCheck for now
     }
@@ -90,7 +96,7 @@ export class SimpleQueen extends SimplePiece {
 export class SimpleRook extends SimplePiece {
     legalMove(location: Square, considerCheck: boolean, position: GameBoard): boolean {
         return (this.state.position.file === location.file || this.state.position.rank === location.rank)
-            && pieceAtLocation(position, location)?.state.player !== this.state.player //piece is other player's or empty
+            && emptyOrOpponent(position, location, this.state.player)
             && !blocked(boardToState(position), this.state.position, location)
             && true; //ignore considerCheck for now
     }
@@ -102,17 +108,34 @@ export class SimpleRook extends SimplePiece {
 export class SimplePawn extends SimplePiece {
     legalMove(location: Square, considerCheck: boolean, position: GameBoard): boolean {
         const rankMult: -1 | 1 = this.state.player === Player.White ? 1 : -1;
-        const thisPosition: Square = this.state.position;
-        const plus2 = ((thisPosition.rank === 1 || thisPosition.rank === position.boardDimensions.rank - 2)
-            && location.rank === thisPosition.rank + 2 * rankMult && !blocked(boardToState(position), this.state.position, location))  // initial +2 move
-        const forwardMove: boolean = (plus2 || location.rank === thisPosition.rank + rankMult)
-            && thisPosition.file === location.file && !pieceAtLocation(position, location) // non-capture forward move
-        return forwardMove
-            || (pieceAtLocation(position, location)?.state.player === (this.state.player === Player.White ? Player.Black : Player.White)
-                && Math.abs(thisPosition.file - location.file) === 1)
-            && true; //ignore considerCheck for now
+        const twoMoveRank = this.state.player === Player.White ? 1 : position.boardDimensions.rank - 2;
+        const curPos: Square = this.state.position;
+        const fileDiff = Math.abs(curPos.file - location.file);
+
+        // initial +2 move
+        const forward2 = fileDiff === 0
+            && curPos.rank === twoMoveRank
+            && location.rank === curPos.rank + 2 * rankMult
+            && !blocked(boardToState(position), this.state.position, location)
+            && !pieceAtLocation(position, location);
+
+        // non-capture forward move
+        const forward1 = fileDiff === 0
+            && location.rank === curPos.rank + rankMult
+            && curPos.file === location.file
+            && !pieceAtLocation(position, location);
+
+        // capture diagonally (not via en passant)
+        const diagCapture = fileDiff === 1
+            && location.rank === curPos.rank + rankMult
+            && pieceAtLocation(position, location)?.state.player === nextPlayer(this.state.player);
+
         // no en passant yet
+        // ignore considerCheck for now
+        return forward1 || forward2 || diagCapture;
     }
+
+
     constructor(location: Square, player: Player) {
         super(location, player, PieceType.Pawn);
     }

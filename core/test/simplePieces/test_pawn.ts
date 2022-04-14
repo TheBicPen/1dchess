@@ -13,11 +13,17 @@ export default () => {
     console.log("Testing simple pawn moves.");
     const ruleSet = new SimpleRuleSet();
     const board = starting_board();
-    const d_pawn = pieceAtLocation2(board, { 'file': 3, 'rank': 1 });
-    console.assert(d_pawn);
-    (d_pawn as PiecePosition).position.rank = 2;
+    const black_c_pawn = pieceAtLocation2(board, { 'file': 2, 'rank': 6 });
+    const white_d_pawn = pieceAtLocation2(board, { 'file': 3, 'rank': 1 });
+    const white_e_pawn = pieceAtLocation2(board, { 'file': 4, 'rank': 1 });
+    console.assert(black_c_pawn);
+    (black_c_pawn as PiecePosition).position.rank = 4;
+    console.assert(white_d_pawn);
+    (white_d_pawn as PiecePosition).position.rank = 3;
+    console.assert(white_e_pawn);
+    (white_e_pawn as PiecePosition).position.rank = 2;
+    
     const gameBoard = ruleSet.initBoardPosition(board);
-
 
     const piece1 = pieceAtLocation(gameBoard, { 'file': 0, 'rank': 6 });
     const piece1moves = (piece1 as GamePiece).getLegalMoves(false, gameBoard);
@@ -45,12 +51,16 @@ export default () => {
     console.assert(piece4moves.some(m => m.file === 0 && m.rank === 2));
     console.assert(piece4moves.some(m => m.file === 0 && m.rank === 3));
 
-    // this pawn is not on file 2 so it only has 1 move
-    const piece5 = pieceAtLocation(gameBoard, { 'file': 3, 'rank': 2 });
+    // white e pawn is not on file 2 so it only has 1 move
+    const piece5 = pieceAtLocation(gameBoard, { 'file': 4, 'rank': 2 });
     const piece5moves = (piece5 as GamePiece).getLegalMoves(false, gameBoard);
     console.assert(piece5moves.length == 1);
-    console.assert(piece5moves.some(m => m.file === 3 && m.rank === 3));
-}
+    console.assert(piece5moves.some(m => m.file === 4 && m.rank === 3));
 
-const validMoves: Square[] = [
-]
+    // white d pawn can capture black c pawn
+    const piece6 = pieceAtLocation(gameBoard, { 'file': 3, 'rank': 3 });
+    const piece6moves = (piece6 as GamePiece).getLegalMoves(false, gameBoard);
+    console.assert(piece6moves.length == 2);
+    console.assert(piece6moves.some(m => m.file === 3 && m.rank === 4));
+    console.assert(piece6moves.some(m => m.file === 2 && m.rank === 4));
+}

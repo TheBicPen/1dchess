@@ -8,11 +8,11 @@ import { SimpleRuleSet } from "../rules/simplePieces.js";
 const ruleSet: RuleSet = new SimpleRuleSet();
 const gameBoard: GameBoard = ruleSet.initBoardPosition(board());
 export default () => {
-    console.log("Testing validMove with simple pieces.");
+    console.log("Testing some simplePiece moves.");
 
     // Simple Pawn move
     const move1: Move = { 'from': { 'file': 0, 'rank': 1 }, 'to': { 'file': 0, 'rank': 2 } };
-    console.assert(validMove(gameBoard, move1, Player.White), "", move1);   // empty string to prevent object being used as format
+    console.assert(validMove(gameBoard, move1, Player.White), "Simple Pawn move", move1);   // string to use object as format for better printout - only necessary in NodeJS
 
 
     // 2-square pawn move
