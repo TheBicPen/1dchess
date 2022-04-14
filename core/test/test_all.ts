@@ -2,6 +2,7 @@
 import test_foolsMate from "./games/test_foolsMate.js";
 import test_scholarsMate from "./games/test_scholarsMate.js";
 import test_bishop from "./simplePieces/test_bishop.js";
+import test_pawn from "./simplePieces/test_pawn.js";
 import test_blocked from "./test_blocked.js";
 import test_countPieces from "./test_countPieces.js";
 import test_nextEmptySquare from "./test_nextEmptySquare.js";
@@ -24,3 +25,4 @@ test_scholarsMate();
 
 // pieces
 test_bishop();
+test_pawn();

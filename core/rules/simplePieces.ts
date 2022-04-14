@@ -38,8 +38,8 @@ export function pieceToGamePiece(piece: PiecePosition): GamePiece {
 
 export class SimpleKing extends SimplePiece {
     legalMove(location: Square, considerCheck: boolean, position: GameBoard): boolean {
-        const dist: number = Math.abs(this.state.position.file - location.file) + Math.abs(this.state.position.rank - location.rank);
-        return dist === 1
+        return Math.abs(this.state.position.file - location.file) <= 1
+            && Math.abs(this.state.position.rank - location.rank) <= 1
             && pieceAtLocation(position, location)?.state.player !== this.state.player //piece is other player's or empty
             && true; //ignore considerCheck for now
     }

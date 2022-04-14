@@ -3,7 +3,7 @@
 
 import chessboard from "../lib/chessboard.js";
 import { Game, MoveStatus } from "../core/game/gameModel.js";
-import { parsePiece, parseSquare, unparseMove, unparseSquare } from "../core/game/conversions.js";
+import { parseSquare, unparseMove, unparseSquare } from "../core/game/conversions.js";
 import starting_position from "../core/positions/1d_standard.js";
 import empty_position from "../core/positions/1x8_empty.js";
 import { BoardState, Player } from "../core/models.js";
@@ -66,6 +66,7 @@ let draft: Draft;
 const CPU: AIPlayer = new randomAI(0);
 const draftRules: DraftRules = draftRules1D;
 let _element: Node | string;
+let destroy: { (): void } | undefined;
 
 export function startGame(element: string | Node) {
     const files = 1;
@@ -101,8 +102,10 @@ export function startDraftGame(element: string | Node) {
     };
     _element = element;
     draft = new Draft(board, draftRules, Player.White);
+    if (destroy) destroy();
     const draftBoard = chessboard.constructor(element, draftConfig);
     draftBoard?.position(objToBoardObj(board), ranks, files);
+    destroy = draftBoard?.destroy;
 }
 
 function draftCallback(action: action) {
@@ -110,8 +113,7 @@ function draftCallback(action: action) {
         return;
     const pick = CPU.draft(draftRules, draft.board, Player.Black, draft.playerPoints.b);
     const pickResult = draft.choosePiece(Player.Black, pick);
-    if (pickResult)
-    {
+    if (pickResult) {
         if (draft.done(Player.Black)) {
             console.log("Draft is done. let's play!");
             startGameAfterDraft();
@@ -161,6 +163,8 @@ function startGameAfterDraft() {
         'showErrors': 'console'
     };
     game = new Game(ruleSet, draft.board);
+    if (destroy) destroy();
     const gameBoard = chessboard.constructor(_element, gameConfig);
     gameBoard?.position(objToBoardObj(draft.board), ranks, files);
+    destroy = gameBoard?.destroy;
 }
