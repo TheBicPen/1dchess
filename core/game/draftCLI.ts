@@ -10,7 +10,7 @@ import { parsePiece } from "./conversions.js";
 
 export default async function runDraftAIGameNode() {
     try {
-        const theBoard = await runAIDraft(draftRules1D, board, requestDraft);
+        const theBoard = await runAIDraft(draftRules1D, board(), requestDraft);
         console.log("Let's play!");
         runAIGameNode(theBoard);
     } catch (error) {

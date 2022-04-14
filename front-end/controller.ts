@@ -72,7 +72,7 @@ export function startGame(element: string | Node) {
     const files = 1;
     const ranks = 8;
     const ruleSet: RuleSet = new SimpleRuleSet1D();
-    const board: BoardState = starting_position;
+    const board: BoardState = starting_position();
     const config = {
         'columns': files,
         'rows': ranks,
@@ -91,7 +91,7 @@ export function startDraftGame(element: string | Node) {
     const files = 1;
     const ranks = 8;
 
-    const board: BoardState = empty_position;
+    const board: BoardState = empty_position();
     const draftConfig = {
         'columns': files,
         'rows': ranks,

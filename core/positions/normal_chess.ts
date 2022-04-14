@@ -1,4 +1,5 @@
 import { BoardState, PieceType, Player } from "../models.js";
+import { deepClone } from "../utils.js";
 
 
 const board: BoardState = {
@@ -41,4 +42,4 @@ const board: BoardState = {
         { 'piece': PieceType.Pawn, 'player': Player.Black, 'position': { 'rank': 6, 'file': 7 } }
     ], "boardDimensions": { "rank": 8, "file": 8 },
 };
-export default board;
+export default () => deepClone(board);

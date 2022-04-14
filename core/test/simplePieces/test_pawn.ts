@@ -12,10 +12,11 @@ export default () => {
 
     console.log("Testing simple pawn moves.");
     const ruleSet = new SimpleRuleSet();
-    const d_pawn = pieceAtLocation2(starting_board, { 'file': 3, 'rank': 1 });
+    const board = starting_board();
+    const d_pawn = pieceAtLocation2(board, { 'file': 3, 'rank': 1 });
     console.assert(d_pawn);
     (d_pawn as PiecePosition).position.rank = 2;
-    const gameBoard = ruleSet.initBoardPosition(starting_board);
+    const gameBoard = ruleSet.initBoardPosition(board);
 
 
     const piece1 = pieceAtLocation(gameBoard, { 'file': 0, 'rank': 6 });

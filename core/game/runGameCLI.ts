@@ -12,7 +12,7 @@ const rl = readline.createInterface({
 rl.question("Normal Game: 0\nDraft: 1\n", answer => {
     rl.close();
     if (answer === "0")
-        runAIGameNode(board);
+        runAIGameNode(board());
     else if (answer === "1")
         runDraftAIGameNode();
     else

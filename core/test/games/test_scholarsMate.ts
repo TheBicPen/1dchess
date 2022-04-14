@@ -9,7 +9,7 @@ export default () => {
 
     console.log("Testing Scholar's Mate game.");
     const ruleSet = new SimpleRuleSet();
-    const game = new Game(ruleSet, starting_position);
+    const game = new Game(ruleSet, starting_position());
     let player = Player.White;
     while (dummyMoves.length > 0) {
         const element = dummyMoves.shift();

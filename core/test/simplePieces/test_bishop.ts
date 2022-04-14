@@ -11,7 +11,7 @@ export default () => {
 
     console.log("Testing Bishop moves.");
     const ruleSet = new SimpleRuleSet();
-    const board = empty_board;
+    const board = empty_board();
     const loc = { 'file': 2, 'rank': 3 };
     board.pieces.push({ 'piece': PieceType.Bishop, 'player': Player.White, 'position': loc });
     const gameBoard = ruleSet.initBoardPosition(board);

@@ -6,7 +6,7 @@ import { validMove } from "../rules/rules.js";
 import { SimpleRuleSet } from "../rules/simplePieces.js";
 
 const ruleSet: RuleSet = new SimpleRuleSet();
-const gameBoard: GameBoard = ruleSet.initBoardPosition(board);
+const gameBoard: GameBoard = ruleSet.initBoardPosition(board());
 export default () => {
     console.log("Testing validMove with simple pieces.");
 

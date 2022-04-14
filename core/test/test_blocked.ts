@@ -15,25 +15,27 @@ const loc8: Square = { 'rank': 1, 'file': 8 };
 // this test is mostly to see the squares `blocked` considers.
 export default () => {
     console.log("Testing blocked pieces. Bad test.");
+    const board1 = emptyBoard();
+    const board2 = startingBoard();
 
-    console.assert(!blocked(emptyBoard, loc1, loc2), "", loc1, loc2);    // empty string to prevent object being used as format
+    console.assert(!blocked(board1, loc1, loc2), "", loc1, loc2);    // empty string to prevent object being used as format
 
-    console.assert(!blocked(emptyBoard, loc1, loc3), "", loc1, loc3);
+    console.assert(!blocked(board1, loc1, loc3), "", loc1, loc3);
 
-    console.assert(!blocked(emptyBoard, loc1, loc4), "", loc1, loc4);
+    console.assert(!blocked(board1, loc1, loc4), "", loc1, loc4);
 
-    console.assert(!blocked(emptyBoard, loc4, loc1), "", loc4, loc1);
+    console.assert(!blocked(board1, loc4, loc1), "", loc4, loc1);
 
-    console.assert(!blocked(emptyBoard, loc2, loc1), "", loc2, loc1);
+    console.assert(!blocked(board1, loc2, loc1), "", loc2, loc1);
 
-    console.assert(!blocked(emptyBoard, loc3, loc1), "", loc3, loc1);
+    console.assert(!blocked(board1, loc3, loc1), "", loc3, loc1);
 
-    console.assert(!blocked(emptyBoard, loc1, loc1), "", loc1, loc1);
+    console.assert(!blocked(board1, loc1, loc1), "", loc1, loc1);
 
-    console.assert(!blocked(emptyBoard, loc6, loc5), "", loc6, loc5);
+    console.assert(!blocked(board1, loc6, loc5), "", loc6, loc5);
 
-    console.assert(!blocked(emptyBoard, loc7, loc8), "", loc7, loc8);
+    console.assert(!blocked(board1, loc7, loc8), "", loc7, loc8);
 
-    console.assert(blocked(startingBoard, loc1, loc2), "", loc1, loc2);
+    console.assert(blocked(board2, loc1, loc2), "", loc1, loc2);
 
 }
