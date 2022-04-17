@@ -1,17 +1,15 @@
 import { GameBoard } from "../../game/GameBoard.js";
 import { Player, PieceType, Square } from "../../models.js";
-import empty_board from "../../positions/normal_empty.js";
+import empty from "../../positions/empty.js";
 import { GamePiece } from "../../rules/piece.js";
 import { SimpleRuleSet } from "../../rules/simplePieces.js";
 import { pieceAtLocation, printBoard } from "../../utils.js";
 
 
-
-
 export default () => {
 
     console.log("Testing Bishop moves.");
-    const board = empty_board();
+    const board = empty({ 'file': 8, 'rank': 8 });
     const loc = { 'file': 2, 'rank': 3 };
     board.pieces.push({ 'piece': PieceType.Bishop, 'player': Player.White, 'position': loc });
     const gameBoard = new GameBoard(board, new SimpleRuleSet());

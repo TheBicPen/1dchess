@@ -1,4 +1,4 @@
-import { BoardState, Move, PieceType, Square } from "../models.js";
+import { BoardState, Move, PieceType, Player, Square } from "../models.js";
 import { GameBoard } from "./GameBoard";
 
 
@@ -42,6 +42,11 @@ export function boardToState(board: GameBoard): BoardState {
 // TS doesn't have reverse mappings for string enums, so we use linear-time lookup
 export function parsePiece(str: string): PieceType | undefined {
     return Object.values(PieceType).find(p => p === str.toUpperCase());
+}
+
+// we want the piece colour to be distinguishable
+export function unparsePieceColour(p: PieceType, colour: Player): string {
+    return colour === Player.White ? p : p.toLowerCase();
 }
 
 

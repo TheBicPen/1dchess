@@ -2,15 +2,14 @@ import { AIPlayer } from "../ai/interface.js";
 import randomAI from "../ai/random.js";
 import { BoardState, Move, Player } from "../models.js";
 import { RuleSet } from "../rules/piece.js";
-import { SimpleRuleSet } from "../rules/simplePieces.js";
 import { Game, MoveStatus } from "./gameModel.js";
 import { boardToState, parseMove, unparseMove } from "./conversions.js";
 import * as readline from "readline";
 import { printBoard } from "../utils.js";
+import { evaluate } from "../ai/minimax.js";
 
-export default async function runAIGameNode(board: BoardState) {
+export default async function runAIGameNode(board: BoardState, ruleSet: RuleSet) {
     const CPU: AIPlayer = new randomAI(0);
-    const ruleSet: RuleSet = new SimpleRuleSet();
 
     const game: Game = new Game(ruleSet, board);
     console.log("Starting AI game");
@@ -20,15 +19,23 @@ export default async function runAIGameNode(board: BoardState) {
         let result: MoveStatus | undefined = undefined;
         do {
             const move = await requestMove().catch(err => console.error(err));
-            if (move) result = game.makeMove(Player.White, move);
+            if (move) {
+                result = game.makeMove(Player.White, move);
+                if (result.reason) console.log(result.reason);
+            }
         }
         while (!result?.move)
-        
+        console.log(evaluate(game.gameBoard, game.gameStatus.player));
+
+        if (game.gameStatus.status !== "playing")
+            break;
         let AIMove = CPU.move(game.gameBoard, Player.Black);
         console.log("AI move:");
         console.log(unparseMove(AIMove));
         game.makeMove(Player.Black, AIMove);
+        console.log(evaluate(game.gameBoard, game.gameStatus.player));
     }
+    console.log("GG!", game.gameStatus.status, game.gameStatus.player);
 }
 
 

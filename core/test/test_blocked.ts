@@ -1,7 +1,7 @@
 import { Square } from "../models.js";
 import { blocked } from "../utils.js";
-import emptyBoard from "../positions/normal_empty.js";
 import startingBoard from "../positions/normal_chess.js";
+import empty from "../positions/empty.js";
 
 const loc1: Square = { 'rank': 1, 'file': 2 };
 const loc2: Square = { 'rank': 1, 'file': 5 };
@@ -15,7 +15,7 @@ const loc8: Square = { 'rank': 1, 'file': 8 };
 // this test is mostly to see the squares `blocked` considers.
 export default () => {
     console.log("Testing blocked pieces. Bad test.");
-    const board1 = emptyBoard();
+    const board1 = empty({ 'file': 8, 'rank': 8 });
     const board2 = startingBoard();
 
     console.assert(!blocked(board1, loc1, loc2), "", loc1, loc2);    // empty string to prevent object being used as format

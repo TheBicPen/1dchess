@@ -1,5 +1,4 @@
 import { BoardState, PiecePosition, Player, Square } from "../models.js";
-import board from "../positions/normal_empty.js";
 import * as readline from "readline";
 import { runAIDraft } from "../draft/draftController.js";
 import draftRules1D from "../draft/1dDraftRules.js";
@@ -7,12 +6,13 @@ import { DraftRules } from "../draft/draftRules.js";
 import { nextEmptySquare } from "../utils.js";
 import runAIGameNode from "./gameCLI.js";
 import { parsePiece } from "./conversions.js";
+import { RuleSet } from "../rules/piece.js";
 
-export default async function runDraftAIGameNode() {
+export default async function runDraftAIGameNode(board:BoardState, ruleSet: RuleSet) {
     try {
-        const theBoard = await runAIDraft(draftRules1D, board(), requestDraft);
+        const theBoard = await runAIDraft(draftRules1D, board, requestDraft);
         console.log("Let's play!");
-        runAIGameNode(theBoard);
+        runAIGameNode(theBoard, ruleSet);
     } catch (error) {
         console.error(error);
     }

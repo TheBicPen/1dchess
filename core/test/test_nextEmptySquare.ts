@@ -1,18 +1,17 @@
 
 import { Player, Square } from "../models.js";
 import standard_board from "../positions/normal_chess.js";
-import empty_board from "../positions/normal_empty.js";
 import pawns_4x4 from "../positions/4x4_fullpawns.js";
-import empty1x8 from "../positions/1x8_empty.js";
 import { nextEmptySquare } from "../utils.js";
+import empty from "../positions/empty.js";
 
 
 export default () => {
     console.log("Testing next empty square.");
     const board_standard = standard_board();
-    const board_empty = empty_board();
+    const board_empty = empty({ 'file': 8, 'rank': 8 });
     const board_pawns4x4 = pawns_4x4();
-    const board_empty1x8 = empty1x8();
+    const board_empty1x8 = empty({ 'file': 1, 'rank': 8 });
     let val: Square | null;
 
     val = nextEmptySquare(board_standard, Player.White);

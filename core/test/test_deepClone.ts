@@ -1,14 +1,15 @@
 
 import { PieceType, Player } from "../models";
-import emptyBoard from "../positions/normal_empty";
-import emptyBoard2 from "../positions/normal_empty";
+import empty from "../positions/empty";
+import empty2 from "../positions/empty";
+
 
 
 export default () => {
     console.log("Testing deepClone.");
-    const board1 = emptyBoard();
-    const board2 = emptyBoard2();
-    const board3 = emptyBoard();
+    const board1 = empty({ 'file': 8, 'rank': 8 });
+    const board2 = empty2({ 'file': 8, 'rank': 8 });
+    const board3 = empty({ 'file': 8, 'rank': 8 });
     console.assert(board1 !== board2);
     console.assert(board1 !== board3);
     console.assert(board2 !== board3);
