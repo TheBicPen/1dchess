@@ -1,4 +1,5 @@
-import { PiecePosition, Square, BoardState, Move, GameBoard, Rules } from "../models.js";
+import { PiecePosition, Square, BoardState, Move, Rules } from "../models.js";
+import { GameBoard } from "../game/GameBoard";
 
 
 // legalMove only checks the piece's movement rules. The target location must be on the board
@@ -11,13 +12,8 @@ export interface GamePiece {
 }
 
 
-// how to instantiate a concrete game from an abstract board state
-export abstract class RuleSet {
-    abstract rules: Rules;
-    abstract pieceToGamePiece(piece: PiecePosition): GamePiece;
-
-    initBoardPosition(board: BoardState): GameBoard {
-        const gamePieces: GamePiece[] = board.pieces.map(p => this.pieceToGamePiece(p));
-        return { 'rules': this, 'gamePieces': gamePieces, 'boardDimensions': board.boardDimensions };
-    }
+// Hold the information necessary to instantiate a concrete game from an abstract board state
+export interface RuleSet {
+    rules: Rules;
+    pieceToGamePiece(piece: PiecePosition): GamePiece;
 }

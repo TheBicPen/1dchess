@@ -1,12 +1,11 @@
 
-import { GameBoard, Move, Player } from "../models.js";
+import { Move, Player } from "../models.js";
+import { GameBoard } from "../game/GameBoard";
 import board from "../positions/normal_chess.js";
-import { RuleSet } from "../rules/piece.js";
 import { validMove } from "../rules/rules.js";
 import { SimpleRuleSet } from "../rules/simplePieces.js";
 
-const ruleSet: RuleSet = new SimpleRuleSet();
-const gameBoard: GameBoard = ruleSet.initBoardPosition(board());
+const gameBoard = new GameBoard(board(), new SimpleRuleSet());
 export default () => {
     console.log("Testing some simplePiece moves.");
 
@@ -67,5 +66,5 @@ export default () => {
     const move12: Move = { 'from': { 'file': 0, 'rank': 0 }, 'to': { 'file': 0, 'rank': 3 } };
     console.assert(!validMove(gameBoard, move12, Player.White), "", move12);
 
-    
+
 }

@@ -1,5 +1,6 @@
 import { boardToState } from "../game/conversions.js";
-import { Square, GameBoard, Player, PieceType, Rules, PiecePosition } from "../models.js";
+import { Square, Player, PieceType, Rules, PiecePosition } from "../models.js";
+import { GameBoard } from "../game/GameBoard";
 import { blocked, blockedSquares, pieceAtLocation } from "../utils.js";
 import { GamePiece, RuleSet } from "./piece.js";
 import {
@@ -9,7 +10,7 @@ import {
     SimpleRook as SimpleRook1D
 } from "./simplePieces.js";
 
-export class SimpleRuleSet1D extends RuleSet {
+export class SimpleRuleSet1D implements RuleSet {
     rules: Rules = { 'kingCheck': false };
     pieceToGamePiece = function pieceToGamePiece(piece: PiecePosition): GamePiece {
         return piece.piece === PieceType.Bishop ? new SimpleBishop1D(piece.position, piece.player)

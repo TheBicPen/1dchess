@@ -1,17 +1,15 @@
+import { GameBoard } from "../../game/GameBoard.js";
 import { Player, PieceType, Square, PiecePosition } from "../../models.js";
 // import empty_board from "../../positions/normal_empty.js";
 import starting_board from "../../positions/normal_chess.js";
 import { GamePiece } from "../../rules/piece.js";
 import { SimpleRuleSet } from "../../rules/simplePieces.js";
-import { pieceAtLocation, pieceAtLocation2, printBoard } from "../../utils.js";
-
-
+import { pieceAtLocation, pieceAtLocation2 } from "../../utils.js";
 
 
 export default () => {
 
     console.log("Testing simple pawn moves.");
-    const ruleSet = new SimpleRuleSet();
     const board = starting_board();
     const black_c_pawn = pieceAtLocation2(board, { 'file': 2, 'rank': 6 });
     const white_d_pawn = pieceAtLocation2(board, { 'file': 3, 'rank': 1 });
@@ -22,8 +20,8 @@ export default () => {
     (white_d_pawn as PiecePosition).position.rank = 3;
     console.assert(white_e_pawn);
     (white_e_pawn as PiecePosition).position.rank = 2;
-    
-    const gameBoard = ruleSet.initBoardPosition(board);
+
+    const gameBoard = new GameBoard(board, new SimpleRuleSet());
 
     const piece1 = pieceAtLocation(gameBoard, { 'file': 0, 'rank': 6 });
     const piece1moves = (piece1 as GamePiece).getLegalMoves(false, gameBoard);

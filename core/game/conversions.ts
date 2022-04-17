@@ -1,4 +1,5 @@
-import { BoardState, GameBoard, Move, PieceType, Square } from "../models.js";
+import { BoardState, Move, PieceType, Square } from "../models.js";
+import { GameBoard } from "./GameBoard";
 
 
 // moves should be encoded as the source square, <any char>, target square. null indicates invalid

@@ -1,3 +1,4 @@
+import { GameBoard } from "../../game/GameBoard.js";
 import { Player, PieceType, Square } from "../../models.js";
 import empty_board from "../../positions/normal_empty.js";
 import { GamePiece } from "../../rules/piece.js";
@@ -10,11 +11,10 @@ import { pieceAtLocation, printBoard } from "../../utils.js";
 export default () => {
 
     console.log("Testing Bishop moves.");
-    const ruleSet = new SimpleRuleSet();
     const board = empty_board();
     const loc = { 'file': 2, 'rank': 3 };
     board.pieces.push({ 'piece': PieceType.Bishop, 'player': Player.White, 'position': loc });
-    const gameBoard = ruleSet.initBoardPosition(board);
+    const gameBoard = new GameBoard(board, new SimpleRuleSet());
     const piece = pieceAtLocation(gameBoard, loc);
     console.assert(piece);
     const moves = (piece as GamePiece).getLegalMoves(false, gameBoard);

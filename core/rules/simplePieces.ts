@@ -1,11 +1,12 @@
 import { boardToState } from "../game/conversions.js";
 import { nextPlayer } from "../game/gameModel.js";
-import { PiecePosition, Square, GameBoard, Move, Player, PieceType, Rules, BoardState } from "../models.js";
+import { PiecePosition, Square, Move, Player, PieceType, Rules, BoardState } from "../models.js";
+import { GameBoard } from "../game/GameBoard";
 import { blocked, enumeratePositions, pieceAtLocation } from "../utils.js";
 import { GamePiece, RuleSet } from "./piece.js";
 
 
-export class SimpleRuleSet extends RuleSet {
+export class SimpleRuleSet implements RuleSet {
     rules: Rules = { 'kingCheck': false };
     pieceToGamePiece = pieceToGamePiece;    // defines piece behaviour
 }

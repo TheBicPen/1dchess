@@ -1,5 +1,6 @@
 import { DraftRules } from "../draft/draftRules.js";
-import { GameBoard, Player, Move, BoardState, PiecePosition, PieceType, Square } from "../models.js";
+import { Player, Move, BoardState, PiecePosition, PieceType, Square } from "../models.js";
+import { GameBoard } from "../game/GameBoard";
 import { nextEmptySquare, randItem } from "../utils.js";
 import { AIPlayer } from "./interface.js";
 

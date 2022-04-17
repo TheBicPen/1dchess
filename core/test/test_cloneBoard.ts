@@ -1,4 +1,5 @@
 
+import { GameBoard } from "../game/GameBoard.js";
 import { cloneBoard, updateWithMove } from "../game/gameModel.js";
 import { Player } from "../models.js";
 import normalBoard from "../positions/normal_chess.js";
@@ -8,8 +9,7 @@ import { pieceAtLocation } from "../utils.js";
 
 export default () => {
     console.log("Testing cloneBoard.");
-    const ruleSet = new SimpleRuleSet();
-    const board1 = ruleSet.initBoardPosition(normalBoard());
+    const board1 = new GameBoard(normalBoard(), new SimpleRuleSet());
     const board2 = cloneBoard(board1);
     const board3 = cloneBoard(board1);
     console.assert(board1 !== board2);

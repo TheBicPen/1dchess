@@ -1,4 +1,5 @@
-import { BoardState, GameBoard, Move, PiecePosition, PieceType, Player } from "../models.js";
+import { BoardState, Move, PiecePosition, PieceType, Player } from "../models.js";
+import { GameBoard } from "./GameBoard";
 import { GamePiece, RuleSet } from "../rules/piece.js";
 import { validMoveWithReason } from "../rules/rules.js";
 import { pieceAtLocation, pieceAtLocation2, printBoard } from "../utils.js";
@@ -22,7 +23,7 @@ export class Game {
     gameStatus: GameStatus;
 
     constructor(ruleSet: RuleSet, board: BoardState) {
-        this.gameBoard = ruleSet.initBoardPosition(board);
+        this.gameBoard =  new GameBoard(board, ruleSet);
         this.gameStatus = { 'player': Player.White, "status": "playing" };
         this.gameStatus = checkGameState(this.gameBoard, this.gameStatus.player);   // check for winning state immediately
     }
@@ -95,7 +96,7 @@ export function updatePositionWithMove(board: BoardState, move: Move) {
 }
 
 export function cloneBoard(board: GameBoard): GameBoard {
-    return board.rules.initBoardPosition(boardToState(board));
+    return new GameBoard(boardToState(board), board.rules);
 }
 
 // Return the game's status. Call this after making a move and updating the current player.

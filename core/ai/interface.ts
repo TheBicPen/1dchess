@@ -1,5 +1,6 @@
 import { DraftRules } from "../draft/draftRules.js";
-import { GameBoard, Move, PiecePosition, Player, BoardState } from "../models.js";
+import { Move, PiecePosition, Player, BoardState } from "../models.js";
+import { GameBoard } from "../game/GameBoard";
 
 
 export abstract class AIPlayer {
