@@ -7,45 +7,52 @@ import { countPieces, printBoard } from "../utils.js";
 import { AIPlayer } from "./interface.js";
 import randomAI from "./random.js";
 
-
-interface moveVal {
-    move: Move | undefined
+interface MoveVal {
+    move: Move
     val: number
 }
 
 export class minimaxAI extends AIPlayer {
     move(position: GameBoard, player: Player): Move {
-        const move = this._minimax(position, player, 0, this.difficulty);
-        return move.move as Move;
+        const move = this._minimax(position, player, 0, this.difficulty) as MoveVal;
+        console.log("Eval:", move.val);
+        return move.move;
     }
 
     draft(rules: DraftRules, board: BoardState, player: Player, points: number): PiecePosition {
         return random.draft(rules, board, player, points);
     }
 
-    _minimax(position: GameBoard, player: Player, depth: number, max_depth: number): moveVal {
+    _minimax(position: GameBoard, player: Player, depth: number, max_depth: number): number | MoveVal {
         if (depth === max_depth) {
             const val = evaluate(position, player);
-            console.log("Evaluation:");
-            printBoard(boardToState(position));
-            console.log(val);
-            return { 'val': val, 'move': undefined };
+            // console.log("Evaluation:");
+            // printBoard(boardToState(position));
+            // console.log(val);
+            return val;
         }
-        const moves = possibleMoves(position, player);
-        const moveVals = moves.map(move => {
-            const move_board = cloneBoard(position);
-            updateWithMove(move_board, move);
-            // no tail recursion - sad
-            const moveValMaybe = this._minimax(move_board, nextPlayer(player), depth + 1, max_depth);
-            if (!moveValMaybe.move)
-                moveValMaybe.move = move;
-            return moveValMaybe;
-        });
-        // get min/max move value
-        if (player === Player.White)
-            return moveVals.reduce((prev, cur) => cur.val > prev.val ? cur : prev, { 'val': -1e9, 'move': undefined });
-        else
-            return moveVals.reduce((prev, cur) => cur.val < prev.val ? cur : prev, { 'val': 1e9, 'move': undefined });
+        else if (depth === 0) {
+            const moves = possibleMoves(position, player);
+            const moveVals = moves.map(move => {
+                const move_board = cloneBoard(position);
+                updateWithMove(move_board, move);
+                return { 'move': move, 'val': this._minimax(move_board, nextPlayer(player), depth + 1, max_depth) as number };
+            });
+            // get min/max move value
+            if (player === Player.White)
+                return moveVals.reduce((prev, cur) => cur.val > prev.val ? cur : prev);
+            else
+                return moveVals.reduce((prev, cur) => cur.val < prev.val ? cur : prev);
+        }
+        else {
+            const moves = possibleMoves(position, player);
+            const moveVals = moves.map(move => {
+                const move_board = cloneBoard(position);
+                updateWithMove(move_board, move);
+                return this._minimax(move_board, nextPlayer(player), depth + 1, max_depth) as number;
+            });
+            return player === Player.White ? Math.max(...moveVals) : Math.min(...moveVals);
+        }
     }
 }
 

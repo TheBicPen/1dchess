@@ -94,18 +94,18 @@ export function countPieces(board: BoardState, p: (pos: PiecePosition) => boolea
 }
 
 export function printBoard(board: BoardState) {
-    console.log("", "", "", range(board.boardDimensions.file).map(_ => "-").join(""));
+    console.log("  +-" + range(board.boardDimensions.file).map(_ => "-").join("-") + "-+");
     for (let rank = board.boardDimensions.rank - 1; rank >= 0; rank--) {
         const filePieces: string[] = range(board.boardDimensions.file).map(file => {
             const piece = board.pieces.find(p => p.position.file === file && p.position.rank === rank);
             return piece ? unparsePieceColour(piece.piece, piece.player) : " ";
         });
-        filePieces.unshift((rank + 1).toString(), " |");
+        filePieces.unshift((rank + 1).toString(), "|");
         filePieces.push("|");
-        console.log(filePieces.join(""));
+        console.log(filePieces.join(" "));
     }
-    console.log("", "", "", range(board.boardDimensions.file).map(_ => "-").join(""));
-    console.log("", "", "", range(board.boardDimensions.file).map(fileToLetter).map(f => f?.toUpperCase()).join(""));
+    console.log("  +-" + range(board.boardDimensions.file).map(_ => "-").join("-") + "-+");
+    console.log("   ", range(board.boardDimensions.file).map(fileToLetter).map(f => f?.toUpperCase()).join(" "));
 }
 
 // temporary solution until structuredClone() makes it into node LTS
