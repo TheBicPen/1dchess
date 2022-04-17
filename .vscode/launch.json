@@ -32,7 +32,7 @@
       ],
       "type": "pwa-node",
       // "trace": true,
-      // "runtimeArgs": ["--trace-warnings"],
+      "runtimeArgs": ["--trace-warnings"],
       "preLaunchTask": "build core"
     },
     {

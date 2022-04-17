@@ -6,10 +6,10 @@ import { Game, MoveStatus } from "./gameModel.js";
 import { boardToState, parseMove, unparseMove } from "./conversions.js";
 import * as readline from "readline";
 import { printBoard } from "../utils.js";
-import { evaluate } from "../ai/minimax.js";
+import { evaluate, minimaxAI } from "../ai/minimax.js";
 
 export default async function runAIGameNode(board: BoardState, ruleSet: RuleSet) {
-    const CPU: AIPlayer = new randomAI(0);
+    const CPU: AIPlayer = new minimaxAI(3);
 
     const game: Game = new Game(ruleSet, board);
     console.log("Starting AI game");
@@ -26,9 +26,10 @@ export default async function runAIGameNode(board: BoardState, ruleSet: RuleSet)
         }
         while (!result?.move)
         console.log(evaluate(game.gameBoard, game.gameStatus.player));
-
+        
         if (game.gameStatus.status !== "playing")
-            break;
+        break;
+        printBoard(boardToState(game.gameBoard));
         let AIMove = CPU.move(game.gameBoard, Player.Black);
         console.log("AI move:");
         console.log(unparseMove(AIMove));
