@@ -3,7 +3,7 @@ import { GameBoard, Move, PiecePosition, Player, BoardState } from "../models.js
 
 
 export abstract class AIPlayer {
-    private difficulty: number;
+    protected difficulty: number;
     constructor(difficulty: number) {
         this.difficulty = difficulty;
     }

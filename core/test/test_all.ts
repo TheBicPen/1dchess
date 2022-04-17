@@ -4,6 +4,7 @@ import test_scholarsMate from "./games/test_scholarsMate.js";
 import test_bishop from "./simplePieces/test_bishop.js";
 import test_pawn from "./simplePieces/test_pawn.js";
 import test_blocked from "./test_blocked.js";
+import test_cloneBoard from "./test_cloneBoard.js";
 import test_countPieces from "./test_countPieces.js";
 import test_deepClone from "./test_deepClone.js";
 import test_nextEmptySquare from "./test_nextEmptySquare.js";
@@ -19,6 +20,7 @@ test_parsePiece();
 test_parseSquare();
 test_validMove();
 test_deepClone();
+test_cloneBoard();
 
 // games
 test_foolsMate();

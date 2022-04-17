@@ -1,7 +1,7 @@
-import { BoardState, GameBoard, Move, PieceType, Player } from "../models.js";
+import { BoardState, GameBoard, Move, PiecePosition, PieceType, Player } from "../models.js";
 import { GamePiece, RuleSet } from "../rules/piece.js";
 import { validMoveWithReason } from "../rules/rules.js";
-import { pieceAtLocation, printBoard } from "../utils.js";
+import { pieceAtLocation, pieceAtLocation2, printBoard } from "../utils.js";
 import { boardToState, parseMove } from "./conversions.js";
 
 export interface MoveResult {
@@ -65,6 +65,10 @@ export function capture(board: GameBoard, piece: GamePiece) {
     board.gamePieces.splice(board.gamePieces.indexOf(piece), 1);
 }
 
+export function captureBoardState(board: BoardState, piece: PiecePosition) {
+    board.pieces.splice(board.pieces.indexOf(piece), 1);
+}
+
 export function nextPlayer(player: Player) {
     return player === Player.White ? Player.Black : Player.White;
 }
@@ -79,12 +83,27 @@ export function updateWithMove(board: GameBoard, move: Move) {
         capture(board, capturePiece);
 }
 
+// move logic for board states. Does not understand move logic
+export function updatePositionWithMove(board: BoardState, move: Move) {
+    const piece: PiecePosition | undefined = pieceAtLocation2(board, move.from);
+    // check target square before moving piece
+    const capturePiece: PiecePosition | undefined = pieceAtLocation2(board, move.to);
+    if (piece)
+        piece.position = move.to;
+    if (capturePiece)
+        captureBoardState(board, capturePiece);
+}
+
+export function cloneBoard(board: GameBoard): GameBoard {
+    return board.rules.initBoardPosition(boardToState(board));
+}
+
 // Return the game's status. Call this after making a move and updating the current player.
 export function checkGameState(gameBoard: GameBoard, playerTurn: Player): GameStatus {
     const whiteKing: boolean = gameBoard.gamePieces.some(p => p.state.player == Player.White && p.state.piece == PieceType.King);
     const blackKing: boolean = gameBoard.gamePieces.some(p => p.state.player == Player.Black && p.state.piece == PieceType.King);
-    const whiteMove: boolean = gameBoard.gamePieces.some(p => p.state.player == Player.White && p.getLegalMoves(gameBoard.rules.kingCheck, gameBoard).length > 0);
-    const blackMove: boolean = gameBoard.gamePieces.some(p => p.state.player == Player.Black && p.getLegalMoves(gameBoard.rules.kingCheck, gameBoard).length > 0);
+    const whiteMove: boolean = gameBoard.gamePieces.some(p => p.state.player == Player.White && p.getLegalMoves(gameBoard.rules.rules.kingCheck, gameBoard).length > 0);
+    const blackMove: boolean = gameBoard.gamePieces.some(p => p.state.player == Player.Black && p.getLegalMoves(gameBoard.rules.rules.kingCheck, gameBoard).length > 0);
 
     if (playerTurn === Player.White ? !whiteKing : !blackKing)
         return { "player": playerTurn, "status": "loss" };

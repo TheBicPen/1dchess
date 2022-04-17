@@ -1,4 +1,4 @@
-import { GamePiece } from "./rules/piece.js";
+import { GamePiece, RuleSet } from "./rules/piece.js";
 
 // matches front-end library
 export enum PieceType {
@@ -31,7 +31,7 @@ export interface BoardState {
 export interface GameBoard {
     boardDimensions: Square,
     gamePieces: GamePiece[],
-    rules: Rules
+    rules: RuleSet
 }
 
 // global rules for a game

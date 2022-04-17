@@ -18,6 +18,6 @@ export abstract class RuleSet {
 
     initBoardPosition(board: BoardState): GameBoard {
         const gamePieces: GamePiece[] = board.pieces.map(p => this.pieceToGamePiece(p));
-        return { 'rules': this.rules, 'gamePieces': gamePieces, 'boardDimensions': board.boardDimensions };
+        return { 'rules': this, 'gamePieces': gamePieces, 'boardDimensions': board.boardDimensions };
     }
 }

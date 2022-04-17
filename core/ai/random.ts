@@ -7,7 +7,7 @@ import { AIPlayer } from "./interface.js";
 export default class randomAI extends AIPlayer {
     move(position: GameBoard, player: Player): Move {
         const a = position.gamePieces.filter(p => p.state.player === player);
-        const b = a.flatMap(p => p.getLegalMoves(position.rules.kingCheck, position)
+        const b = a.flatMap(p => p.getLegalMoves(position.rules.rules.kingCheck, position)
         .map(to => { return { 'from': p.state.position, 'to': to }; }));
         return randItem(b);
     }
