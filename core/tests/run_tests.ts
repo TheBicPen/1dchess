@@ -6,7 +6,7 @@ import test_pawn from "./simplePieces/test_pawn.js";
 import test_blocked from "./test_blocked.js";
 import test_cloneBoard from "./test_cloneBoard.js";
 import test_countPieces from "./test_countPieces.js";
-import test_deepClone from "./test_deepClone.js";
+import test_deepClone from "./test_emptyBoardClone.js";
 import test_nextEmptySquare from "./test_nextEmptySquare.js";
 import test_parsePiece from "./test_parsePiece.js";
 import test_parseSquare from "./test_parseSquare.js";

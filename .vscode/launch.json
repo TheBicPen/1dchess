@@ -37,7 +37,7 @@
     },
     {
       "name": "Test Core",
-      "program": "${workspaceFolder}/core/test/test_all.ts",
+      "program": "${workspaceFolder}/core/tests/run_tests.ts",
       "request": "launch",
       "console": "integratedTerminal",
       "skipFiles": [

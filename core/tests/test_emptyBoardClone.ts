@@ -6,7 +6,7 @@ import empty2 from "../positions/empty";
 
 
 export default () => {
-    console.log("Testing deepClone.");
+    console.log("Testing empty board constructor (board clone).");
     const board1 = empty({ 'file': 8, 'rank': 8 });
     const board2 = empty2({ 'file': 8, 'rank': 8 });
     const board3 = empty({ 'file': 8, 'rank': 8 });
