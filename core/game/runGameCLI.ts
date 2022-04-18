@@ -1,6 +1,6 @@
 
 import board from "../positions/normal_chess.js";
-import board_1d from "../positions/1d_standard.js";
+import board_1d from "../positions/2x8_rooks_knight";
 import * as readline from "readline";
 import runAIGameNode from "./gameCLI.js";
 import runDraftAIGameNode from "./draftCLI.js";
@@ -21,7 +21,7 @@ rl.question("Normal Game: 0\nDraft: 1\n1D game: 2\n1D Draft Game: 3\n", answer =
     else if (answer === "1")
         runDraftAIGameNode(empty({ 'file': 8, 'rank': 8 }), new SimpleRuleSet());
     else if (answer === "2")
-        runAIGameNode(board_1d(), new SimpleRuleSet1D());
+        runAIGameNode(board_1d(), new SimpleRuleSet());
     else if (answer === "3")
         runDraftAIGameNode(empty({ 'file': 1, 'rank': 8 }), new SimpleRuleSet1D());
     else

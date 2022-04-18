@@ -19,7 +19,7 @@ export function range(val: number): number[] {
 }
 
 
-// Random element in range
+// Random int in range [0,val)
 export function randRange(val: number): number {
     return Math.floor(Math.random() * val);
 }

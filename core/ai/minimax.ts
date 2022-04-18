@@ -1,6 +1,6 @@
 import { DraftRules } from "../draft/draftRules.js";
 import { boardToState } from "../game/conversions.js";
-import { checkGameState, cloneBoard, nextPlayer, updateWithMove } from "../game/gameModel.js";
+import { checkGameState, cloneBoard, GameStatus, nextPlayer, updateWithMove } from "../game/gameModel.js";
 import { Player, Move, BoardState, PiecePosition } from "../models.js";
 import { GameBoard } from "../game/GameBoard";
 import { countPieces, printBoard } from "../utils.js";
@@ -12,10 +12,12 @@ interface MoveVal {
     val: number
 }
 
+const DEBUG = false;
+
 export class minimaxAI extends AIPlayer {
     move(position: GameBoard, player: Player): Move {
         const move = this._minimax(position, player, 0, this.difficulty) as MoveVal;
-        console.log("Eval:", move.val);
+        DEBUG && console.log("Eval:", move.val);
         return move.move;
     }
 
@@ -24,11 +26,15 @@ export class minimaxAI extends AIPlayer {
     }
 
     _minimax(position: GameBoard, player: Player, depth: number, max_depth: number): number | MoveVal {
-        if (depth === max_depth) {
-            const val = evaluate(position, player);
-            // console.log("Evaluation:");
-            // printBoard(boardToState(position));
-            // console.log(val);
+        const state = checkGameState(position, player);
+        // leaf node
+        if (depth === max_depth || state.status !== "playing") {
+            const val = evaluate(position, player, state);
+            if (DEBUG) {
+                console.log("Evaluation:");
+                printBoard(boardToState(position));
+                console.log(val);
+            }
             return val;
         }
         else if (depth === 0) {
@@ -36,19 +42,25 @@ export class minimaxAI extends AIPlayer {
             const moveVals = moves.map(move => {
                 const move_board = cloneBoard(position);
                 updateWithMove(move_board, move);
+                DEBUG && console.log("move at depth", depth, move);
                 return { 'move': move, 'val': this._minimax(move_board, nextPlayer(player), depth + 1, max_depth) as number };
             });
             // get min/max move value
-            if (player === Player.White)
+            if (player === Player.White) {
+                DEBUG && console.log("Finding MAX");
                 return moveVals.reduce((prev, cur) => cur.val > prev.val ? cur : prev);
-            else
+            }
+            else {
+                DEBUG && console.log("Finding MIN");
                 return moveVals.reduce((prev, cur) => cur.val < prev.val ? cur : prev);
+            }
         }
         else {
             const moves = possibleMoves(position, player);
             const moveVals = moves.map(move => {
                 const move_board = cloneBoard(position);
                 updateWithMove(move_board, move);
+                DEBUG && console.log("move at depth", depth, move);
                 return this._minimax(move_board, nextPlayer(player), depth + 1, max_depth) as number;
             });
             return player === Player.White ? Math.max(...moveVals) : Math.min(...moveVals);
@@ -66,13 +78,13 @@ function possibleMoves(position: GameBoard, player: Player): Move[] {
 }
 
 // evaluate game state based on advantage for White
-export function evaluate(position: GameBoard, player: Player): number {
+export function evaluate(position: GameBoard, player: Player, status?: GameStatus): number {
+    status = status || checkGameState(position, player);
     const board = boardToState(position);
     const max_val = board.boardDimensions.file * board.boardDimensions.rank;
-    const state = checkGameState(position, player);
-    if (state.status === "draw")
+    if (status.status === "draw")
         return 0;
-    else if (state.status === "loss")
+    else if (status.status === "loss")
         return player === Player.White ? -max_val : max_val;
     else
         return 2 * (position.gamePieces.length / 2 - countPieces(board, p => p.player === Player.Black));

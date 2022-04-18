@@ -45,6 +45,17 @@
       ],
       "type": "pwa-node",
       "preLaunchTask": "build core"
+    },
+    {
+      "name": "Minimax Performance",
+      "program": "${workspaceFolder}/core/perf/minimaxPerformance.ts",
+      "request": "launch",
+      "console": "integratedTerminal",
+      "skipFiles": [
+        "<node_internals>/**"
+      ],
+      "type": "pwa-node",
+      "preLaunchTask": "build core"
     }
 
   ]
