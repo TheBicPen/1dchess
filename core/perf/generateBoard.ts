@@ -1,9 +1,9 @@
-import { PieceType, Player, Square } from "../models";
+import { BoardState, PieceType, Player, Square } from "../models";
 import empty from "../positions/empty";
 import { nextEmptySquare, randItem } from "../utils";
 
 
-export default (dim: Square, pieces: number, symmetric: boolean) => {
+export default (dim: Square, pieces: number, symmetric: boolean): BoardState => {
     const board = empty(dim);
     board.pieces.push({ 'piece': PieceType.King, 'player': Player.White, 'position': nextEmptySquare(board, Player.White) as Square });
     board.pieces.push({ 'piece': PieceType.King, 'player': Player.Black, 'position': nextEmptySquare(board, Player.Black) as Square });
@@ -19,8 +19,11 @@ export default (dim: Square, pieces: number, symmetric: boolean) => {
                 const piece2 = randItem(Object.values(PieceType));
                 board.pieces.push({ 'piece': piece2, 'player': Player.Black, 'position': nextEmptySquare(board, Player.Black) as Square });
             }
+            pieces--;
         } catch (error) {
             console.error(error);
+            break;
         }
     }
+    return board;
 }
