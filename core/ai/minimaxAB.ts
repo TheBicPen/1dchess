@@ -1,10 +1,7 @@
-import { DraftRules } from "../draft/draftRules.js";
-import { boardToState } from "../game/conversions.js";
-import { checkGameState, cloneBoard, GameStatus, nextPlayer, updateWithMove } from "../game/gameModel.js";
-import { Player, Move, BoardState, PiecePosition } from "../models.js";
 import { GameBoard } from "../game/GameBoard";
-import { countPieces, printBoard } from "../utils.js";
-import { AIPlayer } from "./interface.js";
+import { checkGameState, cloneBoard, nextPlayer, updateWithMove } from "../game/gameModel.js";
+import { Move, Player } from "../models.js";
+import { evaluate, possibleMoves } from "./minimax.js";
 import randomAI from "./random.js";
 
 interface MoveVal {
@@ -12,24 +9,21 @@ interface MoveVal {
     val: number
 }
 
-const DEBUG = true;
+const DEBUG = false;
 
-export class minimaxAlphaBetaAI extends AIPlayer {
+export class minimaxAlphaBetaAI extends randomAI {
     private skips = 0;
     private visits = 0;
+    public val = 0;
 
-    move(position: GameBoard, player: Player): Move {
+    override move(position: GameBoard, player: Player): Move {
         this.skips = 0;
         this.visits = 0;
-
-        const move = this.minimax(position, player, 0, this.difficulty, -Infinity, Infinity) as MoveVal;
+        const move = this.minimax(position, player, 0, this.difficulty_param(0), -Infinity, Infinity) as MoveVal;
         DEBUG && console.log("Eval:", move.val);
         DEBUG && console.log("Visited %d, skipped %d", this.visits, this.skips);
+        this.val = move.val;
         return move.move;
-    }
-
-    draft(rules: DraftRules, board: BoardState, player: Player, points: number): PiecePosition {
-        return random.draft(rules, board, player, points);
     }
 
     private minimax(position: GameBoard, player: Player, depth: number, max_depth: number, alpha: number, beta: number): number | MoveVal {
@@ -74,27 +68,4 @@ export class minimaxAlphaBetaAI extends AIPlayer {
             return moveVal;
         }
     }
-}
-
-const random = new randomAI(0);
-
-
-function possibleMoves(position: GameBoard, player: Player): Move[] {
-    return position.gamePieces
-        .filter(p => p.state.player === player)
-        .flatMap(p => p.getLegalMoves(position.rules.rules.kingCheck, position)
-            .map(to => { return { 'from': p.state.position, 'to': to }; }));
-}
-
-// evaluate game state based on advantage for White
-export function evaluate(position: GameBoard, player: Player, status?: GameStatus): number {
-    status = status || checkGameState(position, player);
-    const board = boardToState(position);
-    const max_val = board.boardDimensions.file * board.boardDimensions.rank;
-    if (status.status === "draw")
-        return 0;
-    else if (status.status === "loss")
-        return player === Player.White ? -max_val : max_val;
-    else
-        return 2 * (position.gamePieces.length / 2 - countPieces(board, p => p.player === Player.Black));
 }

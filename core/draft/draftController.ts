@@ -1,4 +1,4 @@
-import { AIPlayer } from "../ai/interface.js";
+import { AIPlayer } from "../ai/base.js";
 import randomAI from "../ai/random.js";
 import { unparseSquare } from "../game/conversions.js";
 import { BoardState, PiecePosition, Player } from "../models.js";
@@ -18,7 +18,7 @@ export function validateDraftChoice(rules: DraftRules, board: BoardState, player
 
 // this is a draft controller. It's really only useful for CLI games - do not use this for event-driven uses
 export async function runAIDraft(draftRules: DraftRules, board: BoardState, choosePiece: (rules: DraftRules, board: BoardState, player: Player, points: number) => Promise<PiecePosition>): Promise<BoardState> {
-    const ai: AIPlayer = new randomAI(0);
+    const ai: AIPlayer = new randomAI();
     const draft = new Draft(board, draftRules, Player.White);
 
     for (let round = 0; round < draftRules.rounds; round++) {

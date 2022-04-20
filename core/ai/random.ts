@@ -2,7 +2,7 @@ import { DraftRules } from "../draft/draftRules.js";
 import { Player, Move, BoardState, PiecePosition, PieceType, Square } from "../models.js";
 import { GameBoard } from "../game/GameBoard";
 import { nextEmptySquare, randItem } from "../utils.js";
-import { AIPlayer } from "./interface.js";
+import { AIPlayer } from "./base.js";
 
 
 export default class randomAI extends AIPlayer {

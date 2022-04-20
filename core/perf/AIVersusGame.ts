@@ -1,4 +1,4 @@
-import { AIPlayer } from "../ai/interface.js";
+import { AIPlayer } from "../ai/base.js";
 import { Game, GameStatus } from "../game/gameModel.js";
 import { BoardState, Player } from "../models.js";
 import { RuleSet } from "../rules/piece.js";

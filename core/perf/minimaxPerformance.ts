@@ -1,5 +1,5 @@
 import { minimaxAI } from "../ai/minimax";
-import MyopicMiniMaxRandom from "../ai/myopic_minimax_random";
+import MyopicMiniMax from "../ai/myopic_minimax";
 import randomAI from "../ai/random";
 import { BoardState, Player, Square } from "../models";
 import X8_rooks_knight from "../positions/2x8_rooks_knight";
@@ -10,14 +10,9 @@ import runAIVersus from "./AIVersusGame";
 import generateBoard from "./generateBoard";
 
 
-
-
-
-
-
 export function versus(runs: number) {
     const cpu1 = new minimaxAI(5);
-    const cpu2 = new randomAI(3);
+    const cpu2 = new randomAI();
     let wins = 0, losses = 0;
     for (let index = 0; index < runs; index++) {
         const result = runAIVersus(X8_rooks_knight(), new SimpleRuleSet(), cpu1, cpu2);
@@ -34,7 +29,7 @@ export function versus(runs: number) {
 
 export function boardValue(strength: number, runs: number, board: BoardState, rules: RuleSet): [number, number, number] {
     const cpu1 = new minimaxAI(strength);
-    const cpu2 = new MyopicMiniMaxRandom(0.5);
+    const cpu2 = new MyopicMiniMax(new randomAI(), 0.5);
     let wins = 0, losses = 0, max_turns = 0;
     for (let index = 0; index < runs; index++) {
         const result = runAIVersus(board, rules, cpu1, cpu2);

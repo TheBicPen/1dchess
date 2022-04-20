@@ -1,4 +1,4 @@
-import { AIPlayer } from "../ai/interface.js";
+import { AIPlayer } from "../ai/base.js";
 import randomAI from "../ai/random.js";
 import { BoardState, Move, Player } from "../models.js";
 import { RuleSet } from "../rules/piece.js";

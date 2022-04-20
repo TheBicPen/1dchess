@@ -1,10 +1,8 @@
-import { DraftRules } from "../draft/draftRules.js";
 import { boardToState } from "../game/conversions.js";
-import { checkGameState, cloneBoard, GameStatus, nextPlayer, updateWithMove } from "../game/gameModel.js";
-import { Player, Move, BoardState, PiecePosition } from "../models.js";
 import { GameBoard } from "../game/GameBoard";
+import { checkGameState, cloneBoard, GameStatus, nextPlayer, updateWithMove } from "../game/gameModel.js";
+import { Move, Player } from "../models.js";
 import { countPieces, printBoard } from "../utils.js";
-import { AIPlayer } from "./interface.js";
 import randomAI from "./random.js";
 
 interface MoveVal {
@@ -14,16 +12,16 @@ interface MoveVal {
 
 const DEBUG = false;
 
-export class minimaxAI extends AIPlayer {
-    move(position: GameBoard, player: Player): Move {
-        const move = this._minimax(position, player, 0, this.difficulty) as MoveVal;
+export class minimaxAI extends randomAI {
+    public val = 0;
+
+    override move(position: GameBoard, player: Player): Move {
+        const move = this._minimax(position, player, 0, this.difficulty_param(0)) as MoveVal;
         DEBUG && console.log("Eval:", move.val);
+        this.val = move.val;
         return move.move;
     }
 
-    draft(rules: DraftRules, board: BoardState, player: Player, points: number): PiecePosition {
-        return random.draft(rules, board, player, points);
-    }
 
     _minimax(position: GameBoard, player: Player, depth: number, max_depth: number): number | MoveVal {
         const state = checkGameState(position, player);
@@ -68,9 +66,8 @@ export class minimaxAI extends AIPlayer {
     }
 }
 
-const random = new randomAI(0);
 
-function possibleMoves(position: GameBoard, player: Player): Move[] {
+export function possibleMoves(position: GameBoard, player: Player): Move[] {
     return position.gamePieces
         .filter(p => p.state.player === player)
         .flatMap(p => p.getLegalMoves(position.rules.rules.kingCheck, position)

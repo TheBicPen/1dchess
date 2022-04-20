@@ -1,6 +1,8 @@
 
 import { parseMove, parseSquare } from "../game/conversions.js";
 import { Move, Square } from "../models.js";
+import { moveEq } from "./utils/moveEq";
+import { squareEq } from "./utils/squareEq";
 
 
 export default () => {
@@ -54,16 +56,3 @@ export default () => {
 
 }
 
-function squareEq(s1: Square | null, s2: Square | null) {
-    return s1 && s2
-        && s1.file === s2.file
-        && s1.rank === s2.rank;
-}
-
-function moveEq(m1: Move | null, m2: Move | null) {
-    return m1 && m2
-        && m1.from && m1.to
-        && m2.from && m2.to
-        && squareEq(m1.from, m2.from)
-        && squareEq(m1.to, m2.to);
-}
