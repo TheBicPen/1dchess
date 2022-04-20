@@ -54,7 +54,7 @@ export function testBoards(dim: Square, boards: number, runs: number, pieces: nu
         const board = generateBoard(dim, pieces, true);
         printBoard(board);
         const [wins, losses, max_moves] = boardValue(strength, runs, board, rules);
-        console.log("wins: %d, losses: %d, ties: %d, winrate: %f", wins, losses, runs - wins + losses, wins / runs);
+        console.log("wins: %d, losses: %d, ties: %d, winrate: %f", wins, losses, runs - wins - losses, wins / runs);
         board_wrs.push([board, wins, losses, max_moves]);
     }
     return board_wrs;
