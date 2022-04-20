@@ -1,15 +1,17 @@
-import { BoardState, Square, Player, PiecePosition } from "./models.js";
-import { GameBoard } from "./game/GameBoard";
-import { GamePiece } from "./rules/piece.js";
 import { fileToLetter, unparsePieceColour } from "./game/conversions.js";
+import { GameBoard } from "./game/GameBoard";
+import { BoardState, PiecePosition, Player, Square } from "./models.js";
+import { GamePiece } from "./rules/piece.js";
 
 
-// Return a list of possible positions within dimensions
+// Return a list of possible positions within dimensions.
+// Iterative implementation is much faster than functional implementation
 export function enumeratePositions(dimensions: Square): Square[] {
-    const ranks = range(dimensions.rank);
-    const files = range(dimensions.file);
-    // 2-ary Cartesian product
-    return ranks.flatMap(x => files.map(y => { return { rank: x, file: y } as Square }));
+    const out = [];
+    for (let i = 0; i < dimensions.file; i++)
+        for (let j = 0; j < dimensions.rank; j++)
+            out.push({ 'file': i, 'rank': j });
+    return out;
 }
 
 

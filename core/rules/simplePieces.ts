@@ -1,5 +1,5 @@
 import { boardToState } from "../game/conversions.js";
-import { nextPlayer } from "../game/gameModel.js";
+import { Game, nextPlayer } from "../game/gameModel.js";
 import { PiecePosition, Square, Move, Player, PieceType, Rules, BoardState } from "../models.js";
 import { GameBoard } from "../game/GameBoard";
 import { blocked, enumeratePositions, pieceAtLocation } from "../utils.js";
@@ -17,9 +17,12 @@ export abstract class SimplePiece implements GamePiece {
         this.state.position = location;
     }
     abstract legalMove(location: Square, considerCheck: boolean, position: GameBoard): boolean;
+    potentialMoves(position: GameBoard): Square[] {
+        return enumeratePositions(position.boardDimensions);
+    }
 
     getLegalMoves(considerCheck: boolean, position: GameBoard): Square[] {
-        return enumeratePositions(position.boardDimensions).filter(x => this.legalMove(x, considerCheck, position));
+        return this.potentialMoves(position).filter(x => this.legalMove(x, considerCheck, position));
     }
     locationToMove(to: Square): Move {
         return { "from": this.state.position, "to": to };
@@ -34,6 +37,10 @@ function emptyOrOpponent(position: GameBoard, location: Square, current_player: 
     return pieceAtLocation(position, location)?.state.player !== current_player;
 }
 
+function onBoard(s: Square, boardDims: Square) {
+    return s.file >= 0 && s.file <= boardDims.file && s.rank >= 0 && s.rank <= boardDims.rank;
+}
+
 export function pieceToGamePiece(piece: PiecePosition): GamePiece {
     return piece.piece === PieceType.Bishop ? new SimpleBishop(piece.position, piece.player)
         : piece.piece === PieceType.King ? new SimpleKing(piece.position, piece.player)
@@ -44,7 +51,22 @@ export function pieceToGamePiece(piece: PiecePosition): GamePiece {
 }
 
 export class SimpleKing extends SimplePiece {
-    legalMove(location: Square, considerCheck: boolean, position: GameBoard): boolean {
+    override potentialMoves(position: GameBoard): Square[] {
+        const pos = this.state.position;
+        const out = [
+            { 'file': pos.file - 1, 'rank': pos.rank - 1 },
+            { 'file': pos.file - 1, 'rank': pos.rank },
+            { 'file': pos.file - 1, 'rank': pos.rank + 1 },
+            { 'file': pos.file, 'rank': pos.rank - 1 },
+            { 'file': pos.file, 'rank': pos.rank + 1 },
+            { 'file': pos.file + 1, 'rank': pos.rank - 1 },
+            { 'file': pos.file + 1, 'rank': pos.rank },
+            { 'file': pos.file + 1, 'rank': pos.rank + 1 }
+        ];
+        return out.filter(s => onBoard(s, position.boardDimensions));
+    }
+
+    override legalMove(location: Square, considerCheck: boolean, position: GameBoard): boolean {
         return Math.abs(this.state.position.file - location.file) <= 1
             && Math.abs(this.state.position.rank - location.rank) <= 1
             && emptyOrOpponent(position, location, this.state.player)
@@ -56,7 +78,21 @@ export class SimpleKing extends SimplePiece {
 }
 
 export class SimpleKnight extends SimplePiece {
-    legalMove(location: Square, considerCheck: boolean, position: GameBoard): boolean {
+    override potentialMoves(position: GameBoard): Square[] {
+        const pos = this.state.position;
+        const out = [
+            { 'file': pos.file - 2, 'rank': pos.rank - 1 },
+            { 'file': pos.file - 2, 'rank': pos.rank + 1 },
+            { 'file': pos.file - 1, 'rank': pos.rank - 2 },
+            { 'file': pos.file - 1, 'rank': pos.rank + 2 },
+            { 'file': pos.file + 1, 'rank': pos.rank - 2 },
+            { 'file': pos.file + 1, 'rank': pos.rank + 2 },
+            { 'file': pos.file + 2, 'rank': pos.rank - 1 },
+            { 'file': pos.file + 2, 'rank': pos.rank + 1 },
+        ];
+        return out.filter(s => onBoard(s, position.boardDimensions));
+    }
+    override legalMove(location: Square, considerCheck: boolean, position: GameBoard): boolean {
         return (Math.abs(this.state.position.file - location.file) === 2 && Math.abs(this.state.position.rank - location.rank) === 1
             || Math.abs(this.state.position.file - location.file) === 1 && Math.abs(this.state.position.rank - location.rank) === 2)
             && emptyOrOpponent(position, location, this.state.player)
@@ -68,7 +104,7 @@ export class SimpleKnight extends SimplePiece {
 }
 
 export class SimpleBishop extends SimplePiece {
-    legalMove(location: Square, considerCheck: boolean, position: GameBoard): boolean {
+    override legalMove(location: Square, considerCheck: boolean, position: GameBoard): boolean {
         return (this.state.position.file - this.state.position.rank === location.file - location.rank
             || this.state.position.file + this.state.position.rank === location.file + location.rank)
             && emptyOrOpponent(position, location, this.state.player)
@@ -81,7 +117,7 @@ export class SimpleBishop extends SimplePiece {
 }
 
 export class SimpleQueen extends SimplePiece {
-    legalMove(location: Square, considerCheck: boolean, position: GameBoard): boolean {
+    override legalMove(location: Square, considerCheck: boolean, position: GameBoard): boolean {
         return (this.state.position.file - this.state.position.rank === location.file - location.rank
             || this.state.position.file + this.state.position.rank === location.file + location.rank
             || this.state.position.file === location.file || this.state.position.rank === location.rank)
@@ -95,7 +131,7 @@ export class SimpleQueen extends SimplePiece {
 }
 
 export class SimpleRook extends SimplePiece {
-    legalMove(location: Square, considerCheck: boolean, position: GameBoard): boolean {
+    override legalMove(location: Square, considerCheck: boolean, position: GameBoard): boolean {
         return (this.state.position.file === location.file || this.state.position.rank === location.rank)
             && emptyOrOpponent(position, location, this.state.player)
             && !blocked(boardToState(position), this.state.position, location)
@@ -107,7 +143,19 @@ export class SimpleRook extends SimplePiece {
 }
 
 export class SimplePawn extends SimplePiece {
-    legalMove(location: Square, considerCheck: boolean, position: GameBoard): boolean {
+    override potentialMoves(position: GameBoard): Square[] {
+        const rankMult: -1 | 1 = this.state.player === Player.White ? 1 : -1;
+        const pos = this.state.position;
+        const out = [
+            { 'file': pos.file, 'rank': pos.rank + rankMult },
+            { 'file': pos.file, 'rank': pos.rank + rankMult * 2 },
+            { 'file': pos.file - 1, 'rank': pos.rank + rankMult },
+            { 'file': pos.file + 1, 'rank': pos.rank + rankMult },
+        ];
+        return out.filter(s => onBoard(s, position.boardDimensions));
+    }
+
+    override legalMove(location: Square, considerCheck: boolean, position: GameBoard): boolean {
         const rankMult: -1 | 1 = this.state.player === Player.White ? 1 : -1;
         const twoMoveRank = this.state.player === Player.White ? 1 : position.boardDimensions.rank - 2;
         const curPos: Square = this.state.position;

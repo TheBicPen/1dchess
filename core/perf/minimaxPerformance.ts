@@ -1,4 +1,5 @@
 import { minimaxAI } from "../ai/minimax";
+import { minimaxAlphaBetaAI } from "../ai/minimaxAB";
 import MyopicMiniMax from "../ai/myopic_minimax";
 import randomAI from "../ai/random";
 import { BoardState, Player, Square } from "../models";
@@ -27,8 +28,8 @@ export function versus(runs: number) {
 }
 
 
-export function boardValue(strength: number, runs: number, board: BoardState, rules: RuleSet): [number, number, number] {
-    const cpu1 = new minimaxAI(strength);
+export function boardValue(strength: number, runs: number, board: BoardState, rules: RuleSet, prune: boolean): [number, number, number] {
+    const cpu1 = prune ? new minimaxAlphaBetaAI(strength) : new minimaxAI(strength);
     const cpu2 = new MyopicMiniMax(new randomAI(), 0.5);
     let wins = 0, losses = 0, max_turns = 0;
     for (let index = 0; index < runs; index++) {
@@ -43,12 +44,12 @@ export function boardValue(strength: number, runs: number, board: BoardState, ru
     return [wins, losses, max_turns];
 }
 
-export function testBoards(dim: Square, boards: number, runs: number, pieces: number, strength: number, rules: RuleSet) {
+export function testBoards(dim: Square, boards: number, runs: number, pieces: number, strength: number, rules: RuleSet, prune: boolean) {
     const board_wrs = [];
     for (let i = 0; i < boards; i++) {
         const board = generateBoard(dim, pieces, true);
         printBoard(board);
-        const [wins, losses, max_moves] = boardValue(strength, runs, board, rules);
+        const [wins, losses, max_moves] = boardValue(strength, runs, board, rules, prune);
         console.log("wins: %d, losses: %d, ties: %d, winrate: %f", wins, losses, runs - wins - losses, wins / runs);
         board_wrs.push([board, wins, losses, max_moves]);
     }
@@ -57,7 +58,7 @@ export function testBoards(dim: Square, boards: number, runs: number, pieces: nu
 
 
 
-testBoards({ 'file': 2, 'rank': 9 }, 100, 50, 3, 4, new SimpleRuleSet()).forEach(([b, w, l, m]) => {
+testBoards({ 'file': 2, 'rank': 9 }, 100, 50, 3, 4, new SimpleRuleSet(), true).forEach(([b, w, l, m]) => {
     printBoard(b as BoardState);
     console.log(w, l, m);
 });;
