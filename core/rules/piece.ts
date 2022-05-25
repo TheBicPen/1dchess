@@ -1,5 +1,5 @@
 import { PiecePosition, Square, BoardState, Move, Rules } from "../models.js";
-import { GameBoard } from "../game/GameBoard";
+import { GameBoard } from "../game/GameBoard.js";
 
 
 // legalMove only checks the piece's movement rules. The target location must be on the board

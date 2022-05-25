@@ -3,7 +3,5 @@
     "compilerOptions": {
         "outDir": "dist",
         "sourceMap": true
-    },
-    "include": ["**/*.ts"],
-    "exclude": ["node_modules", "lib", "dist"]
-  }
+    }
+}

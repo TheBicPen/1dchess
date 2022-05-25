@@ -1,5 +1,5 @@
 import { BoardState, Move, PiecePosition, PieceType, Player } from "../models.js";
-import { GameBoard } from "./GameBoard";
+import { GameBoard } from "./GameBoard.js";
 import { GamePiece, RuleSet } from "../rules/piece.js";
 import { validMoveWithReason } from "../rules/rules.js";
 import { pieceAtLocation, pieceAtLocation2, printBoard } from "../utils.js";

@@ -1,8 +1,8 @@
 
 import { parseMove, parseSquare } from "../game/conversions.js";
 import { Move, Square } from "../models.js";
-import { moveEq } from "./utils/moveEq";
-import { squareEq } from "./utils/squareEq";
+import { moveEq } from "./utils/moveEq.js";
+import { squareEq } from "./utils/squareEq.js";
 
 
 export default () => {

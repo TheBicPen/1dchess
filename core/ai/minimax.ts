@@ -1,5 +1,5 @@
 import { boardToState } from "../game/conversions.js";
-import { GameBoard } from "../game/GameBoard";
+import { GameBoard } from "../game/GameBoard.js";
 import { checkGameState, cloneBoard, GameStatus, nextPlayer, updateWithMove } from "../game/gameModel.js";
 import { Move, Player } from "../models.js";
 import { countPieces, printBoard } from "../utils.js";
@@ -13,7 +13,7 @@ interface MoveVal {
 const DEBUG = false;
 
 export class minimaxAI extends randomAI {
-    public val = 0;
+    public val = 0; // public to allow inspection by tests
 
     override move(position: GameBoard, player: Player): Move {
         const move = this._minimax(position, player, 0, this.difficulty_param(0)) as MoveVal;

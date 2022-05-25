@@ -1,5 +1,5 @@
 import { fileToLetter, unparsePieceColour } from "./game/conversions.js";
-import { GameBoard } from "./game/GameBoard";
+import { GameBoard } from "./game/GameBoard.js";
 import { BoardState, PiecePosition, Player, Square } from "./models.js";
 import { GamePiece } from "./rules/piece.js";
 

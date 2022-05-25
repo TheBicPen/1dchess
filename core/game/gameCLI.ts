@@ -9,7 +9,7 @@ import { printBoard } from "../utils.js";
 import { evaluate, minimaxAI } from "../ai/minimax.js";
 
 export default async function runAIGameNode(board: BoardState, ruleSet: RuleSet) {
-    const CPU: AIPlayer = new minimaxAI(8);
+    const CPU: AIPlayer = new minimaxAI(2);
 
     const game: Game = new Game(ruleSet, board);
     console.log("Starting AI game");

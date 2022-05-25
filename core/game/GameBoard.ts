@@ -1,5 +1,5 @@
 import { GamePiece, RuleSet } from "../rules/piece.js";
-import { BoardState, Square } from "../models";
+import { BoardState, Square } from "../models.js";
 
 // concrete, aware of rules and piece movement
 export class GameBoard {

@@ -1,14 +1,14 @@
-import { minimaxAI } from "../ai/minimax";
-import { minimaxAlphaBetaAI } from "../ai/minimaxAB";
-import MyopicMiniMax from "../ai/myopic_minimax";
-import randomAI from "../ai/random";
-import { BoardState, Player, Square } from "../models";
-import X8_rooks_knight from "../positions/2x8_rooks_knight";
-import { RuleSet } from "../rules/piece";
-import { SimpleRuleSet } from "../rules/simplePieces";
-import { printBoard } from "../utils";
-import runAIVersus from "./AIVersusGame";
-import generateBoard from "./generateBoard";
+import { minimaxAI } from "../ai/minimax.js";
+import { minimaxAlphaBetaAI } from "../ai/minimaxAB.js";
+import MyopicMiniMax from "../ai/myopic_minimax.js";
+import randomAI from "../ai/random.js";
+import { BoardState, Player, Square } from "../models.js";
+import X8_rooks_knight from "../positions/2x8_rooks_knight.js";
+import { RuleSet } from "../rules/piece.js";
+import { SimpleRuleSet } from "../rules/simplePieces.js";
+import { printBoard } from "../utils.js";
+import runAIVersus from "./AIVersusGame.js";
+import generateBoard from "./generateBoard.js";
 
 
 export function versus(runs: number) {

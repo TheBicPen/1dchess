@@ -1,6 +1,6 @@
 import { DraftRules } from "../draft/draftRules.js";
 import { Player, Move, BoardState, PiecePosition } from "../models.js";
-import { GameBoard } from "../game/GameBoard";
+import { GameBoard } from "../game/GameBoard.js";
 import { AIPlayer } from "./base.js";
 import randomAI from "./random.js";
 import { minimaxAlphaBetaAI } from "./minimaxAB.js";

@@ -1,12 +1,12 @@
-import deterministicAI from "../ai/deterministic";
-import { minimaxAI } from "../ai/minimax";
-import { minimaxAlphaBetaAI } from "../ai/minimaxAB";
-import MyopicMiniMax from "../ai/myopic_minimax";
+import deterministicAI from "../ai/deterministic.js";
+import { minimaxAI } from "../ai/minimax.js";
+import { minimaxAlphaBetaAI } from "../ai/minimaxAB.js";
+import MyopicMiniMax from "../ai/myopic_minimax.js";
 import { Game, GameStatus } from "../game/gameModel.js";
 import { BoardState, Player } from "../models.js";
 import { RuleSet } from "../rules/piece.js";
-import { SimpleRuleSet } from "../rules/simplePieces";
-import { moveEq } from "../tests/utils/moveEq";
+import { SimpleRuleSet } from "../rules/simplePieces.js";
+import { moveEq } from "../tests/utils/moveEq.js";
 import newBoard from "./generateBoard.js";
 
 

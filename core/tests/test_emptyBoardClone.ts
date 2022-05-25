@@ -1,7 +1,7 @@
 
-import { PieceType, Player } from "../models";
-import empty from "../positions/empty";
-import empty2 from "../positions/empty";
+import { PieceType, Player } from "../models.js";
+import empty from "../positions/empty.js";
+import empty2 from "../positions/empty.js";
 
 
 

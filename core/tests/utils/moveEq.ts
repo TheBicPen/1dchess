@@ -1,5 +1,5 @@
 import { Move } from "../../models.js";
-import { squareEq } from "./squareEq";
+import { squareEq } from "./squareEq.js";
 
 export function moveEq(m1: Move | null, m2: Move | null) {
     return m1 && m2

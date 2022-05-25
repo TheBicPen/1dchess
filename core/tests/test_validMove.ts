@@ -1,6 +1,6 @@
 
 import { Move, Player } from "../models.js";
-import { GameBoard } from "../game/GameBoard";
+import { GameBoard } from "../game/GameBoard.js";
 import board from "../positions/normal_chess.js";
 import { validMove } from "../rules/rules.js";
 import { SimpleRuleSet } from "../rules/simplePieces.js";

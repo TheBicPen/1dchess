@@ -1,4 +1,4 @@
-import { GameBoard } from "../game/GameBoard";
+import { GameBoard } from "../game/GameBoard.js";
 import { checkGameState, cloneBoard, nextPlayer, updateWithMove } from "../game/gameModel.js";
 import { Move, Player } from "../models.js";
 import { evaluate, possibleMoves } from "./minimax.js";

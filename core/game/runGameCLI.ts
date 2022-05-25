@@ -1,6 +1,6 @@
 
 import board from "../positions/normal_chess.js";
-import board_1d from "../positions/2x8_rooks_knight";
+import board_1d from "../positions/2x8_rooks_knight.js";
 import * as readline from "readline";
 import runAIGameNode from "./gameCLI.js";
 import runDraftAIGameNode from "./draftCLI.js";
