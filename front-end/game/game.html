@@ -7,17 +7,15 @@
 </head>
 
 <body>
+    <a href="../index.html">Home</a>
 
     <div id="board1" style="width: 400px; height: 400px;"></div>
     <script src="https://code.jquery.com/jquery-3.6.0.js"
         integrity="sha256-H+K7U5CnXl1h5ywQfKtSj8PCmoN9aaq30gDh27Xc0jk=" crossorigin="anonymous"></script>
-    <a href="../index.html">Home</a>
     <button id="start">Start Game</button>
-    <button id="start-draft">Start Draft Game</button>
     <script type="module">
-        import { startGame, startDraftGame } from "../../front-end/dist/front-end/game/controller.js"
-        document.querySelector("#start").addEventListener('click', () => startGame('board1'));
-        document.querySelector("#start-draft").addEventListener('click', () => startDraftGame('board1'));
+        import play from "../../front-end/dist/front-end/game/controller.js"
+        document.querySelector("#start").addEventListener('click', () => play(true, '1x9', 'board1'));
     </script>
 </body>
 

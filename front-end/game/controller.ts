@@ -11,6 +11,8 @@ import { Game, MoveStatus } from "../../core/game/gameModel.js";
 import { BoardState, Player } from "../../core/models.js";
 import empty_position from "../../core/positions/empty.js";
 import starting_position from "../../core/positions/normal_chess.js";
+import one9 from "../../core/positions/1x9_rook_knight.js";
+import two8 from "../../core/positions/2x8_rooks_knight.js";
 import { RuleSet } from "../../core/rules/piece.js";
 import { SimpleRuleSet1D } from "../../core/rules/simplePieces1D.js";
 import chessboard from "../../lib/chessboard.js";
@@ -68,18 +70,18 @@ function checkStatus() {
 
 }
 
-export function startGame(element: string | Node) {
-    const files = 1;
-    const ranks = 8;
+function startGame(element: string | Node, board: BoardState) {
+    const ranks = board.boardDimensions.rank;
+    const files = board.boardDimensions.file;
     const ruleSet: RuleSet = new SimpleRuleSet1D();
-    const board: BoardState = starting_position();
     const config = {
         'columns': files,
         'rows': ranks,
         'onDrop': onMove,
         'moveCallback': moveResponse,
         'draggable': true,
-        'showErrors': 'console'
+        'showErrors': 'console',
+        'pieceTheme': '../img/chesspieces/wikipedia/{piece}.png'
     };
 
     game = new Game(ruleSet, board);
@@ -87,18 +89,17 @@ export function startGame(element: string | Node) {
     screenBoard?.position(objToBoardObj(board), ranks, files);
 }
 
-export function startDraftGame(element: string | Node) {
-    const files = 1;
-    const ranks = 8;
-
-    const board: BoardState = empty_position({ 'file': files, 'rank': ranks });
+function startDraftGame(element: string | Node, board: BoardState) {
+    const ranks = board.boardDimensions.rank;
+    const files = board.boardDimensions.file;
     const draftConfig = {
         'columns': files,
         'rows': ranks,
         'onDrop': onDropDraft,
         'moveCallback': draftCallback,
         'sparePieces': true,
-        'showErrors': 'console'
+        'showErrors': 'console',
+        'pieceTheme': '../img/chesspieces/wikipedia/{piece}.png'
     };
     _element = element;
     draft = new Draft(board, draftRules, Player.White);
@@ -160,11 +161,27 @@ function startGameAfterDraft() {
         'onDrop': onMove,
         'moveCallback': moveResponse,
         'draggable': true,
-        'showErrors': 'console'
+        'showErrors': 'console',
+        'pieceTheme': '../img/chesspieces/wikipedia/{piece}.png'
     };
     game = new Game(ruleSet, draft.board);
     if (destroy) destroy();
     const gameBoard = chessboard.constructor(_element, gameConfig);
     gameBoard?.position(objToBoardObj(draft.board), ranks, files);
     destroy = gameBoard?.destroy;
+}
+
+const positionNames = {
+    "1x9": one9,
+    "2x8": two8,
+    "8x8": starting_position
+};
+type namedPositions = keyof typeof positionNames;
+
+export default function play(draft: boolean, dimString: namedPositions, element: string | Node): void {
+    if (draft)
+        startDraftGame(element, empty_position(positionNames[dimString]().boardDimensions));
+    else
+        startGame(element, positionNames[dimString]());
+
 }
