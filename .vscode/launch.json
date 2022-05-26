@@ -6,7 +6,7 @@
       "request": "launch",
       "reAttach": true,
       "name": "Launch Front-end",
-      "url": "http://localhost:8000/front-end/game.html",
+      "url": "http://localhost:8000/front-end/index.html",
       "webRoot": "${workspaceFolder}",
       "preLaunchTask": "prep front-end",
       "pathMappings": [

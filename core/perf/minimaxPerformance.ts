@@ -58,7 +58,7 @@ export function testBoards(dim: Square, boards: number, runs: number, pieces: nu
 
 
 
-testBoards({ 'file': 2, 'rank': 9 }, 100, 50, 3, 4, new SimpleRuleSet(), true).forEach(([b, w, l, m]) => {
-    printBoard(b as BoardState);
-    console.log(w, l, m);
-});;
+testBoards({ 'file': 2, 'rank': 9 }, 100, 50, 3, 4, new SimpleRuleSet(), true).forEach(([board, wins, losses, max_turns]) => {
+    printBoard(board as BoardState);
+    console.log(wins, losses, max_turns);
+});

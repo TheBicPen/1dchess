@@ -1,19 +1,19 @@
 
 
 
-import { AIPlayer } from "../core/ai/base.js";
-import randomAI from "../core/ai/random.js";
-import draftRules1D from "../core/draft/1dDraftRules.js";
-import { Draft } from "../core/draft/draftModel.js";
-import { DraftRules } from "../core/draft/draftRules.js";
-import { parseSquare, unparseMove, unparseSquare } from "../core/game/conversions.js";
-import { Game, MoveStatus } from "../core/game/gameModel.js";
-import { BoardState, Player } from "../core/models.js";
-import empty_position from "../core/positions/empty.js";
-import starting_position from "../core/positions/normal_chess.js";
-import { RuleSet } from "../core/rules/piece.js";
-import { SimpleRuleSet1D } from "../core/rules/simplePieces1D.js";
-import chessboard from "../lib/chessboard.js";
+import { AIPlayer } from "../../core/ai/base.js";
+import randomAI from "../../core/ai/random.js";
+import draftRules1D from "../../core/draft/1dDraftRules.js";
+import { Draft } from "../../core/draft/draftModel.js";
+import { DraftRules } from "../../core/draft/draftRules.js";
+import { parseSquare, unparseMove, unparseSquare } from "../../core/game/conversions.js";
+import { Game, MoveStatus } from "../../core/game/gameModel.js";
+import { BoardState, Player } from "../../core/models.js";
+import empty_position from "../../core/positions/empty.js";
+import starting_position from "../../core/positions/normal_chess.js";
+import { RuleSet } from "../../core/rules/piece.js";
+import { SimpleRuleSet1D } from "../../core/rules/simplePieces1D.js";
+import chessboard from "../../lib/chessboard.js";
 import { objToBoardObj, parseObjPiece, unparseObjPiece } from "./core_adapter.js";
 
 type action = "snapback" | "trash" | "drop";
@@ -26,6 +26,7 @@ const CPU: AIPlayer = new randomAI();
 const draftRules: DraftRules = draftRules1D;
 let _element: Node | string;
 let destroy: { (): void } | undefined;
+
 
 
 // When a move is made via the UI, send that move and wait for a response move

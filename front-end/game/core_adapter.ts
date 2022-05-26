@@ -1,5 +1,5 @@
-import { fileToLetter, parsePiece } from "../core/game/conversions.js";
-import { BoardState, PieceType, Player } from "../core/models.js";
+import { fileToLetter, parsePiece } from "../../core/game/conversions.js";
+import { BoardState, PieceType, Player } from "../../core/models.js";
 
 
 
