@@ -13,12 +13,20 @@ import {
 export class SimpleRuleSet1D implements RuleSet {
     rules: Rules = { 'kingCheck': false };
     pieceToGamePiece = function pieceToGamePiece(piece: PiecePosition): GamePiece {
-        return piece.piece === PieceType.Bishop ? new SimpleBishop1D(piece.position, piece.player)
-            : piece.piece === PieceType.King ? new SimpleKing1D(piece.position, piece.player)
-                : piece.piece === PieceType.Knight ? new SimpleKnight1D(piece.position, piece.player)
-                    : piece.piece === PieceType.Queen ? new SimpleQueen1D(piece.position, piece.player)
-                        : piece.piece === PieceType.Rook ? new SimpleRook1D(piece.position, piece.player)
-                            : /* piece.piece === Piece.Pawn ? */ new SimplePawn1D(piece.position, piece.player)
+        switch (piece.piece) {
+            case PieceType.Bishop:
+                return new SimpleBishop1D(piece.position, piece.player);
+            case PieceType.King:
+                return new SimpleKing1D(piece.position, piece.player);
+            case PieceType.Knight:
+                return new SimpleKnight1D(piece.position, piece.player);
+            case PieceType.Queen:
+                return new SimpleQueen1D(piece.position, piece.player);
+            case PieceType.Rook:
+                return new SimpleRook1D(piece.position, piece.player);
+            case PieceType.Pawn:
+                return new SimplePawn1D(piece.position, piece.player);
+        }
     };    // defines piece behaviour
 }
 

@@ -5,7 +5,7 @@ import { AIPlayer } from "../../core/ai/base.js";
 import randomAI from "../../core/ai/random.js";
 import { Draft } from "../../core/draft/draftModel.js";
 import { boardToState, parseSquare, unparseMove, unparseSquare } from "../../core/game/conversions.js";
-import { Game, MoveStatus, nextPlayer } from "../../core/game/gameModel.js";
+import { Game, GameStatus, MoveStatus, nextPlayer } from "../../core/game/gameModel.js";
 import { Player } from "../../core/models.js";
 import { knownDraft, knownGame, namedPositions, positionNames } from "../../core/game/knownGames.js";
 import chessboard from "../../lib/chessboard.js";
@@ -19,8 +19,8 @@ let theGame: Game;
 let theDraft: Draft;
 const theCPU: AIPlayer = new randomAI();
 let theBoardElement: Node | string;
-let destroyTheBoard: { (): void } | undefined;
-
+let destroyTheBoard: (() => void) | undefined;
+let doneCallback: ((status: GameStatus) => any) | undefined;
 
 
 // When a move is made via the UI, send that move and wait for a response move
@@ -57,11 +57,9 @@ function moveResponse(action: action): string | null {
 }
 
 function checkStatus() {
-    if (theGame?.gameStatus.status === "draw")
-        window.alert(`Game over! It's a draw!`);
-    if (theGame?.gameStatus.status === "loss")
-        window.alert(`Game over! ${nextPlayer(theGame.gameStatus.player)} wins!`);
-
+    if (theGame?.gameStatus.status !== "playing") {
+        doneCallback && doneCallback(theGame?.gameStatus);
+    }
 }
 
 function startGame(element: string | Node, game: Game) {
@@ -163,8 +161,6 @@ function startGameAfterDraft() {
     destroyTheBoard = gameBoard?.destroy;
 }
 
-
-
 export function fillPositionDropdown(element: Node) {
     positionNames.forEach(s => {
         const opt = document.createElement("option");
@@ -174,7 +170,8 @@ export function fillPositionDropdown(element: Node) {
     });
 }
 
-export function play(draft: boolean, dimString: namedPositions, element: string | Node): void {
+export function play(draft: boolean, dimString: namedPositions, element: string | Node, done?: (status: GameStatus) => any): void {
+    doneCallback = done;
     if (draft)
         startDraft(element, knownDraft(dimString));
     else

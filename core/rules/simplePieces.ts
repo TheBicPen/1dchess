@@ -42,12 +42,20 @@ function onBoard(s: Square, boardDims: Square) {
 }
 
 export function pieceToGamePiece(piece: PiecePosition): GamePiece {
-    return piece.piece === PieceType.Bishop ? new SimpleBishop(piece.position, piece.player)
-        : piece.piece === PieceType.King ? new SimpleKing(piece.position, piece.player)
-            : piece.piece === PieceType.Knight ? new SimpleKnight(piece.position, piece.player)
-                : piece.piece === PieceType.Queen ? new SimpleQueen(piece.position, piece.player)
-                    : piece.piece === PieceType.Rook ? new SimpleRook(piece.position, piece.player)
-                        : /* piece.piece === Piece.Pawn ? */ new SimplePawn(piece.position, piece.player);
+    switch (piece.piece) {
+        case PieceType.Bishop:
+            return new SimpleBishop(piece.position, piece.player);
+        case PieceType.King:
+            return new SimpleKing(piece.position, piece.player);
+        case PieceType.Knight:
+            return new SimpleKnight(piece.position, piece.player);
+        case PieceType.Queen:
+            return new SimpleQueen(piece.position, piece.player);
+        case PieceType.Rook:
+            return new SimpleRook(piece.position, piece.player);
+        case PieceType.Pawn:
+            return new SimplePawn(piece.position, piece.player);
+    }
 }
 
 export class SimpleKing extends SimplePiece {

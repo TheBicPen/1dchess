@@ -23,8 +23,16 @@
         <script type="module">
             import { play, fillPositionDropdown } from "../../front-end/dist/front-end/game/controller.js"
             fillPositionDropdown(document.querySelector("#gameSetup #boards"));
+            const done = (status) => {
+                document.querySelector("#gameSetup").style.display = '';
+                if (status.status === "draw")
+                    window.alert(`Game over! It's a draw!`);
+                else if (status.status === "loss")
+                    window.alert(`Game over! ${nextPlayer(theGame.gameStatus.player)} wins!`);
+            };
+
             document.querySelector("#gameSetup #start").addEventListener('click', () => {
-                play(document.querySelector("#gameSetup #draft").checked, document.querySelector("#gameSetup #boards").value, 'board1');
+                play(document.querySelector("#gameSetup #draft").checked, document.querySelector("#gameSetup #boards").value, 'board1', done);
                 document.querySelector("#gameSetup").style.display = 'none';
             });
         </script>
