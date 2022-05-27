@@ -4,6 +4,8 @@ import { GamePiece, RuleSet } from "../rules/piece.js";
 import { validMoveWithReason } from "../rules/rules.js";
 import { pieceAtLocation, pieceAtLocation2, printBoard } from "../utils.js";
 import { boardToState, parseMove } from "./conversions.js";
+import { SimpleRuleSet1D } from "../rules/simplePieces1D.js";
+import { SimpleRuleSet } from "../rules/simplePieces.js";
 
 export interface MoveResult {
     reason: string | null,
@@ -22,8 +24,9 @@ export class Game {
     gameBoard: GameBoard;
     gameStatus: GameStatus;
 
-    constructor(ruleSet: RuleSet, board: BoardState) {
-        this.gameBoard =  new GameBoard(board, ruleSet);
+    constructor(board: BoardState, ruleSet?: RuleSet) {
+        const rules = ruleSet || board.boardDimensions.file <= 2 ? new SimpleRuleSet1D() : new SimpleRuleSet();
+        this.gameBoard = new GameBoard(board, rules);
         this.gameStatus = { 'player': Player.White, "status": "playing" };
         this.gameStatus = checkGameState(this.gameBoard, this.gameStatus.player);   // check for winning state immediately
     }

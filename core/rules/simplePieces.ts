@@ -38,7 +38,7 @@ function emptyOrOpponent(position: GameBoard, location: Square, current_player: 
 }
 
 function onBoard(s: Square, boardDims: Square) {
-    return s.file >= 0 && s.file <= boardDims.file && s.rank >= 0 && s.rank <= boardDims.rank;
+    return s.file >= 0 && s.file < boardDims.file && s.rank >= 0 && s.rank < boardDims.rank;
 }
 
 export function pieceToGamePiece(piece: PiecePosition): GamePiece {

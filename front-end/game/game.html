@@ -12,11 +12,23 @@
     <div id="board1" style="width: 400px; height: 400px;"></div>
     <script src="https://code.jquery.com/jquery-3.6.0.js"
         integrity="sha256-H+K7U5CnXl1h5ywQfKtSj8PCmoN9aaq30gDh27Xc0jk=" crossorigin="anonymous"></script>
-    <button id="start">Start Game</button>
-    <script type="module">
-        import play from "../../front-end/dist/front-end/game/controller.js"
-        document.querySelector("#start").addEventListener('click', () => play(true, '1x9', 'board1'));
-    </script>
+
+    <div id="gameSetup">
+        Boards:
+        <select id="boards"></select>
+        Draft pieces
+        <input type="checkbox" id="draft">
+        <button id="start">Start Game</button>
+
+        <script type="module">
+            import { play, fillPositionDropdown } from "../../front-end/dist/front-end/game/controller.js"
+            fillPositionDropdown(document.querySelector("#gameSetup #boards"));
+            document.querySelector("#gameSetup #start").addEventListener('click', () => {
+                play(document.querySelector("#gameSetup #draft").checked, document.querySelector("#gameSetup #boards").value, 'board1');
+                document.querySelector("#gameSetup").style.display = 'none';
+            });
+        </script>
+    </div>
 </body>
 
 </html>
