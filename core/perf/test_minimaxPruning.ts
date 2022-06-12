@@ -18,7 +18,7 @@ export function testMiniMaxes(board: BoardState, ruleSet: RuleSet, depth: number
     const minimax = new minimaxAI(depth);
     const minimaxAB = new minimaxAlphaBetaAI(depth);
     const cpu3 = new MyopicMiniMax(new deterministicAI(1), 0.7);
-    const game: Game = new Game(ruleSet, board);
+    const game: Game = new Game(board, ruleSet);
     let move_count = 0;
     while (game.gameStatus.status === "playing" && move_count < MAX_MOVES) {
         const move1 = minimax.move(game.gameBoard, Player.White);

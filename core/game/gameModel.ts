@@ -24,9 +24,8 @@ export class Game {
     gameBoard: GameBoard;
     gameStatus: GameStatus;
 
-    constructor(board: BoardState, ruleSet?: RuleSet) {
-        const rules = ruleSet || board.boardDimensions.file <= 2 ? new SimpleRuleSet1D() : new SimpleRuleSet();
-        this.gameBoard = new GameBoard(board, rules);
+    constructor(board: BoardState, ruleSet: RuleSet) {
+        this.gameBoard = new GameBoard(board, ruleSet);
         this.gameStatus = { 'player': Player.White, "status": "playing" };
         this.gameStatus = checkGameState(this.gameBoard, this.gameStatus.player);   // check for winning state immediately
     }

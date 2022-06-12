@@ -45,8 +45,8 @@ function squaresBetweenDiagonal(rank_from: number, rank_to: number) {
 class SimpleKnight1D extends SimplePiece {
     legalMove(location: Square, considerCheck: boolean, position: GameBoard): boolean {
         return Math.abs(this.state.position.rank - location.rank) === 3
-            && pieceAtLocation(position, location)?.state.player !== this.state.player //piece is other player's or empty
-            && true; //ignore considerCheck for now
+            && pieceAtLocation(position, location)?.state.player !== this.state.player // piece is other player's or empty
+            && true; // ignore considerCheck for now
     }
     constructor(location: Square, player: Player) {
         super(location, player, PieceType.Knight);

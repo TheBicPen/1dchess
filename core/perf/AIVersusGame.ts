@@ -9,7 +9,7 @@ const MAX_MOVES = 100;
 
 export default function runAIVersus(board: BoardState, ruleSet: RuleSet, cpu1: AIPlayer, cpu2: AIPlayer): [GameStatus, number] {
 
-    const game: Game = new Game(ruleSet, board);
+    const game: Game = new Game(board, ruleSet);
     let move_count = 0;
     while (game.gameStatus.status === "playing" && move_count < MAX_MOVES) {
         game.makeMove(Player.White, cpu1.move(game.gameBoard, Player.White));

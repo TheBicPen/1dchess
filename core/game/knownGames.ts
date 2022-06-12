@@ -6,6 +6,8 @@ import empty_position from "../positions/empty.js";
 import draftRules1D from "../draft/1dDraftRules.js";
 import { Draft } from "../draft/draftModel.js";
 import { Player } from "../models.js";
+import { SimpleRuleSet } from "../rules/simplePieces.js";
+import { SimpleRuleSet1D } from "../rules/simplePieces1D.js";
 
 
 // names of known board setups
@@ -22,7 +24,8 @@ export type namedPositions = keyof typeof positions;
 // Factory for cases where we do not need full control over the game setup
 export function knownGame(name: namedPositions): Game {
     const board = positions[name]();
-    return new Game(board);
+    const rules = board.boardDimensions.file <= 2 ? new SimpleRuleSet1D() : new SimpleRuleSet();
+    return new Game(board, rules);
 }
 
 

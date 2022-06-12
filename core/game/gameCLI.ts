@@ -11,7 +11,7 @@ import { evaluate, minimaxAI } from "../ai/minimax.js";
 export default async function runAIGameNode(board: BoardState, ruleSet: RuleSet) {
     const CPU: AIPlayer = new minimaxAI(2);
 
-    const game: Game = new Game(ruleSet, board);
+    const game: Game = new Game(board, ruleSet);
     console.log("Starting AI game");
 
     while (game.gameStatus.status === "playing") {
