@@ -1,7 +1,7 @@
 import { DraftRules } from "../draft/draftRules.js";
 import { GameBoard } from "../game/GameBoard.js";
 import { BoardState, Move, PiecePosition, PieceType, Player, Square } from "../models.js";
-import { nextEmptySquare } from "../utils.js";
+import { nextEmptySquare } from "../utils/chessUtils.js";
 import { AIPlayer } from "./base.js";
 
 

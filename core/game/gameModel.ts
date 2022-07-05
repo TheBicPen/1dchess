@@ -2,10 +2,9 @@ import { BoardState, Move, PiecePosition, PieceType, Player } from "../models.js
 import { GameBoard } from "./GameBoard.js";
 import { GamePiece, RuleSet } from "../rules/piece.js";
 import { validMoveWithReason } from "../rules/rules.js";
-import { pieceAtLocation, pieceAtLocation2, printBoard } from "../utils.js";
+import { pieceAtLocation, pieceAtLocation2, printBoard } from "../utils/chessUtils.js";
 import { boardToState, parseMove } from "./conversions.js";
-import { SimpleRuleSet1D } from "../rules/simplePieces1D.js";
-import { SimpleRuleSet } from "../rules/simplePieces.js";
+import { chessClockRules, ChessClock } from "./chessClock.js";
 
 export interface MoveResult {
     reason: string | null,
@@ -13,7 +12,8 @@ export interface MoveResult {
 }
 
 type GameState = "playing" | "loss" | "draw";
-export type GameStatus = { "status": GameState, player: Player };
+type GameEndedReason = "timer" | "checkmate" | "stalemate";
+export type GameStatus = { "status": GameState, player: Player, reason?: GameEndedReason };
 
 export interface MoveStatus extends MoveResult {
     status: GameStatus
@@ -23,11 +23,14 @@ export class Game {
 
     gameBoard: GameBoard;
     gameStatus: GameStatus;
+    clock?: ChessClock;
 
-    constructor(board: BoardState, ruleSet: RuleSet) {
+    constructor(board: BoardState, ruleSet: RuleSet, clock?: chessClockRules) {
         this.gameBoard = new GameBoard(board, ruleSet);
         this.gameStatus = { 'player': Player.White, "status": "playing" };
-        this.gameStatus = checkGameState(this.gameBoard, this.gameStatus.player);   // check for winning state immediately
+        if (clock)
+            this.clock = new ChessClock(clock);
+        this.gameStatus = checkGameState(this.gameBoard, this.gameStatus.player, this.clock);   // check for winning state immediately
     }
 
 
@@ -51,7 +54,9 @@ export class Game {
 
         updateWithMove(this.gameBoard, move);
         this.gameStatus.player = nextPlayer(this.gameStatus.player);
-        this.gameStatus = checkGameState(this.gameBoard, this.gameStatus.player);
+        if (this.clock)
+            this.clock.increment(player); // increment next player
+        this.gameStatus = checkGameState(this.gameBoard, this.gameStatus.player, this.clock);
         return { ...moveResult, 'status': this.gameStatus };
     }
     _printBoard() {
@@ -62,7 +67,6 @@ export class Game {
 
 
 ///////////// exported to allow for unit testing
-///////////// also since ES5 doesn't support private members
 
 export function capture(board: GameBoard, piece: GamePiece) {
     board.gamePieces.splice(board.gamePieces.indexOf(piece), 1);
@@ -102,16 +106,20 @@ export function cloneBoard(board: GameBoard): GameBoard {
 }
 
 // Return the game's status. Call this after making a move and updating the current player.
-export function checkGameState(gameBoard: GameBoard, playerTurn: Player): GameStatus {
+export function checkGameState(gameBoard: GameBoard, playerTurn: Player, clock?: ChessClock): GameStatus {
+    if (clock && !clock.timers.w.alive)
+        return { "player": Player.White, "status": "loss", "reason": "timer" };
+    else if (clock && !clock.timers.b.alive)
+        return { "player": Player.Black, "status": "loss", "reason": "timer" };
     const whiteKing: boolean = gameBoard.gamePieces.some(p => p.state.player == Player.White && p.state.piece == PieceType.King);
     const blackKing: boolean = gameBoard.gamePieces.some(p => p.state.player == Player.Black && p.state.piece == PieceType.King);
     const whiteMove: boolean = gameBoard.gamePieces.some(p => p.state.player == Player.White && p.getLegalMoves(gameBoard.rules.rules.kingCheck, gameBoard).length > 0);
     const blackMove: boolean = gameBoard.gamePieces.some(p => p.state.player == Player.Black && p.getLegalMoves(gameBoard.rules.rules.kingCheck, gameBoard).length > 0);
 
     if (playerTurn === Player.White ? !whiteKing : !blackKing)
-        return { "player": playerTurn, "status": "loss" };
+        return { "player": playerTurn, "status": "loss", "reason": "checkmate" };
     else if (playerTurn === Player.White ? !whiteMove && whiteKing : !blackMove && blackKing)
-        return { "player": playerTurn, "status": "draw" };
+        return { "player": playerTurn, "status": "draw", "reason": "stalemate" };
     else
         return { "player": playerTurn, "status": "playing" };
 }

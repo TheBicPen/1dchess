@@ -1,5 +1,5 @@
 import { PiecePosition, PieceType, Player } from "../models.js";
-import { countPieces } from "../utils.js";
+import { countPieces } from "../utils/chessUtils.js";
 import standard_board from "../positions/normal_chess.js";
 import empty from "../positions/empty.js";
 

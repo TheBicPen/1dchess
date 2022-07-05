@@ -2,7 +2,7 @@ import { AIPlayer } from "../ai/base.js";
 import randomAI from "../ai/random.js";
 import { unparseSquare } from "../game/conversions.js";
 import { BoardState, PiecePosition, Player } from "../models.js";
-import { pieceAtLocation2, printBoard } from "../utils.js";
+import { pieceAtLocation2, printBoard } from "../utils/chessUtils.js";
 import { Draft } from "./draftModel.js";
 import { DraftRules } from "./draftRules.js";
 

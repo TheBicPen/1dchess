@@ -4,7 +4,7 @@ import { Player, PieceType, Square, PiecePosition } from "../../models.js";
 import starting_board from "../../positions/normal_chess.js";
 import { GamePiece } from "../../rules/piece.js";
 import { SimpleRuleSet } from "../../rules/simplePieces.js";
-import { pieceAtLocation, pieceAtLocation2 } from "../../utils.js";
+import { pieceAtLocation, pieceAtLocation2 } from "../../utils/chessUtils.js";
 
 
 export default () => {

@@ -1,5 +1,5 @@
 import { BoardState, PieceType, Player } from "../models.js";
-import { deepClone } from "../utils.js";
+import { deepClone } from "../utils/chessUtils.js";
 
 
 

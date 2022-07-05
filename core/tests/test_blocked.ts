@@ -1,5 +1,5 @@
 import { Square } from "../models.js";
-import { blocked } from "../utils.js";
+import { blocked } from "../utils/chessUtils.js";
 import startingBoard from "../positions/normal_chess.js";
 import empty from "../positions/empty.js";
 

@@ -6,7 +6,7 @@ import { BoardState, Player, Square } from "../models.js";
 import X8_rooks_knight from "../positions/2x8_rooks_knight.js";
 import { RuleSet } from "../rules/piece.js";
 import { SimpleRuleSet } from "../rules/simplePieces.js";
-import { printBoard } from "../utils.js";
+import { printBoard } from "../utils/chessUtils.js";
 import runAIVersus from "./AIVersusGame.js";
 import generateBoard from "./generateBoard.js";
 

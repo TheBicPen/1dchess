@@ -3,7 +3,7 @@ import * as readline from "readline";
 import { runAIDraft } from "../draft/draftController.js";
 import draftRules1D from "../draft/1dDraftRules.js";
 import { DraftRules } from "../draft/draftRules.js";
-import { nextEmptySquare } from "../utils.js";
+import { nextEmptySquare } from "../utils/chessUtils.js";
 import runAIGameNode from "./gameCLI.js";
 import { parsePiece } from "./conversions.js";
 import { RuleSet } from "../rules/piece.js";

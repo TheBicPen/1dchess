@@ -1,7 +1,7 @@
 import { boardToState } from "../game/conversions.js";
 import { Square, Player, PieceType, Rules, PiecePosition } from "../models.js";
 import { GameBoard } from "../game/GameBoard.js";
-import { blocked, blockedSquares, pieceAtLocation } from "../utils.js";
+import { blocked, blockedSquares, pieceAtLocation } from "../utils/chessUtils.js";
 import { GamePiece, RuleSet } from "./piece.js";
 import {
     SimplePiece,

@@ -1,6 +1,6 @@
 import { nextPlayer } from "../game/gameModel.js";
 import { BoardState, PiecePosition, PieceType, Player, Square } from "../models.js";
-import { nextEmptySquare } from "../utils.js";
+import { nextEmptySquare } from "../utils/chessUtils.js";
 import { validateDraftChoice } from "./draftController.js";
 import { DraftRules } from "./draftRules.js";
 

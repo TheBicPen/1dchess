@@ -2,7 +2,7 @@ import { boardToState } from "../game/conversions.js";
 import { GameBoard } from "../game/GameBoard.js";
 import { checkGameState, cloneBoard, GameStatus, nextPlayer, updateWithMove } from "../game/gameModel.js";
 import { Move, Player } from "../models.js";
-import { countPieces, printBoard } from "../utils.js";
+import { countPieces, printBoard } from "../utils/chessUtils.js";
 import randomAI from "./random.js";
 
 interface MoveVal {

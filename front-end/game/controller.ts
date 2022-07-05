@@ -10,6 +10,7 @@ import { Player } from "../../core/models.js";
 import { knownDraft, knownGame, namedPositions, positionNames } from "../../core/game/knownGames.js";
 import chessboard from "../../lib/chessboard.js";
 import { objToBoardObj, parseObjPiece, unparseObjPiece } from "./core_adapter.js";
+import { RuleSet } from "../../core/rules/piece.js";
 
 type action = "snapback" | "trash" | "drop";
 
@@ -17,6 +18,7 @@ type action = "snapback" | "trash" | "drop";
 // global state
 let theGame: Game;
 let theDraft: Draft;
+let theDraftGameRules: RuleSet;
 const theCPU: AIPlayer = new randomAI();
 let theBoardElement: Node | string;
 let destroyTheBoard: (() => void) | undefined;
@@ -80,7 +82,7 @@ function startGame(element: string | Node, game: Game) {
     screenBoard?.position(objToBoardObj(board), ranks, files);
 }
 
-function startDraft(element: string | Node, draft: Draft) {
+function startDraft(element: string | Node, draft: Draft, gameRules: RuleSet) {
     const ranks = draft.board.boardDimensions.rank;
     const files = draft.board.boardDimensions.file;
     const draftConfig = {
@@ -94,6 +96,7 @@ function startDraft(element: string | Node, draft: Draft) {
     };
     theBoardElement = element;
     theDraft = draft;
+    theDraftGameRules = gameRules;
     if (destroyTheBoard) destroyTheBoard();
     const draftBoard = chessboard.constructor(element, draftConfig);
     draftBoard?.position(objToBoardObj(draft.board), ranks, files);
@@ -154,7 +157,7 @@ function startGameAfterDraft() {
         'showErrors': 'console',
         'pieceTheme': '../img/chesspieces/wikipedia/{piece}.png'
     };
-    theGame = new Game(theDraft.board);
+    theGame = new Game(theDraft.board, theDraftGameRules);
     if (destroyTheBoard) destroyTheBoard();
     const gameBoard = chessboard.constructor(theBoardElement, gameConfig);
     gameBoard?.position(objToBoardObj(theDraft.board), ranks, files);
@@ -173,7 +176,7 @@ export function fillPositionDropdown(element: Node) {
 export function play(draft: boolean, dimString: namedPositions, element: string | Node, done?: (status: GameStatus) => any): void {
     doneCallback = done;
     if (draft)
-        startDraft(element, knownDraft(dimString));
+        startDraft(element, knownDraft(dimString), knownGame(dimString).gameBoard.rules);
     else
         startGame(element, knownGame(dimString));
 

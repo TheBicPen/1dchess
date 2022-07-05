@@ -1,7 +1,7 @@
-import { fileToLetter, unparsePieceColour } from "./game/conversions.js";
-import { GameBoard } from "./game/GameBoard.js";
-import { BoardState, PiecePosition, Player, Square } from "./models.js";
-import { GamePiece } from "./rules/piece.js";
+import { fileToLetter, unparsePieceColour } from "../game/conversions.js";
+import { GameBoard } from "../game/GameBoard.js";
+import { BoardState, PiecePosition, Player, Square } from "../models.js";
+import { GamePiece } from "../rules/piece.js";
 
 
 // Return a list of possible positions within dimensions.

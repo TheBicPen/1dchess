@@ -10,6 +10,6 @@ export class GameBoard {
     constructor(position: BoardState, rules: RuleSet) {
         this.boardDimensions = position.boardDimensions;
         this.rules = rules;
-        this.gamePieces = position.pieces.map(p => rules.pieceToGamePiece(p));
+        this.gamePieces = position.pieces.map(rules.pieceToGamePiece);
     }
 }

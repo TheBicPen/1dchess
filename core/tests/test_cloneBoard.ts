@@ -4,7 +4,7 @@ import { cloneBoard, updateWithMove } from "../game/gameModel.js";
 import { Player } from "../models.js";
 import normalBoard from "../positions/normal_chess.js";
 import { SimpleBishop, SimpleRuleSet } from "../rules/simplePieces.js";
-import { pieceAtLocation } from "../utils.js";
+import { pieceAtLocation } from "../utils/chessUtils.js";
 
 
 export default () => {

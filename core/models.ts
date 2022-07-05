@@ -10,8 +10,8 @@ export enum PieceType {
 }
 
 export interface Square {
-    file: number
-    rank: number,
+    file: number,
+    rank: number
 }
 
 export interface PiecePosition {

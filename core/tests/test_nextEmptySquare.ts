@@ -2,7 +2,7 @@
 import { Player, Square } from "../models.js";
 import standard_board from "../positions/normal_chess.js";
 import pawns_4x4 from "../positions/4x4_fullpawns.js";
-import { nextEmptySquare } from "../utils.js";
+import { nextEmptySquare } from "../utils/chessUtils.js";
 import empty from "../positions/empty.js";
 
 

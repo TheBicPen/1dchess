@@ -1,6 +1,6 @@
 import { BoardState, PieceType, Player, Square } from "../models.js";
 import empty from "../positions/empty.js";
-import { nextEmptySquare, randItem } from "../utils.js";
+import { nextEmptySquare, randItem } from "../utils/chessUtils.js";
 
 
 export default (dim: Square, pieces: number, symmetric: boolean): BoardState => {
