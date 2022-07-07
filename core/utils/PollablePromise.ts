@@ -37,7 +37,7 @@ export class PollablePromise<T> {
         });
     }
 
-    // add an action to perform each poll until the promise resolves. Await the returned promise.
+    // add an action to perform each poll until the promise resolves. Returns the promise to be awaited.
     polling(delay: ((iter: number) => number) | number, tick: () => void) {
         let i = 0;
         const _poll = () => {
@@ -48,6 +48,6 @@ export class PollablePromise<T> {
             }
         };
         _poll();
-        return this.awaitable();
+        return this.p;
     }
 }

@@ -47,6 +47,17 @@
       "preLaunchTask": "build core"
     },
     {
+      "name": "Manual Test",
+      "program": "${workspaceFolder}/core/test.ts",
+      "request": "launch",
+      "console": "integratedTerminal",
+      "skipFiles": [
+        "<node_internals>/**"
+      ],
+      "type": "pwa-node",
+      "preLaunchTask": "build core"
+    },
+    {
       "name": "Test Minimax pruning",
       "program": "${workspaceFolder}/core/perf/test_minimaxPruning.ts",
       "request": "launch",
