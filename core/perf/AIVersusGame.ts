@@ -11,14 +11,14 @@ export default function runAIVersus(board: BoardState, ruleSet: RuleSet, cpu1: A
 
     const game: Game = new Game(board, ruleSet);
     let move_count = 0;
-    while (game.gameStatus.status === "playing" && move_count < MAX_MOVES) {
+    while (game.checkStatus().status === "playing" && move_count < MAX_MOVES) {
         game.makeMove(Player.White, cpu1.move(game.gameBoard, Player.White));
-        if (game.gameStatus.status !== "playing")
+        if (game.checkStatus().status !== "playing")
             break;
         game.makeMove(Player.Black, cpu2.move(game.gameBoard, Player.Black));
         move_count++;
     }
     if (move_count === MAX_MOVES)
-        game.gameStatus.status = "draw";
-    return [game.gameStatus, move_count];
+        game.checkStatus().status = "draw";
+    return [game.checkStatus(), move_count];
 }

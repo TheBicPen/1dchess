@@ -8,8 +8,8 @@ import test_game from "./test_game.js";
 export default () => {
     console.log("Testing Fool's Mate game.");
     const game = test_game(new SimpleRuleSet(), starting_position(), dummyMoves);
-    console.assert(game.gameStatus.player === Player.White);
-    console.assert(game.gameStatus.status === "loss");
+    console.assert(game.checkStatus().player === Player.White);
+    console.assert(game.checkStatus().status === "loss");
 }
 
 const dummyMoves: Move[] = [

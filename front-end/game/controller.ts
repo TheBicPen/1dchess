@@ -29,7 +29,7 @@ let doneCallback: ((status: GameStatus) => any) | undefined;
 function onMove(source: string, target: string, _piece: string,
     _newPos: string, _oldPos: string, _orientation: string): action {
     const move: string = source + "-" + target;
-    if (theGame?.gameStatus.status !== "playing")
+    if (theGame?.checkStatus().status !== "playing")
         return "snapback";
     const moveResult: MoveStatus = theGame.makeMove(Player.White, move);
     if (!moveResult.move) {
@@ -46,7 +46,7 @@ function onMove(source: string, target: string, _piece: string,
 function moveResponse(action: action): string | null {
     if (action !== "drop")
         return null;
-    if (theGame?.gameStatus.status !== "playing")
+    if (theGame?.checkStatus().status !== "playing")
         return null;
     const response: MoveStatus = theGame.makeMove(Player.Black, theCPU.move(theGame.gameBoard, Player.Black));
     const AIMove = response.move && unparseMove(response.move);
@@ -59,8 +59,8 @@ function moveResponse(action: action): string | null {
 }
 
 function checkStatus() {
-    if (theGame?.gameStatus.status !== "playing") {
-        doneCallback && doneCallback(theGame?.gameStatus);
+    if (theGame?.checkStatus().status !== "playing") {
+        doneCallback && doneCallback(theGame?.checkStatus());
     }
 }
 

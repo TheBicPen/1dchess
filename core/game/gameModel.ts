@@ -22,7 +22,7 @@ export interface MoveStatus extends MoveResult {
 export class Game {
 
     gameBoard: GameBoard;
-    gameStatus: GameStatus;
+    private gameStatus: GameStatus; // can be invalid if the game has a clock
     clock?: ChessClock;
 
     constructor(board: BoardState, ruleSet: RuleSet, clock?: chessClockRules) {
@@ -56,7 +56,7 @@ export class Game {
         this.gameStatus.player = nextPlayer(this.gameStatus.player);
         if (this.clock)
             this.clock.increment(player); // increment next player
-        this.gameStatus = checkGameState(this.gameBoard, this.gameStatus.player, this.clock);
+        this.gameStatus = this.checkStatus();
         return { ...moveResult, 'status': this.gameStatus };
     }
     _printBoard() {

@@ -9,8 +9,8 @@ export default (ruleSet: RuleSet, position: BoardState, dummyMoves: Move[]): Gam
     let player = Player.White;
     while (dummyMoves.length > 0) {
         const element = dummyMoves.shift();
-        console.assert(game.gameStatus.status === "playing");
-        console.assert(game.gameStatus.player === player);
+        console.assert(game.checkStatus().status === "playing");
+        console.assert(game.checkStatus().player === player);
         // game._printBoard();
         const result = game.makeMove(player, element as Move);
         player = nextPlayer(player);
