@@ -7,10 +7,13 @@ export class PollablePromise<T> {
     p: Promise<T>;
     result?: T;
     reason?: string;
-    constructor(p: Promise<T>) {
+    constructor(p: Promise<T>, timeout?: number) {
         this.state = "pending";
-        this.p = p;
-        p.then(value => { this.result = value; this.state = "resolved" }, reason => { this.reason = reason; this.state = "rejected" });
+        this.p = timeout ? new Promise((resolve, reject) => {
+            setTimeout(() => reject("timeout"), timeout);
+            p.then(value => resolve(value));
+        }) : p;
+        this.p.then(value => { this.result = value; this.state = "resolved" }, reason => { this.reason = reason; this.state = "rejected" });
     }
 
     completed() {
@@ -38,11 +41,11 @@ export class PollablePromise<T> {
     }
 
     // add an action to perform each poll until the promise resolves. Returns the promise to be awaited.
-    polling(delay: ((iter: number) => number) | number, tick: () => void) {
+    polling(delay: ((iter: number) => number) | number, tick: (iter: number) => void) {
         let i = 0;
         const _poll = () => {
             if (!this.completed()) {
-                tick();
+                tick(i);
                 setTimeout(_poll, typeof delay === "number" ? delay : delay(i));
                 i++;
             }

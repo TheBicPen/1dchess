@@ -30,7 +30,7 @@ export class Game {
         this.gameStatus = { 'player': Player.White, "status": "playing" };
         if (clock)
             this.clock = new ChessClock(clock);
-        this.gameStatus = checkGameState(this.gameBoard, this.gameStatus.player, this.clock);   // check for winning state immediately
+        this.gameStatus = this.checkStatus();   // check for winning state immediately
     }
 
 
@@ -61,6 +61,10 @@ export class Game {
     }
     _printBoard() {
         printBoard(boardToState(this.gameBoard));
+    }
+
+    checkStatus() {
+        return checkGameState(this.gameBoard, this.gameStatus.player, this.clock);
     }
 
 }
@@ -107,9 +111,9 @@ export function cloneBoard(board: GameBoard): GameBoard {
 
 // Return the game's status. Call this after making a move and updating the current player.
 export function checkGameState(gameBoard: GameBoard, playerTurn: Player, clock?: ChessClock): GameStatus {
-    if (clock && !clock.timers.w.alive)
+    if (clock && !clock.timers.w.alive())
         return { "player": Player.White, "status": "loss", "reason": "timer" };
-    else if (clock && !clock.timers.b.alive)
+    else if (clock && !clock.timers.b.alive())
         return { "player": Player.Black, "status": "loss", "reason": "timer" };
     const whiteKing: boolean = gameBoard.gamePieces.some(p => p.state.player == Player.White && p.state.piece == PieceType.King);
     const blackKing: boolean = gameBoard.gamePieces.some(p => p.state.player == Player.Black && p.state.piece == PieceType.King);

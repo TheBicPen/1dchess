@@ -2,7 +2,7 @@ import { AIPlayer } from "../ai/base.js";
 import randomAI from "../ai/random.js";
 import { BoardState, Move, Player } from "../models.js";
 import { RuleSet } from "../rules/piece.js";
-import { Game, MoveStatus } from "./gameModel.js";
+import { checkGameState, Game, MoveStatus } from "./gameModel.js";
 import { boardToState, parseMove, unparseMove } from "./conversions.js";
 import * as readline from "readline";
 import { printBoard } from "../utils/chessUtils.js";
@@ -14,16 +14,16 @@ import { seconds } from "../utils/Timer.js";
 export default async function runAIGameNode(board: BoardState, ruleSet: RuleSet) {
     const CPU: AIPlayer = new minimaxAI(2);
 
-    const game: Game = new Game(board, ruleSet, { 'increment': 5, 'timeSeconds': 30 });
+    const game: Game = new Game(board, ruleSet, { 'increment': 5, 'timeSeconds': 5 });
     console.log("Starting AI game");
 
-    while (game.gameStatus.status === "playing") {
+    while (game.checkStatus().status === "playing") {
         printBoard(boardToState(game.gameBoard));
         let result: MoveStatus | undefined = undefined;
-        while (!result || !result.move) {
-            const request = new PollablePromise(requestMove(game));
+        while (game.checkStatus().status === "playing" && (!result || !result.move)) {
+            const request = new PollablePromise(requestMove(game), game.clock!.remaining(game.checkStatus().player));
             try {
-                let move: Move = await request.polling(1000, () => printTime(game.clock!, game.gameStatus.player));
+                let move: Move = await request.polling(1000, () => printTime(game.clock!, game.checkStatus().player));
                 result = game.makeMove(Player.White, move);
             } catch (error) {
                 console.error(error);
@@ -31,18 +31,18 @@ export default async function runAIGameNode(board: BoardState, ruleSet: RuleSet)
         }
 
 
-        console.log(evaluate(game.gameBoard, game.gameStatus.player));
+        console.log(evaluate(game.gameBoard, game.checkStatus().player));
 
-        if (game.gameStatus.status !== "playing")
+        if (game.checkStatus().status !== "playing")
             break;
         printBoard(boardToState(game.gameBoard));
         let AIMove = CPU.move(game.gameBoard, Player.Black);
         console.log("AI move:");
         console.log(unparseMove(AIMove));
         game.makeMove(Player.Black, AIMove);
-        console.log(evaluate(game.gameBoard, game.gameStatus.player));
+        console.log(evaluate(game.gameBoard, game.checkStatus().player));
     }
-    console.log("GG!", game.gameStatus.status, game.gameStatus.player);
+    console.log("GG!", game.checkStatus().status, game.checkStatus().player);
 }
 
 function printTime(clock: ChessClock, player?: Player) {

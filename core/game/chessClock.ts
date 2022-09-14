@@ -28,6 +28,7 @@ export class ChessClock {
     }
 
     remaining(player: Player){
-        this.timers[player].remaining();
+        return this.timers[player].remaining();
     }
+
 }
