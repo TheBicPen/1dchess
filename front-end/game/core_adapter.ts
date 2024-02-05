@@ -3,8 +3,8 @@ import { BoardState, PieceType, Player } from "../../core/models.js";
 
 
 
-export function objToBoardObj(position: BoardState): object {
-    const out: any = {};
+export function objToBoardObj(position: BoardState): Record<string, string> {
+    const out: Record<string, string> = {};
     position.pieces.forEach(p => {
         const file: string | null = fileToLetter(p.position.file);
         if (file)

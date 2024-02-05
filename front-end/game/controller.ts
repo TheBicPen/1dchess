@@ -5,7 +5,7 @@ import { AIPlayer } from "../../core/ai/base.js";
 import randomAI from "../../core/ai/random.js";
 import { Draft } from "../../core/draft/draftModel.js";
 import { boardToState, parseSquare, unparseMove, unparseSquare } from "../../core/game/conversions.js";
-import { Game, GameStatus, MoveStatus, nextPlayer } from "../../core/game/gameModel.js";
+import { Game, GameStatus, MoveStatus } from "../../core/game/gameModel.js";
 import { Player } from "../../core/models.js";
 import { knownDraft, knownGame, namedPositions, positionNames } from "../../core/game/knownGames.js";
 import chessboard from "../../lib/chessboard.js";
@@ -22,7 +22,7 @@ let theDraftGameRules: RuleSet;
 const theCPU: AIPlayer = new randomAI();
 let theBoardElement: Node | string;
 let destroyTheBoard: (() => void) | undefined;
-let doneCallback: ((status: GameStatus) => any) | undefined;
+let doneCallback: ((status: GameStatus) => void);
 
 
 // When a move is made via the UI, send that move and wait for a response move
@@ -60,7 +60,7 @@ function moveResponse(action: action): string | null {
 
 function checkStatus() {
     if (theGame?.checkStatus().status !== "playing") {
-        doneCallback && doneCallback(theGame?.checkStatus());
+        doneCallback(theGame?.checkStatus());
     }
 }
 
@@ -173,7 +173,7 @@ export function fillPositionDropdown(element: Node) {
     });
 }
 
-export function play(draft: boolean, dimString: namedPositions, element: string | Node, done?: (status: GameStatus) => any): void {
+export function play(draft: boolean, dimString: namedPositions, element: string | Node, done: (status: GameStatus) => void): void {
     doneCallback = done;
     if (draft)
         startDraft(element, knownDraft(dimString), knownGame(dimString).gameBoard.rules);
