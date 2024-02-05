@@ -4,11 +4,10 @@
     {
       "type": "firefox",
       "request": "launch",
-      "reAttach": true,
       "name": "Launch Front-end",
       "url": "http://localhost:8000/front-end/index.html",
       "webRoot": "${workspaceFolder}",
-      "preLaunchTask": "prep front-end",
+      "preLaunchTask": "build front-end",
       "pathMappings": [
         {
           "url": "http://localhost:8000/front-end/dist/core",
