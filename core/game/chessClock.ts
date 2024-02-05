@@ -1,6 +1,6 @@
-import { Player } from "../models";
-import { Timer } from "../utils/Timer";
-import { nextPlayer } from "./gameModel";
+import { Player } from "../models.js";
+import { Timer } from "../utils/Timer.js";
+import { nextPlayer } from "./gameModel.js";
 
 export interface chessClockRules {
     timeSeconds: number,
