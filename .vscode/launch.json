@@ -30,7 +30,7 @@
       "skipFiles": [
         "<node_internals>/**"
       ],
-      "type": "pwa-node",
+      "type": "node",
       // "trace": true,
       "runtimeArgs": ["--trace-warnings"],
       "preLaunchTask": "build core"
@@ -43,7 +43,7 @@
       "skipFiles": [
         "<node_internals>/**"
       ],
-      "type": "pwa-node",
+      "type": "node",
       "preLaunchTask": "build core"
     },
     {
@@ -54,7 +54,7 @@
       "skipFiles": [
         "<node_internals>/**"
       ],
-      "type": "pwa-node",
+      "type": "node",
       "preLaunchTask": "build core"
     },
     {
@@ -65,7 +65,7 @@
       "skipFiles": [
         "<node_internals>/**"
       ],
-      "type": "pwa-node",
+      "type": "node",
       "preLaunchTask": "build core"
     },
     {
@@ -76,7 +76,7 @@
       "skipFiles": [
         "<node_internals>/**"
       ],
-      "type": "pwa-node",
+      "type": "node",
       "preLaunchTask": "build core"
     }
 
