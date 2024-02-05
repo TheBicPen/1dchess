@@ -28,7 +28,7 @@
                 if (status.status === "draw")
                     window.alert(`Game over! It's a draw!`);
                 else if (status.status === "loss")
-                    window.alert(`Game over! ${nextPlayer(theGame.checkStatus().player)} wins!`);
+                    window.alert(`Game over! ${status.player} ${status.status}!`);
             };
 
             document.querySelector("#gameSetup #start").addEventListener('click', () => {
