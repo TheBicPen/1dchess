@@ -22,6 +22,6 @@ export function parseObjPiece(p: string): { piece: PieceType, player: Player } |
     return player && piece && { 'piece': piece, 'player': player };
 }
 
-export function unparseObjPiece(piece: PieceType, player: Player ): string {
-  return `${player}${piece}`;   // this makes sure both are strings
+export function unparseObjPiece(piece: PieceType, player: Player): string {
+    return `${player}${piece}`;   // this makes sure both are strings
 }

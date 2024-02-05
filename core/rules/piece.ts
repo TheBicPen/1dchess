@@ -1,4 +1,4 @@
-import { PiecePosition, Square, BoardState, Move, Rules } from "../models.js";
+import { PiecePosition, Square, Move, Rules } from "../models.js";
 import { GameBoard } from "../game/GameBoard.js";
 
 

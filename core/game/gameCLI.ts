@@ -1,8 +1,7 @@
 import { AIPlayer } from "../ai/base.js";
-import randomAI from "../ai/random.js";
 import { BoardState, Move, Player } from "../models.js";
 import { RuleSet } from "../rules/piece.js";
-import { checkGameState, Game, MoveStatus } from "./gameModel.js";
+import { Game, MoveStatus } from "./gameModel.js";
 import { boardToState, parseMove, unparseMove } from "./conversions.js";
 import * as readline from "readline";
 import { printBoard } from "../utils/chessUtils.js";
@@ -23,7 +22,7 @@ export default async function runAIGameNode(board: BoardState, ruleSet: RuleSet)
         while (game.checkStatus().status === "playing" && (!result || !result.move)) {
             const request = new PollablePromise(requestMove(game), game.clock!.remaining(game.checkStatus().player));
             try {
-                let move: Move = await request.polling(1000, () => printTime(game.clock!, game.checkStatus().player));
+                const move: Move = await request.polling(1000, () => printTime(game.clock!, game.checkStatus().player));
                 result = game.makeMove(Player.White, move);
             } catch (error) {
                 console.error(error);
@@ -36,7 +35,7 @@ export default async function runAIGameNode(board: BoardState, ruleSet: RuleSet)
         if (game.checkStatus().status !== "playing")
             break;
         printBoard(boardToState(game.gameBoard));
-        let AIMove = CPU.move(game.gameBoard, Player.Black);
+        const AIMove = CPU.move(game.gameBoard, Player.Black);
         console.log("AI move:");
         console.log(unparseMove(AIMove));
         game.makeMove(Player.Black, AIMove);
@@ -51,7 +50,7 @@ function printTime(clock: ChessClock, player?: Player) {
 }
 
 
-function requestMove(game: Game): Promise<Move> {
+function requestMove(_game: Game): Promise<Move> {
     const rl = readline.createInterface({
         input: process.stdin,
         output: process.stdout

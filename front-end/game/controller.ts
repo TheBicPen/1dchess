@@ -121,7 +121,7 @@ function draftCallback(action: action) {
 }
 
 function onDropDraft(source: string, target: string, piece: string, _oldPos: string, _newPos: string, _orientation: string): action {
-    // only allow placing pieces onto the board    
+    // only allow placing pieces onto the board
     if (source !== "spare" || target === "offboard" || !theDraft || theDraft.done(Player.White))
         return "snapback";
     const thePiece = parseObjPiece(piece);

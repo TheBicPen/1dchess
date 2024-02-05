@@ -3,7 +3,7 @@ import { Player, PieceType, Square } from "../../models.js";
 import empty from "../../positions/empty.js";
 import { GamePiece } from "../../rules/piece.js";
 import { SimpleRuleSet } from "../../rules/simplePieces.js";
-import { pieceAtLocation, printBoard } from "../../utils/chessUtils.js";
+import { pieceAtLocation } from "../../utils/chessUtils.js";
 
 
 export default () => {

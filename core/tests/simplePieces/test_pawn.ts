@@ -1,6 +1,5 @@
 import { GameBoard } from "../../game/GameBoard.js";
-import { Player, PieceType, Square, PiecePosition } from "../../models.js";
-// import empty_board from "../../positions/normal_empty.js";
+import { PiecePosition } from "../../models.js";
 import starting_board from "../../positions/normal_chess.js";
 import { GamePiece } from "../../rules/piece.js";
 import { SimpleRuleSet } from "../../rules/simplePieces.js";
