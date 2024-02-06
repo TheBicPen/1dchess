@@ -20,7 +20,7 @@ let theGame: Game;
 let theDraft: Draft;
 let theDraftGameRules: RuleSet;
 const theCPU: AIPlayer = new randomAI();
-let theBoardElement: Node | string;
+let theBoardElement: Element;
 let destroyTheBoard: (() => void) | undefined;
 let doneCallback: ((status: GameStatus) => void);
 
@@ -64,7 +64,7 @@ function checkStatus() {
     }
 }
 
-function startGame(element: string | Node, game: Game) {
+function startGame(element: Element, game: Game) {
     const board = boardToState(game.gameBoard);
     const ranks = board.boardDimensions.rank;
     const files = board.boardDimensions.file;
@@ -82,7 +82,7 @@ function startGame(element: string | Node, game: Game) {
     screenBoard?.position(objToBoardObj(board), ranks, files);
 }
 
-function startDraft(element: string | Node, draft: Draft, gameRules: RuleSet) {
+function startDraft(element: Element, draft: Draft, gameRules: RuleSet) {
     const ranks = draft.board.boardDimensions.rank;
     const files = draft.board.boardDimensions.file;
     const draftConfig = {
@@ -173,7 +173,7 @@ export function fillPositionDropdown(element: Node) {
     });
 }
 
-export function play(draft: boolean, dimString: namedPositions, element: string | Node, done: (status: GameStatus) => void): void {
+export function play(draft: boolean, dimString: namedPositions, element: Element, done: (status: GameStatus) => void): void {
     doneCallback = done;
     if (draft)
         startDraft(element, knownDraft(dimString), knownGame(dimString).gameBoard.rules);

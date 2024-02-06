@@ -32,9 +32,10 @@
             };
 
             document.querySelector("#gameSetup #start").addEventListener('click', () => {
-                let isDraft = document.querySelector("#gameSetup #draft").checked;
-                let dimensionStr = document.querySelector("#gameSetup #boards").value;
-                play(isDraft, dimensionStr, 'board1', done);
+                const isDraft = document.querySelector("#gameSetup #draft").checked;
+                const dimensionStr = document.querySelector("#gameSetup #boards").value;
+                const board = document.getElementById('board1');
+                play(isDraft, dimensionStr, board, done);
                 document.querySelector("#gameSetup").style.display = 'none';
             });
         </script>
