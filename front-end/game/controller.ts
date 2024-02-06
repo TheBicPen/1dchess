@@ -11,7 +11,7 @@ import { knownDraft, knownGame, namedPositions, positionNames } from "../../core
 import chessboard from "../../lib/chessboard.js";
 import { objToBoardObj, parseObjPiece, unparseObjPiece } from "./core_adapter.js";
 import { RuleSet } from "../../core/rules/piece.js";
-
+import { pieceAtLocation } from "../../core/utils/chessUtils.js";
 type action = "snapback" | "trash" | "drop";
 
 
@@ -55,7 +55,34 @@ function moveResponse(action: action): string | null {
     else
         console.error("No move made. Not updating");
     console.log(AIMove);
+    theGame?._printBoard();
     return AIMove;
+}
+
+function onMouseoverSquare(square: string, piece: string) {
+    console.log("here");
+    if (!piece || theGame.checkStatus().status !== "playing")
+        return;
+    const boardSquare = parseSquare(square);
+    const boardPiece = pieceAtLocation(theGame.gameBoard, boardSquare!);
+    const moveTargets = boardPiece?.getLegalMoves(false, theGame.gameBoard);
+    moveTargets?.forEach(targetSquare => {
+        const unparsedTarget = unparseSquare(targetSquare);
+        const squareNode = theBoardElement.querySelector(`.square-${unparsedTarget}`)!;
+        const highlightClass = squareNode.classList.contains('black-3c85d')
+            ? 'black-highlight' : 'white-highlight';
+        squareNode.classList.add(highlightClass);
+    });
+
+}
+
+function onMouseoutSquare(_square: string) {
+    theBoardElement.querySelectorAll(".white-highlight").forEach(el => {
+        el.classList.remove("white-highlight");
+    });
+    theBoardElement.querySelectorAll(".black-highlight").forEach(el => {
+        el.classList.remove("black-highlight");
+    });
 }
 
 function checkStatus() {
@@ -72,6 +99,8 @@ function startGame(element: Element, game: Game) {
         'columns': files,
         'rows': ranks,
         'onDrop': onMove,
+        'onMouseoverSquare': onMouseoverSquare,
+        'onMouseoutSquare': onMouseoutSquare,
         'moveCallback': moveResponse,
         'draggable': true,
         'showErrors': 'console',
@@ -153,6 +182,8 @@ function startGameAfterDraft() {
         'columns': files,
         'rows': ranks,
         'onDrop': onMove,
+        'onMouseoverSquare': onMouseoverSquare,
+        'onMouseoutSquare': onMouseoutSquare,
         'moveCallback': moveResponse,
         'draggable': true,
         'showErrors': 'console',
