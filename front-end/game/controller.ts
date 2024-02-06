@@ -78,6 +78,7 @@ function startGame(element: Element, game: Game) {
         'pieceTheme': '../img/chesspieces/wikipedia/{piece}.png'
     };
     theGame = game;
+    theBoardElement = element;
     const screenBoard = chessboard.constructor(element, config);
     screenBoard?.position(objToBoardObj(board), ranks, files);
 }
