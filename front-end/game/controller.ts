@@ -12,6 +12,7 @@ import chessboard from "../../lib/chessboard.js";
 import { objToBoardObj, parseObjPiece, unparseObjPiece } from "./core_adapter.js";
 import { RuleSet } from "../../core/rules/piece.js";
 import { pieceAtLocation } from "../../core/utils/chessUtils.js";
+import { GameBoard } from "../../core/game/GameBoard.js";
 type action = "snapback" | "trash" | "drop";
 
 
@@ -62,9 +63,13 @@ function moveResponse(action: action): string | null {
 export function onMouseoverSquare(boardElement: Element, square: string, piece: string) {
     if (!piece || theGame.checkStatus().status !== "playing")
         return;
+    highlightLegalMoves(theGame.gameBoard, square, boardElement);
+}
+
+function highlightLegalMoves(board: GameBoard, square: string, boardElement: Element) {
     const boardSquare = parseSquare(square);
-    const boardPiece = pieceAtLocation(theGame.gameBoard, boardSquare!);
-    const moveTargets = boardPiece?.getLegalMoves(false, theGame.gameBoard);
+    const boardPiece = pieceAtLocation(board, boardSquare!);
+    const moveTargets = boardPiece?.getLegalMoves(false, board);
     moveTargets?.forEach(targetSquare => {
         const unparsedTarget = unparseSquare(targetSquare);
         const squareNode = boardElement.querySelector(`.square-${unparsedTarget}`)!;
@@ -72,7 +77,6 @@ export function onMouseoverSquare(boardElement: Element, square: string, piece: 
             ? 'black-highlight' : 'white-highlight';
         squareNode.classList.add(highlightClass);
     });
-
 }
 
 export function onMouseoutSquare(boardElement: Element, _square: string) {
