@@ -29,9 +29,9 @@ export class GameOnPage {
         this.doneCallback = done;
         this.theBoardElement = element;
         if (draft)
-            this.startDraft(element, knownDraft(dimString), knownGame(dimString).gameBoard.rules);
+            this.startDraft(knownDraft(dimString), knownGame(dimString).gameBoard.rules);
         else
-            this.startGame(element, knownGame(dimString));
+            this.startGame(knownGame(dimString));
     }
 
     // When a move is made via the UI, send that move and wait for a response move.
@@ -68,10 +68,14 @@ export class GameOnPage {
         return AIMove;
     }
 
-    private onMouseoverSquare = (boardElement: Element, square: string, piece: string) => {
+    private onMouseoverSquare = (square: string, piece: string) => {
         if (!piece || this.theGame!.checkStatus().status !== "playing")
             return;
-        highlightLegalMoves(this.theGame!.gameBoard, boardElement, square);
+        highlightLegalMoves(this.theGame!.gameBoard, this.theBoardElement, square);
+    }
+
+    private onMouseoutSquare = (_square: string, _piece: string) => {
+        onMouseoutSquare(this.theBoardElement);
     }
 
     private maybeEndGame() {
@@ -80,7 +84,7 @@ export class GameOnPage {
         }
     }
 
-    private startDraft(element: Element, draft: Draft, gameRules: RuleSet) {
+    private startDraft(draft: Draft, gameRules: RuleSet) {
         const ranks = draft.board.boardDimensions.rank;
         const files = draft.board.boardDimensions.file;
         const draftConfig = {
@@ -92,16 +96,15 @@ export class GameOnPage {
             'showErrors': 'console',
             'pieceTheme': '../img/chesspieces/wikipedia/{piece}.png'
         };
-        this.theBoardElement = element;
         this.theDraft = draft;
         this.theDraftGameRules = gameRules;
         if (this.destroyTheBoard) this.destroyTheBoard();
-        const draftBoard = chessboard.constructor(element, draftConfig);
+        const draftBoard = chessboard.constructor(this.theBoardElement, draftConfig);
         draftBoard?.position(objToBoardObj(draft.board), ranks, files);
         this.destroyTheBoard = draftBoard?.destroy;
     }
 
-    private startGame(element: Element, game: Game) {
+    private startGame(game: Game) {
         const board = boardToState(game.gameBoard);
         const ranks = board.boardDimensions.rank;
         const files = board.boardDimensions.file;
@@ -109,16 +112,15 @@ export class GameOnPage {
             'columns': files,
             'rows': ranks,
             'onDrop': this.onMove,
-            'onMouseoverSquare': (square: string, piece: string) => this.onMouseoverSquare(element, square, piece),
-            'onMouseoutSquare': (square: string) => onMouseoutSquare(element),
+            'onMouseoverSquare': this.onMouseoverSquare,
+            'onMouseoutSquare': this.onMouseoutSquare,
             'moveCallback': this.moveResponse,
             'draggable': true,
             'showErrors': 'console',
             'pieceTheme': '../img/chesspieces/wikipedia/{piece}.png'
         };
         this.theGame = game;
-        this.theBoardElement = element;
-        const screenBoard = chessboard.constructor(element, config);
+        const screenBoard = chessboard.constructor(this.theBoardElement, config);
         screenBoard?.position(objToBoardObj(board), ranks, files);
     }
 
@@ -171,8 +173,8 @@ export class GameOnPage {
             'columns': files,
             'rows': ranks,
             'onDrop': this.onMove,
-            'onMouseoverSquare': (square: string, piece: string) => this.onMouseoverSquare(this.theBoardElement, square, piece),
-            'onMouseoutSquare': (square: string) => onMouseoutSquare(this.theBoardElement),
+            'onMouseoverSquare': this.onMouseoverSquare,
+            'onMouseoutSquare': this.onMouseoutSquare,
             'moveCallback': this.moveResponse,
             'draggable': true,
             'showErrors': 'console',
