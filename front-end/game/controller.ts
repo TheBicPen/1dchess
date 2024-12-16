@@ -59,7 +59,7 @@ function moveResponse(action: action): string | null {
     return AIMove;
 }
 
-function onMouseoverSquare(square: string, piece: string) {
+export function onMouseoverSquare(boardElement: Element, square: string, piece: string) {
     if (!piece || theGame.checkStatus().status !== "playing")
         return;
     const boardSquare = parseSquare(square);
@@ -67,7 +67,7 @@ function onMouseoverSquare(square: string, piece: string) {
     const moveTargets = boardPiece?.getLegalMoves(false, theGame.gameBoard);
     moveTargets?.forEach(targetSquare => {
         const unparsedTarget = unparseSquare(targetSquare);
-        const squareNode = theBoardElement.querySelector(`.square-${unparsedTarget}`)!;
+        const squareNode = boardElement.querySelector(`.square-${unparsedTarget}`)!;
         const highlightClass = squareNode.classList.contains('black-3c85d')
             ? 'black-highlight' : 'white-highlight';
         squareNode.classList.add(highlightClass);
@@ -75,16 +75,16 @@ function onMouseoverSquare(square: string, piece: string) {
 
 }
 
-function onMouseoutSquare(_square: string) {
-    theBoardElement.querySelectorAll(".white-highlight").forEach(el => {
+export function onMouseoutSquare(boardElement: Element, _square: string) {
+    boardElement.querySelectorAll(".white-highlight").forEach(el => {
         el.classList.remove("white-highlight");
     });
-    theBoardElement.querySelectorAll(".black-highlight").forEach(el => {
+    boardElement.querySelectorAll(".black-highlight").forEach(el => {
         el.classList.remove("black-highlight");
     });
 }
 
-function checkStatus() {
+export function checkStatus() {
     if (theGame?.checkStatus().status !== "playing") {
         doneCallback(theGame?.checkStatus());
     }
@@ -98,8 +98,8 @@ function startGame(element: Element, game: Game) {
         'columns': files,
         'rows': ranks,
         'onDrop': onMove,
-        'onMouseoverSquare': onMouseoverSquare,
-        'onMouseoutSquare': onMouseoutSquare,
+        'onMouseoverSquare': (square: string, piece: string) => onMouseoverSquare(element, square, piece),
+        'onMouseoutSquare': (square: string) => onMouseoutSquare(element, square),
         'moveCallback': moveResponse,
         'draggable': true,
         'showErrors': 'console',
