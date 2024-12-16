@@ -16,61 +16,180 @@ import { GameBoard } from "../../core/game/GameBoard.js";
 type action = "snapback" | "trash" | "drop";
 
 
-// global state
-let theGame: Game;
-let theDraft: Draft;
-let theDraftGameRules: RuleSet;
-const theCPU: AIPlayer = new randomAI();
-let theBoardElement: Element;
-let destroyTheBoard: (() => void) | undefined;
-let doneCallback: ((status: GameStatus) => void);
+export class GameOnPage {
+    theGame: Game | undefined;
+    theDraft: Draft | undefined;
+    theDraftGameRules: RuleSet | undefined;
+    readonly theCPU: AIPlayer = new randomAI();
+    theBoardElement: Element;
+    destroyTheBoard: (() => void) | undefined;
+    doneCallback: ((status: GameStatus) => void);
 
-
-// When a move is made via the UI, send that move and wait for a response move
-function onMove(source: string, target: string, _piece: string,
-    _newPos: string, _oldPos: string, _orientation: string): action {
-    const move: string = source + "-" + target;
-    if (theGame?.checkStatus().status !== "playing")
-        return "snapback";
-    const moveResult: MoveStatus = theGame.makeMove(Player.White, move);
-    if (!moveResult.move) {
-        console.log("Invalid move:", moveResult.reason);
-        return 'snapback';
+    constructor(draft: boolean, dimString: namedPositions, element: Element, done: (status: GameStatus) => void) {
+        this.doneCallback = done;
+        this.theBoardElement = element;
+        if (draft)
+            this.startDraft(element, knownDraft(dimString), knownGame(dimString).gameBoard.rules);
+        else
+            this.startGame(element, knownGame(dimString));
     }
-    console.log(moveResult);
-    checkStatus();
-    return 'drop';
+
+    // When a move is made via the UI, send that move and wait for a response move.
+    // callbacks need to capture `this` so we use an arrow function
+    private onMove = (source: string, target: string, _piece: string, _newPos: string, _oldPos: string, _orientation: string): action => {
+        const move: string = source + "-" + target;
+        if (this.theGame?.checkStatus().status !== "playing")
+            return "snapback";
+        const moveResult: MoveStatus = this.theGame.makeMove(Player.White, move);
+        if (!moveResult.move) {
+            console.log("Invalid move:", moveResult.reason);
+            return 'snapback';
+        }
+        console.log(moveResult);
+        this.maybeEndGame();
+        return 'drop';
+    }
+
+    // Callback for move: action is the action of the move that triggered the callback
+    // Get AI move.
+    private moveResponse = (action: action): string | null => {
+        if (action !== "drop")
+            return null;
+        if (this.theGame?.checkStatus().status !== "playing")
+            return null;
+        const response: MoveStatus = this.theGame.makeMove(Player.Black, this.theCPU.move(this.theGame.gameBoard, Player.Black));
+        const AIMove = response.move && unparseMove(response.move);
+        if (AIMove)
+            this.maybeEndGame();
+        else
+            console.error("No move made. Not updating");
+        console.log(AIMove);
+        this.theGame?._printBoard();
+        return AIMove;
+    }
+
+    private onMouseoverSquare = (boardElement: Element, square: string, piece: string) => {
+        if (!piece || this.theGame!.checkStatus().status !== "playing")
+            return;
+        highlightLegalMoves(this.theGame!.gameBoard, boardElement, square);
+    }
+
+    private maybeEndGame() {
+        if (this.theGame?.checkStatus().status !== "playing") {
+            this.doneCallback(this.theGame!.checkStatus());
+        }
+    }
+
+    private startDraft(element: Element, draft: Draft, gameRules: RuleSet) {
+        const ranks = draft.board.boardDimensions.rank;
+        const files = draft.board.boardDimensions.file;
+        const draftConfig = {
+            'columns': files,
+            'rows': ranks,
+            'onDrop': this.onDropDraft,
+            'moveCallback': this.draftCallback,
+            'sparePieces': true,
+            'showErrors': 'console',
+            'pieceTheme': '../img/chesspieces/wikipedia/{piece}.png'
+        };
+        this.theBoardElement = element;
+        this.theDraft = draft;
+        this.theDraftGameRules = gameRules;
+        if (this.destroyTheBoard) this.destroyTheBoard();
+        const draftBoard = chessboard.constructor(element, draftConfig);
+        draftBoard?.position(objToBoardObj(draft.board), ranks, files);
+        this.destroyTheBoard = draftBoard?.destroy;
+    }
+
+    private startGame(element: Element, game: Game) {
+        const board = boardToState(game.gameBoard);
+        const ranks = board.boardDimensions.rank;
+        const files = board.boardDimensions.file;
+        const config = {
+            'columns': files,
+            'rows': ranks,
+            'onDrop': this.onMove,
+            'onMouseoverSquare': (square: string, piece: string) => this.onMouseoverSquare(element, square, piece),
+            'onMouseoutSquare': (square: string) => onMouseoutSquare(element, square),
+            'moveCallback': this.moveResponse,
+            'draggable': true,
+            'showErrors': 'console',
+            'pieceTheme': '../img/chesspieces/wikipedia/{piece}.png'
+        };
+        this.theGame = game;
+        this.theBoardElement = element;
+        const screenBoard = chessboard.constructor(element, config);
+        screenBoard?.position(objToBoardObj(board), ranks, files);
+    }
+
+    private draftCallback = (action: action) => {
+        if (action !== "drop")
+            return;
+        const pick = this.theCPU.draft(this.theDraft!.rules, this.theDraft!.board, Player.Black, this.theDraft!.playerPoints.b);
+        const pickResult = this.theDraft!.choosePiece(Player.Black, pick);
+        if (pickResult) {
+            if (this.theDraft!.done(Player.Black)) {
+                console.log("Draft is done. let's play!");
+                this.startGameAfterDraft();
+            }
+            return { 'playerPiece': unparseObjPiece(pick.piece, pick.player), 'target': unparseSquare(pick.position) };
+        }
+        else
+            console.error("AI pick invalid");
+
+    }
+
+    private onDropDraft = (source: string, target: string, piece: string, _oldPos: string, _newPos: string, _orientation: string): action => {
+        // only allow placing pieces onto the board
+        if (source !== "spare" || target === "offboard" || !this.theDraft || this.theDraft.done(Player.White))
+            return "snapback";
+        const thePiece = parseObjPiece(piece);
+        if (!thePiece) {
+            console.error("can't parse piece!");
+            return "snapback";
+        }
+        const square = parseSquare(target);
+        if (!square) {
+            console.error("can't parse target!");
+            return "snapback";
+        }
+        if (this.theDraft.choosePiece(Player.White, { 'piece': thePiece.piece, 'player': Player.White, 'position': square })) {
+            if (this.theDraft.done(Player.White)) {
+                console.log("Draft is done. let's play!");
+                this.startGameAfterDraft();
+            }
+            return "drop";
+        } else {
+            return "snapback";
+        }
+    }
+
+    private startGameAfterDraft() {
+        const files = this.theDraft!.board.boardDimensions.file;
+        const ranks = this.theDraft!.board.boardDimensions.rank;
+        const gameConfig = {
+            'columns': files,
+            'rows': ranks,
+            'onDrop': this.onMove,
+            'onMouseoverSquare': this.onMouseoverSquare,
+            'onMouseoutSquare': onMouseoutSquare,
+            'moveCallback': this.moveResponse,
+            'draggable': true,
+            'showErrors': 'console',
+            'pieceTheme': '../img/chesspieces/wikipedia/{piece}.png'
+        };
+        this.theGame = new Game(this.theDraft!.board, this.theDraftGameRules!);
+        if (this.destroyTheBoard) this.destroyTheBoard();
+        const gameBoard = chessboard.constructor(this.theBoardElement, gameConfig);
+        gameBoard?.position(objToBoardObj(this.theDraft!.board), ranks, files);
+        this.destroyTheBoard = gameBoard?.destroy;
+    }
 }
 
-// Callback for move: action is the action of the move that triggered the callback
-// Get AI move.
-function moveResponse(action: action): string | null {
-    if (action !== "drop")
-        return null;
-    if (theGame?.checkStatus().status !== "playing")
-        return null;
-    const response: MoveStatus = theGame.makeMove(Player.Black, theCPU.move(theGame.gameBoard, Player.Black));
-    const AIMove = response.move && unparseMove(response.move);
-    if (AIMove)
-        checkStatus();
-    else
-        console.error("No move made. Not updating");
-    console.log(AIMove);
-    theGame?._printBoard();
-    return AIMove;
-}
-
-export function onMouseoverSquare(boardElement: Element, square: string, piece: string) {
-    if (!piece || theGame.checkStatus().status !== "playing")
-        return;
-    highlightLegalMoves(theGame.gameBoard, square, boardElement);
-}
-
-function highlightLegalMoves(board: GameBoard, square: string, boardElement: Element) {
+export function highlightLegalMoves(board: GameBoard, boardElement: Element, square: string) {
     const boardSquare = parseSquare(square);
     const boardPiece = pieceAtLocation(board, boardSquare!);
-    const moveTargets = boardPiece?.getLegalMoves(false, board);
-    moveTargets?.forEach(targetSquare => {
+    boardPiece?.getLegalMoves(false, board).forEach(targetSquare => {
         const unparsedTarget = unparseSquare(targetSquare);
         const squareNode = boardElement.querySelector(`.square-${unparsedTarget}`)!;
         const highlightClass = squareNode.classList.contains('black-3c85d')
@@ -88,117 +207,6 @@ export function onMouseoutSquare(boardElement: Element, _square: string) {
     });
 }
 
-export function checkStatus() {
-    if (theGame?.checkStatus().status !== "playing") {
-        doneCallback(theGame?.checkStatus());
-    }
-}
-
-function startGame(element: Element, game: Game) {
-    const board = boardToState(game.gameBoard);
-    const ranks = board.boardDimensions.rank;
-    const files = board.boardDimensions.file;
-    const config = {
-        'columns': files,
-        'rows': ranks,
-        'onDrop': onMove,
-        'onMouseoverSquare': (square: string, piece: string) => onMouseoverSquare(element, square, piece),
-        'onMouseoutSquare': (square: string) => onMouseoutSquare(element, square),
-        'moveCallback': moveResponse,
-        'draggable': true,
-        'showErrors': 'console',
-        'pieceTheme': '../img/chesspieces/wikipedia/{piece}.png'
-    };
-    theGame = game;
-    theBoardElement = element;
-    const screenBoard = chessboard.constructor(element, config);
-    screenBoard?.position(objToBoardObj(board), ranks, files);
-}
-
-function startDraft(element: Element, draft: Draft, gameRules: RuleSet) {
-    const ranks = draft.board.boardDimensions.rank;
-    const files = draft.board.boardDimensions.file;
-    const draftConfig = {
-        'columns': files,
-        'rows': ranks,
-        'onDrop': onDropDraft,
-        'moveCallback': draftCallback,
-        'sparePieces': true,
-        'showErrors': 'console',
-        'pieceTheme': '../img/chesspieces/wikipedia/{piece}.png'
-    };
-    theBoardElement = element;
-    theDraft = draft;
-    theDraftGameRules = gameRules;
-    if (destroyTheBoard) destroyTheBoard();
-    const draftBoard = chessboard.constructor(element, draftConfig);
-    draftBoard?.position(objToBoardObj(draft.board), ranks, files);
-    destroyTheBoard = draftBoard?.destroy;
-}
-
-function draftCallback(action: action) {
-    if (action !== "drop")
-        return;
-    const pick = theCPU.draft(theDraft.rules, theDraft.board, Player.Black, theDraft.playerPoints.b);
-    const pickResult = theDraft.choosePiece(Player.Black, pick);
-    if (pickResult) {
-        if (theDraft.done(Player.Black)) {
-            console.log("Draft is done. let's play!");
-            startGameAfterDraft();
-        }
-        return { 'playerPiece': unparseObjPiece(pick.piece, pick.player), 'target': unparseSquare(pick.position) };
-    }
-    else
-        console.error("AI pick invalid");
-
-}
-
-function onDropDraft(source: string, target: string, piece: string, _oldPos: string, _newPos: string, _orientation: string): action {
-    // only allow placing pieces onto the board
-    if (source !== "spare" || target === "offboard" || !theDraft || theDraft.done(Player.White))
-        return "snapback";
-    const thePiece = parseObjPiece(piece);
-    if (!thePiece) {
-        console.error("can't parse piece!");
-        return "snapback";
-    }
-    const square = parseSquare(target);
-    if (!square) {
-        console.error("can't parse target!");
-        return "snapback";
-    }
-    if (theDraft.choosePiece(Player.White, { 'piece': thePiece.piece, 'player': Player.White, 'position': square })) {
-        if (theDraft.done(Player.White)) {
-            console.log("Draft is done. let's play!");
-            startGameAfterDraft();
-        }
-        return "drop";
-    } else {
-        return "snapback";
-    }
-}
-
-function startGameAfterDraft() {
-    const files = theDraft.board.boardDimensions.file;
-    const ranks = theDraft.board.boardDimensions.rank;
-    const gameConfig = {
-        'columns': files,
-        'rows': ranks,
-        'onDrop': onMove,
-        'onMouseoverSquare': onMouseoverSquare,
-        'onMouseoutSquare': onMouseoutSquare,
-        'moveCallback': moveResponse,
-        'draggable': true,
-        'showErrors': 'console',
-        'pieceTheme': '../img/chesspieces/wikipedia/{piece}.png'
-    };
-    theGame = new Game(theDraft.board, theDraftGameRules);
-    if (destroyTheBoard) destroyTheBoard();
-    const gameBoard = chessboard.constructor(theBoardElement, gameConfig);
-    gameBoard?.position(objToBoardObj(theDraft.board), ranks, files);
-    destroyTheBoard = gameBoard?.destroy;
-}
-
 export function fillPositionDropdown(element: Node) {
     positionNames.forEach(s => {
         const opt = document.createElement("option");
@@ -206,13 +214,4 @@ export function fillPositionDropdown(element: Node) {
         opt.text = s;
         element.appendChild(opt);
     });
-}
-
-export function play(draft: boolean, dimString: namedPositions, element: Element, done: (status: GameStatus) => void): void {
-    doneCallback = done;
-    if (draft)
-        startDraft(element, knownDraft(dimString), knownGame(dimString).gameBoard.rules);
-    else
-        startGame(element, knownGame(dimString));
-
 }
