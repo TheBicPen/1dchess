@@ -10,6 +10,10 @@
       "preLaunchTask": "prep front-end",
       "pathMappings": [
         {
+          "url": "http://localhost:8000/front-end/game",
+          "path": "${workspaceFolder}/front-end/game"
+        },
+        {
           "url": "http://localhost:8000/front-end/dist/core",
           "path": "${workspaceFolder}/core/dist"
         }
@@ -30,8 +34,9 @@
         "<node_internals>/**"
       ],
       "type": "node",
-      // "trace": true,
-      "runtimeArgs": ["--trace-warnings"],
+      "runtimeArgs": [
+        "--trace-warnings"
+      ],
       "preLaunchTask": "build core"
     },
     {
@@ -78,6 +83,5 @@
       "type": "node",
       "preLaunchTask": "build core"
     }
-
   ]
 }
