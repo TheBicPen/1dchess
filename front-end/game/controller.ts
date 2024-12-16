@@ -110,7 +110,7 @@ export class GameOnPage {
             'rows': ranks,
             'onDrop': this.onMove,
             'onMouseoverSquare': (square: string, piece: string) => this.onMouseoverSquare(element, square, piece),
-            'onMouseoutSquare': (square: string) => onMouseoutSquare(element, square),
+            'onMouseoutSquare': (square: string) => onMouseoutSquare(element),
             'moveCallback': this.moveResponse,
             'draggable': true,
             'showErrors': 'console',
@@ -172,7 +172,7 @@ export class GameOnPage {
             'rows': ranks,
             'onDrop': this.onMove,
             'onMouseoverSquare': (square: string, piece: string) => this.onMouseoverSquare(this.theBoardElement, square, piece),
-            'onMouseoutSquare': (square: string) => onMouseoutSquare(this.theBoardElement, square),
+            'onMouseoutSquare': (square: string) => onMouseoutSquare(this.theBoardElement),
             'moveCallback': this.moveResponse,
             'draggable': true,
             'showErrors': 'console',
@@ -198,7 +198,7 @@ export function highlightLegalMoves(board: GameBoard, boardElement: Element, squ
     });
 }
 
-export function onMouseoutSquare(boardElement: Element, _square: string) {
+export function onMouseoutSquare(boardElement: Element) {
     boardElement.querySelectorAll(".white-highlight").forEach(el => {
         el.classList.remove("white-highlight");
     });
