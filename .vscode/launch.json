@@ -7,7 +7,7 @@
       "name": "Launch Front-end",
       "url": "http://localhost:8000/front-end/index.html",
       "webRoot": "${workspaceFolder}",
-      "preLaunchTask": "build front-end",
+      "preLaunchTask": "prep front-end",
       "pathMappings": [
         {
           "url": "http://localhost:8000/front-end/dist/core",

@@ -3,7 +3,8 @@
 ## Usage
 
 ### Browser front-end
-- Run `npm run start-server` to start listening
+This is the configuration closest to the production environment.
+
 - Launch VSCode config `Launch Front-end`
 
 ### CLI front-end
