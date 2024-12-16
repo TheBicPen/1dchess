@@ -60,7 +60,6 @@ function moveResponse(action: action): string | null {
 }
 
 function onMouseoverSquare(square: string, piece: string) {
-    console.log("here");
     if (!piece || theGame.checkStatus().status !== "playing")
         return;
     const boardSquare = parseSquare(square);
