@@ -18,7 +18,8 @@
   "scripts": {
     "test": "exit 1",
     "start-server": "./node_modules/http-server/bin/http-server -p 8000",
-    "lint": "./node_modules/.bin/eslint --ext .ts --fix -- ."
+    "lint": "./node_modules/.bin/eslint --ext .ts --fix -- .",
+    "update-all-deps": "npx npm-check-updates -u"
   },
   "repository": {
     "type": "git",
