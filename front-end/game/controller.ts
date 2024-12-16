@@ -13,7 +13,8 @@ import { objToBoardObj, parseObjPiece, unparseObjPiece } from "./core_adapter.js
 import { RuleSet } from "../../core/rules/piece.js";
 import { pieceAtLocation } from "../../core/utils/chessUtils.js";
 import { GameBoard } from "../../core/game/GameBoard.js";
-type action = "snapback" | "trash" | "drop";
+
+export type action = "snapback" | "trash" | "drop";
 
 
 export class GameOnPage {

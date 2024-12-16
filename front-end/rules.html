@@ -6,9 +6,12 @@
     <meta http-equiv="X-UA-Compatible" content="IE=edge">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Rules</title>
+    <link rel="stylesheet" href="../lib/chessboard.css" />
 </head>
 
 <body>
+    <script src="https://code.jquery.com/jquery-3.6.0.js"
+        integrity="sha256-H+K7U5CnXl1h5ywQfKtSj8PCmoN9aaq30gDh27Xc0jk=" crossorigin="anonymous"></script>
     <a href="index.html">Home</a>
     <h3>
         Game Rules
@@ -35,6 +38,15 @@
         </li>
     </ul>
 
+    <button id="demo">Try it out!</button>
+    <div id="testboard" style="width: 400px; height: 400px"></div>
+    <script type="module">
+        import { initDemoBoard } from '../front-end/dist/front-end/demo_controller.js';
+        const board = document.getElementById("testboard");
+        document.getElementById("demo").addEventListener('click', () => {
+            initDemoBoard(board);
+        });
+    </script>
 </body>
 
 </html>
